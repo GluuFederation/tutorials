@@ -1,0 +1,19 @@
+<div class="container mt-3">
+  <div class="card text-white bg-success mb-3" *ngIf="accessToken">
+    <div class="card-body">
+      <h5 class="card-title">User info</h5>
+      <pre class="card-text">{{userInfo | json}}</pre>
+    </div>
+
+    <div class="card-body">
+      <h5 class="card-title">Protected Resources</h5>
+      <pre class="card-text">{{images | json}}</pre>
+    </div>
+  </div>
+
+  <div class="card text-white bg-danger mb-3" *ngIf="!accessToken">
+    <div class="card-body">
+      <h5 class="card-title">You are un authenticate!</h5>
+    </div>
+  </div>
+</div>

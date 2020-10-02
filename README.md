@@ -1,2 +1,2 @@
-# tutorials
-Gluu Platform Tutorials
+# Gluu Platform Tutorials
+
