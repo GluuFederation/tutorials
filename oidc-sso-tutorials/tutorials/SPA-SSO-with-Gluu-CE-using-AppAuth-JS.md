@@ -316,7 +316,7 @@ You are using Single Page Application which means you are 101% calling REST API(
 
 Now you need to secure your REST API application using `access_token` where you can `introspect the token` and validate the user. You can also use this `access_token` at your Backend side to get `userinfo` and authorize the user.
 
-To secure your backend application with `OAuth 2.0 Access Token`. Check my next blog `Secure your REST API application using Gluu Gateway and its OAuth plugins`.
+To secure your backend application with `OAuth 2.0 Access Token`. Check my next blog [Secure your REST API application using Gluu Gateway and its OAuth plugins](https://github.com/GluuFederation/tutorials/blob/master/gluu-gateway-tutorials/tutorials/Secure-API-backend-application-using-Gluu-Gateway-and-OAuth-plugins.md).
 
 ---------------------------------------------------
 
