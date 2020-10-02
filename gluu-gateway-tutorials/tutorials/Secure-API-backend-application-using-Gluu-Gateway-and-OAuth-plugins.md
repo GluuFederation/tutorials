@@ -103,6 +103,10 @@ After installation of GG you will get the following components:
 
     Gluu Gateway provides many plugins. [Check here for list](https://gluu.org/docs/gg/4.2/admin-guide/enable-plugins/). We are only using the `gluu-oauth-auth` plugin for request authentication.  
 
+- [OXD](https://gluu.org/docs/oxd/)
+
+    OXD exposes simple, static APIs web application developers can use to implement user authentication and authorization against an OAuth 2.0 authorization server like Gluu.
+
 ### Backend API(Protected Resources)
 We can also call it as a `Protected resources` or `Upstream App` or `target` or `backend APIs`. In this blog, I am using a demo Node.js App, available [here](https://github.com/GluuFederation/gluu-gateway-setup/tree/version_4.2.0/gg-demo/node-api-2). You should have to deploy this app on the Gluu-Gateway machine. This is your backend application that you want to secure and used by your frontend application e.g. mobile app, web frontend app.
 
