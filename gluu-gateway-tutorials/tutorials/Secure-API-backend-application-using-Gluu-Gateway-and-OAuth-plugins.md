@@ -108,7 +108,7 @@ After installation of GG you will get the following components:
     OXD exposes simple, static APIs web application developers can use to implement user authentication and authorization against an OAuth 2.0 authorization server like Gluu.
 
 ### Backend API(Protected Resources)
-We can also call it as a `Protected resources` or `Upstream App` or `target` or `backend APIs`. In this blog, I am using a demo Node.js App, available [here](https://github.com/GluuFederation/gluu-gateway-setup/tree/version_4.2.0/gg-demo/node-api-2). You should have to deploy this app on the Gluu-Gateway machine. This is your backend application that you want to secure and used by your frontend application e.g. mobile app, web frontend app.
+We can also call it as a `Protected resources` or `Upstream App` or `target` or `backend APIs`. In this blog, I am using a demo Node.js App, available [here](https://github.com/GluuFederation/tutorials/tree/master/other-utility-projects/code/node/gg-upstream-app-node). You should have to deploy this app on the Gluu-Gateway machine. This is your backend application that you want to secure and used by your frontend application e.g. mobile app, web frontend app.
 
 ### Angular Client
 I am using Angular Client to access protected resources. This is your Frontend application which requests to Gluu Gateway. Check blog [Single Page Application SSO With Gluu CE using AppAuth JS](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/tutorials/SPA-SSO-with-Gluu-CE-using-AppAuth-JS.md) for detail configuration and implementation. You can use your application, overall you need an application that will request to GG protected API.

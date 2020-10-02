@@ -11,7 +11,7 @@ In this blog, I'll describe how to achieve SSO with the Gluu Server.
 1. Node JS >= 12.x.x
 1. @angular/cli >= 10.1.2
 1. [Gluu CE](https://gluu.org/docs/gluu-server) >= 4.x.x, I am using Gluu Server as a OpenID Connect Provider. [Check here for more details about Gluu Server](https://gluu.org/docs/gluu-server)
-1. Clone or download RP(Angular App) Client from here [appauth-angular-gluu](https://github.com/kdhttps/appauth-angular-gluu). Currently I am using Angular as a Single Page Application technology. By following these below steps you can easily integrate it with your any single page application technology.
+1. Clone or download RP(Angular App) Client from here [appauth-angular-gluu](https://github.com/GluuFederation/tutorials/tree/master/oidc-sso-tutorials/code/angular/appauth-angular-gluu). Currently I am using Angular as a Single Page Application technology. By following these below steps you can easily integrate it with your any single page application technology.
 
 Let's integrated and implement Step by Step
 
