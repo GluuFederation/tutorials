@@ -168,4 +168,4 @@ curl -k -X GET \
 
 - Now you have authenticated user. Flow completed.
 
-If you are having Single Page Application i.e. angular, react, ect.. then you need to use the `Authorization Code PKCE Flow`. [Check here for more details](https://dev.to/kdhttps/the-best-security-for-single-page-applications-spa-openid-connect-oauth-2-0-authorization-code-pkce-flow-544p).
+If you are having Single Page Application i.e. angular, react, ect.. then you need to use the `Authorization Code PKCE Flow`. [Check here for more details](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/tutorials/Why-OpenID-Connect-OAuth-2.0-Authorization-Code-PKCE-Flow-for-SPA.md).
