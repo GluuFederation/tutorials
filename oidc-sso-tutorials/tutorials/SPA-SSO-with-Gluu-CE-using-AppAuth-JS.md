@@ -2,7 +2,7 @@
 
 Now we can easily integrate the Single Sign On(SSO) feature into any Single Page Application(SPA) using [AppAuth JS](https://github.com/openid/AppAuth-JS). The [AppAuth JS](https://github.com/openid/AppAuth-JS) is the best library to integrate `OpenID Connect Authorization Code PKCE Flow` at your any single page application technology.
 
-Before starting this, please check [OpenID Connect OAuth 2.0 Overview and Security Flows](https://github.com/kdhttps/node-passport/wiki/OpenID-Connect-OAuth-2.0-Overview-and-Security-Flows) and [The Best Security for Single Page Applications(SPA) - OpenID Connect OAuth 2.0 Authorization Code PKCE Flow](https://github.com/kdhttps/appauth-angular-gluu/wiki/Why-OpenID-Connect-OAuth-2.0-Authorization-Code-PKCE-Flow-for-SPA) for overview and details.
+Before starting this, please check [OpenID Connect OAuth 2.0 Overview and Security Flows](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/tutorials/OpenID-Connect-OAuth-2.0-Overview-and-Security-Flows.md) and [The Best Security for Single Page Applications(SPA) - OpenID Connect OAuth 2.0 Authorization Code PKCE Flow](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/tutorials/Why-OpenID-Connect-OAuth-2.0-Authorization-Code-PKCE-Flow-for-SPA.md) for overview and details.
 
 In this blog, I'll describe how to achieve SSO with the Gluu Server.
 

@@ -52,7 +52,7 @@ In this case, the **/token** endpoint is not protected by [**Token Endpoint auth
     console.log(code_challenge)
     ```
 
-    This is a simple Node.js code. For SPA applications, there is the best library available that is [AppAuth JS](https://github.com/openid/AppAuth-JS). Check blog here on [AppAuth JS integration with Single Page application](https://github.com/kdhttps/appauth-angular-gluu/wiki/SPA-SSO-with-Gluu-CE-using-AppAuth-JS)
+    This is a simple Node.js code. For SPA applications, there is the best library available that is [AppAuth JS](https://github.com/openid/AppAuth-JS). Check blog here on [AppAuth JS integration with Single Page application](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/tutorials/SPA-SSO-with-Gluu-CE-using-AppAuth-JS.md)
 
 2. Authorization request to OP Server
 
@@ -94,6 +94,6 @@ In this case, the **/token** endpoint is not protected by [**Token Endpoint auth
 
 I am not forcing you to use `PKCE flow` but it is better than the `implicit flow`.
 
-I've integrated the Authorization Code PKCE flow with Single Page Application. Check blog here on [AppAuth JS integration with Single Page application](https://github.com/kdhttps/appauth-angular-gluu/wiki/SPA-SSO-with-Gluu-CE-using-AppAuth-JS)
+I've integrated the Authorization Code PKCE flow with Single Page Application. Check blog here on [AppAuth JS integration with Single Page application](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/tutorials/SPA-SSO-with-Gluu-CE-using-AppAuth-JS.md)
 
 Thank you :blush:!!!

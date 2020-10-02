@@ -4,7 +4,7 @@ You can now secure your any API applications with `Zero line of Code` using `Glu
 
 The Gluu Gateway has many features and plugin to secure different types of applications, needs, and requirements. In this blog, I am mainly focusing on the API Application. For this, I am using `gluu-oauth-auth` plugin to authenticate the request using an access token. 
 
-Before starting this, check [OpenID Connect OAuth 2.0 Overview and Security Flows](https://github.com/kdhttps/node-passport/wiki/OpenID-Connect-OAuth-2.0-Overview-and-Security-Flows) for more details on OpenID Connect and terms and also check [Single Page Application SSO With Gluu CE using AppAuth JS](https://github.com/kdhttps/appauth-angular-gluu/wiki/SPA-SSO-with-Gluu-CE-using-AppAuth-JS).
+Before starting this, check [OpenID Connect OAuth 2.0 Overview and Security Flows](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/tutorials/OpenID-Connect-OAuth-2.0-Overview-and-Security-Flows.md) for more details on OpenID Connect and terms and also check [Single Page Application SSO With Gluu CE using AppAuth JS](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/tutorials/SPA-SSO-with-Gluu-CE-using-AppAuth-JS.md).
 
 ## Flow
 
@@ -14,7 +14,7 @@ In this tutorial, I am going to secure our API application using `gluu-oauth-aut
 
 2. Validate the OP Client which we used to get the `access_token`.
 
-Let's assume you have an angular app that requests to OP Server for user authentication using `OP client's client_id/client_secret` and get `access token`. After this angular app requesting this Gluu Gateway secured the application with `access token` in the authorization header. I covered this part in [Single Page Application SSO With Gluu CE using AppAuth JS](https://github.com/kdhttps/appauth-angular-gluu/wiki/SPA-SSO-with-Gluu-CE-using-AppAuth-JS) blog so take a look into this blog first.
+Let's assume you have an angular app that requests to OP Server for user authentication using `OP client's client_id/client_secret` and get `access token`. After this angular app requesting this Gluu Gateway secured the application with `access token` in the authorization header. I covered this part in [Single Page Application SSO With Gluu CE using AppAuth JS](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/tutorials/SPA-SSO-with-Gluu-CE-using-AppAuth-JS.md) blog so take a look into this blog first.
 
 Let's call `OP client's client_id/client_secret` as a `Consumer OP Client`, but why?, You will get it in the next following steps. This is the OP client which is validated by `Gluu Gateway` in the second step and this is the same client by which you requested for **access_token**. You need to register this `OP Client` into Gluu Gateway. We will see this configuration in the next following steps.
 
@@ -107,7 +107,7 @@ After installation of GG you will get the following components:
 We can also call it as a `Protected resources` or `Upstream App` or `target` or `backend APIs`. In this blog, I am using a demo Node.js App, available [here](https://github.com/GluuFederation/gluu-gateway-setup/tree/version_4.2.0/gg-demo/node-api-2). You should have to deploy this app on the Gluu-Gateway machine. This is your backend application that you want to secure and used by your frontend application e.g. mobile app, web frontend app.
 
 ### Angular Client
-I am using Angular Client to access protected resources. This is your Frontend application which requests to Gluu Gateway. Check blog [Single Page Application SSO With Gluu CE using AppAuth JS](https://github.com/kdhttps/appauth-angular-gluu/wiki/SPA-SSO-with-Gluu-CE-using-AppAuth-JS) for detail configuration and implementation. You can use your application, overall you need an application that will request to GG protected API.
+I am using Angular Client to access protected resources. This is your Frontend application which requests to Gluu Gateway. Check blog [Single Page Application SSO With Gluu CE using AppAuth JS](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/tutorials/SPA-SSO-with-Gluu-CE-using-AppAuth-JS.md) for detail configuration and implementation. You can use your application, overall you need an application that will request to GG protected API.
 
 ### Consumer OP Client
 This is the same client that you are using in the Angular App. I am calling this as a `Consumer OP Client`. We need to register this clients `client_id` into Gluu Gateway so it will only allow this client to access protected resources.
