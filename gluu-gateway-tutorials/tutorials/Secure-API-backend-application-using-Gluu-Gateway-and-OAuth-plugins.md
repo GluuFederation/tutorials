@@ -216,4 +216,6 @@ this.http.get('https://gluu.local.org:443/posts',
 
 If all is ok then you will get response from the GG.
 
+Gluu Gateway is a good fit for big complex data flow applications. For Small Applications, It over a burden to configure it.
+
 Thank you !!!
