@@ -37,7 +37,7 @@ RP->User: Allow login or allow to access protected endpoints(resources)
 
 1. Node JS >= v12.x.x
 1. NPM >= v6.x.x
-1. Clone or download [node-passport](https://github.com/kdhttps/node-passport) for quick SP configuration. You can make your own also.
+1. Clone or download [node-gluu-sso](https://github.com/GluuFederation/tutorials/tree/master/oidc-sso-tutorials/code/node/node-gluu-sso) for quick SP configuration. You can make your own also.
 1. [Gluu CE with Shibboleth SAML IDP](https://gluu.org/docs/gluu-server) >= 4.x.x, during Gluu CE installation it will ask you `Install Shibboleth SAML IDP` and you need to install SAML IDP into your Gluu CE. [Check here for more details about Gluu Server](https://gluu.org/docs/gluu-server)
 
 ## Implementation and integration
@@ -56,7 +56,7 @@ Create new client and you will get `client id` and `client secret`. We need this
 
 The `NodeJS` is acting here as a RP(Relying Party) and `Gluu` as a OP Server Provider.
 
-- You can manually generate this URL and send redirect GET request to OP Server. [Check details here for manual integration](https://github.com/kdhttps/node-passport/wiki/OpenID-Connect-OAuth-2.0-Overview-and-Security-Flows#stage-1-rp-configuration-generate-authorization-url-and-request-to-op-server). But we are using `passport` and `passport-openidconnect` so we just need to add configuration and all this things handle by passport library.
+- You can manually generate this URL and send redirect GET request to OP Server. [Check details here for manual integration](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/tutorials/OpenID-Connect-OAuth-2.0-Overview-and-Security-Flows.md#stage-2-rp-configuration-generate-authorization-url-and-request-to-op-server). But we are using `passport` and `passport-openidconnect` so we just need to add configuration and all this things handle by passport library.
 
 - Register the `passport-openidconnect` strategy.
 
