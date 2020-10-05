@@ -1,0 +1,21 @@
+<html>
+
+<head>
+  <title>Passport Demo</title>
+  <%- include('style') %>
+</head>
+
+<body>
+  <%- include('nav') %>
+
+  <div class="container">
+    <br />
+    <a href="/auth/oidc" class="btn btn-warning">Gluu OIDC SSO Login</a>
+
+    <a href="/auth/saml" class="btn btn-warning">Gluu SAML SSO Login</a>
+
+    <a href="/auth/inbound_saml" class="btn btn-warning">Gluu OIDC SSO Login - INBOUND SAML</a>
+  </div>
+</body>
+
+</html>

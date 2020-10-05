@@ -1,0 +1,9 @@
+<nav class="navbar navbar-light bg-success">
+    <a class="text-white navbar-brand" href="">Gluu Passport Demo</a>
+  
+    <a href="/" class="btn btn-primary">Home</a>
+    <a href="/profile" class="btn btn-primary">Profile</a>
+    <% if(user) { %>
+    <a href="/auth/logout" class="btn btn-primary">Logout</a>
+    <% } %>
+  </nav>

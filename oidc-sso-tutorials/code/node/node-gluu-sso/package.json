@@ -1,0 +1,50 @@
+{
+  "name": "node-passport-demo",
+  "version": "0.0.1",
+  "description": "Testing Node App with Gluu Server",
+  "main": "index.js",
+  "scripts": {
+    "test": "cucumber-js --exit test/*",
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "lint": "standard"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kdhttps/node-passport.git"
+  },
+  "keywords": [
+    "node",
+    "gluu",
+    "passportjs"
+  ],
+  "author": "Kiran Mali",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kdhttps/node-passport/issues"
+  },
+  "homepage": "https://github.com/kdhttps/node-passport#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cookie-session": "^1.4.0",
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "passport": "^0.4.1",
+    "passport-openidconnect": "0.0.2",
+    "passport-oxd": "^4.1.0",
+    "passport-saml": "^1.3.4"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "cucumber": "^6.0.5",
+    "husky": "^4.3.0",
+    "selenium-webdriver": "^4.0.0-alpha.7",
+    "standard": "^14.3.4"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
+  }
+}
