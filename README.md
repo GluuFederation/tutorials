@@ -14,7 +14,7 @@
 
 1. [SAML SSO with Gluu Shibboleth: **SP Initiated Flow**](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/tutorials/SAML-SSO-with-Gluu-Shibboleth-SP-Initiated-Flow.md) - Implement and integrate SAML SSO into your NodeJS application with Gluu Server
 
-1. [SAML SSO with Gluu Shibboleth: IDP Initiated Flow](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/tutorials/SAML-SSO-with-Gluu-Shibboleth-IDP-Initiated-Flow.md) - Implement and integrate SAML SSO into your NodeJS application with Gluu Server
+1. [SAML SSO with Gluu Shibboleth: **IDP Initiated Flow**](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/tutorials/SAML-SSO-with-Gluu-Shibboleth-IDP-Initiated-Flow.md) - Implement and integrate SAML SSO into your NodeJS application with Gluu Server
 
 ### Gluu Gateway Security
 
