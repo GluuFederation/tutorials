@@ -12,6 +12,8 @@
 
 1. [OpenID Connect OAuth 2.0 SSO with Gluu in NodeJS](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/tutorials/OpenID-Connect-OAuth2-SSO-with-Gluu.md) - Implement and integrate SSO into your NodeJS application with Gluu Server
 
+1. [SAML SSO with Gluu Shibboleth: SP Initiated Flow](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/tutorials/SAML-SSO-with-Gluu-Shibboleth-SP-Initiated-Flow) - Implement and integrate SAML SSO into your NodeJS application with Gluu Server
+
 ### Gluu Gateway Security
 
 1. [Secure API(backend) application using Gluu Gateway and OAuth plugins](https://github.com/GluuFederation/tutorials/blob/master/gluu-gateway-tutorials/tutorials/Secure-API-backend-application-using-Gluu-Gateway-and-OAuth-plugins.md)
