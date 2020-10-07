@@ -2,6 +2,12 @@
 
 You can now secure your any API applications with `Zero line of Code` using `Gluu Gateway`. You focus on your products features and let handle your product security by `Gluu Gateway`. What you need to do it to **install Gluu Gateway** and **Configure your application with Gluu Gateway**.
 
+## What is Gluu Gateway?
+
+Gluu Gateway (GG) is an authentication and authorization solution for APIs and websites.
+
+GG bundles the open-source [Kong Gateway](https://konghq.com/community/) for its core functionality and adds a GUI and custom plugins to enable access management policy enforcement using OAuth, UMA, OpenID Connect, and Open Policy Agent (OPA). In addition, GG supports the broader ecosystem of [Kong plugins](https://docs.konghq.com/hub/) to enable API rate limiting, logging, and many other capabilities.
+
 The Gluu Gateway has many features and plugin to secure different types of applications, needs, and requirements. In this blog, I am mainly focusing on the API Application. For this, I am using `gluu-oauth-auth` plugin to authenticate the request using an access token. 
 
 Before starting this, check [OpenID Connect OAuth 2.0 Overview and Security Flows](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/tutorials/OpenID-Connect-OAuth-2.0-Overview-and-Security-Flows.md) for more details on OpenID Connect and terms and also check [Single Page Application SSO With Gluu CE using AppAuth JS](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/tutorials/SPA-SSO-with-Gluu-CE-using-AppAuth-JS.md).
