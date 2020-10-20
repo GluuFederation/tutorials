@@ -1,30 +1,32 @@
 ## Secure REST API application using Gluu Gateway and OAuth plugins
 
-You can now secure your any API applications with `Zero line of Code` using `Gluu Gateway`. You focus on your products features and let handle your product security by `Gluu Gateway`. What you need to do it to **install Gluu Gateway** and **Configure your application with Gluu Gateway**.
+You can now secure any API or web application with **zero lines of code** using a free open source proxy called [Gluu Gateway](https://gateway.gluu.org/). As application developers, we want to focus on core functionality — not security. Putting a proxy in front of web applications or API’s to enforce security is a well-trodden path to securing content. There are many excellent proxies out there that can help you do this. Gluu Gateway has some unique features —it is the only proxy to support the [User Managed Access protocol](https://kantarainitiative.org/confluence/display/uma/Home), which is handy if you need to interact with a user post-authentication (e.g., for consent). It can handle both simple and complex requirements for authorization, making it an interesting option to help you secure your web content.
+
 
 ## What is Gluu Gateway?
 
 Gluu Gateway (GG) is an authentication and authorization solution for APIs and websites.
 
-GG bundles the open-source [Kong Gateway](https://konghq.com/community/) for its core functionality and adds a GUI and custom plugins to enable access management policy enforcement using OAuth, UMA, OpenID Connect, and Open Policy Agent (OPA). In addition, GG supports the broader ecosystem of [Kong plugins](https://docs.konghq.com/hub/) to enable API rate limiting, logging, and many other capabilities.
+GG bundles the open-source [Kong Community Edition 2.x Gateway](https://konghq.com/community/) for its core functionality and adds a GUI and custom plugins to enable access management policy enforcement using OAuth, UMA, OpenID Connect, and [Open Policy Agent](https://www.openpolicyagent.org/) (“OPA”). In addition, GG supports the broader ecosystem of [Kong plugins](https://docs.konghq.com/hub/) to enable API rate limiting, logging, and many other capabilities.
 
-The Gluu Gateway has many features and plugin to secure different types of applications, needs, and requirements. In this blog, I am mainly focusing on the API Application. For this, I am using `gluu-oauth-auth` plugin to authenticate the request using an access token. 
+In this blog, I am focusing on securing a backchannel API application. To accomplish this, I will use the **gluu-oauth-auth** plugin to authenticate the request using an access token.
 
-Before starting this, check [OpenID Connect OAuth 2.0 Overview and Security Flows](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/tutorials/OpenID-Connect-OAuth-2.0-Overview-and-Security-Flows.md) for more details on OpenID Connect and terms and also check [Single Page Application SSO With Gluu CE using AppAuth JS](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/tutorials/SPA-SSO-with-Gluu-CE-using-AppAuth-JS.md).
+You can read more about the [OpenID Connect OAuth 2.0 Overview and Security Flows](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/tutorials/OpenID-Connect-OAuth-2.0-Overview-and-Security-Flows.md) for a more detailed description of the terms. If you’re an Angular guru, you may also want to check out the [Single Page Application SSO With Gluu CE using AppAuth JS](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/tutorials/SPA-SSO-with-Gluu-CE-using-AppAuth-JS.md).
+
 
 ## Flow
 
-In this tutorial, I am going to secure our API application using `gluu-oauth-auth` plugin. It does two things.
+The gluu-oauth-auth plugin performs two important functions:
 
-1. Introspect the token, check token is active or not, and cache the token authentication.
+1. **Introspect the token:** verify the token is active , and cache the token key until expiration, to speed up subsequent validation of this token value.
 
-2. Validate the OP Client which we used to get the `access_token`.
+1. **Correlate** the **OAuth Client** from the **access_token** with a “consumer” in Kong. This is important because many policies (such as rate limiting), or based on the consumer id. There is no need to authenticate the client — authentication already happened at the OAuth Authorization Server (“AS”) token endpoint prior to obtaining an access token. The client_id claim in the access_token verifies the identity of the client that obtained the token.
 
-Let's assume you have an angular app that requests to OP Server for user authentication using `OP client's client_id/client_secret` and get `access token`. After this angular app requesting this Gluu Gateway secured the application with `access token` in the authorization header. I covered this part in [Single Page Application SSO With Gluu CE using AppAuth JS](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/tutorials/SPA-SSO-with-Gluu-CE-using-AppAuth-JS.md) blog so take a look into this blog first.
+For example, an app may obtain an access token using basic authentication at the token endpoint of an AS by presenting its **client_id/client_secret** in the authorization header. After this, the app can use the access token to call endpoints on the Gluu Gateway. This is covered in the howto about writing a [Single Page Application SSO With Gluu CE using the AppAuth JS](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/tutorials/SPA-SSO-with-Gluu-CE-using-AppAuth-JS.md).
 
-Let's call `OP client's client_id/client_secret` as a `Consumer OP Client`, but why?, You will get it in the next following steps. This is the OP client which is validated by `Gluu Gateway` in the second step and this is the same client by which you requested for **access_token**. You need to register this `OP Client` into Gluu Gateway. We will see this configuration in the next following steps.
+In Gluu Gateway, you map the OAuth client_id to a Kong Consumer ID. This can be accomplished via Kong’s configuration API. Or you can do it in the admin GUI, which may make it easier, because OAuth is the only mechanism you can use to define clients. Kong of course supports other mechanisms to authenticate consumers. But we don’t want Kong to do this — we want our OAuth Authorization Server to handle client authentication.
 
-The next flow is in the below diagram.
+The sequence diagram below may help you understand the flow for an Angular application. Note, [“PKCE”](https://tools.ietf.org/html/rfc7636) is used in cases where we can’t safely store a client secret in the client. For example, in a browser application, there is nothing we can do to stop a user from looking at the code.
 
 ![OIDC Authorization Code PKCE Flow and Gluu Gateway API Security](https://user-images.githubusercontent.com/39133739/94115067-d876b900-fe66-11ea-9a6e-134fac407d7c.png)
 
@@ -69,31 +71,31 @@ GG->RP: response data
 RP->User: Show data
 ```
 
-- Request always comes first to Gluu Gateway, it send request to your backend API application.
+- The request hits Gluu Gateway first — it is the Internet facing endpoint.
 
-- Overall you need to request Gluu Gateway with the `access_token` for protected endpoints(resources). 
+- You need to send the access token in the Authorization header — just like you would do for any OAuth protected API.
 
-- Gluu Gateway OAuth plugin introspect the token and validate the token
+- The GG OAuth plugin introspects the token (or validates the signature if it’s a JWT). If the token is not active, GG returns 401 — Unauthorized.
 
 - Next, it verifies the OP Consumer client
 
 - If all ok then GG request to your backend API, get a response, and return to RP Client
 
-As I told you you don't need to do a single line of code for security integration what you need to do it to install Gluu Gateway and configure your application in it. So let's configure your application with Gluu Gateway.
+Voila! OAuth access management without a single line of code! All you need to do it to install Gluu Gateway, map your OAuth client to a Kong consumer, and register the upstream API. Following is a more detailed description of how to do this.
 
 ## Prerequisites
 
 ### Gluu Server 
-This is our OpenID Connect Server (OP Server), from where the Requesting(Relying) party issue the OAuth token with scopes. [Install Gluu](https://gluu.org/docs/ce/4.2/installation-guide/install-ubuntu/).
+This is our OAuth Authorization Server. The Client software, or Relying Party (“RP”) will get an access token from the Gluu Server /token endpoint — requesting the required scopes. So the first step is to install a Gluu Server, if you don’t already have one. There are a number of ways to do this — you can use one of the Linux packages (Ubuntu, Centos, Red Hat or Debian), you can use Docker, or you can even use Kubernetes. Probably the simplest way is to use the Linux packages, which install all the components of the Gluu Server in a simple file system container (in /opt/gluu-server). This is normally a three step process: install the package, start the gluu server, run setup. But for detailed instructions, see the Installation Guide for the current version in the official [Gluu Server documentation](https://gluu.org/docs).
 
 ### Gluu Gateway(GG)
-This is our Resource Server (RS), where we will configure our backend application and it will validate the access tokens. [Install Gluu Gateway](https://gluu.org/docs/gg/4.2).
+In OAuth jargon, GG is our Resource Server (“RS”). For example, it publishes the endpoints that the Client will call, presenting the access token. Gluu Gateway also has a number of distributions. See the docs for [Gluu Gateway](https://gluu.org/docs/gg/4.2) to pick the distribution that makes the most sense for you. Note: you probably want to install GG on a different VM then your Gluu Server. If you do install GG on the same VM, I would suggest setting up a different virtual ethernet interface and making sure that the GG processes bind to this IP. This is a little out of scope of this howto article… so the easiest things is to probably just use a different VM!
 
 After installation of GG you will get the following components:
 
-- [Kong](https://konghq.com)
+- [Kong Community Edition 2.x](https://konghq.com)
 
-    It is `Proxy Middleware Gateway` Software which `handle the request` at GG, apply the security `plugins` and perform the `security tasks` as per plugin configuration.
+    Kong Provides the core API gateway functionality. This is the software which handles the request, applies the security plugins, and enforces the security policy per the plugin configuration
 
     It provides two endpoints. One is `Admin Endpoint` and `Proxy Endpoint`.
 
@@ -114,7 +116,7 @@ After installation of GG you will get the following components:
     OXD exposes simple, static APIs web application developers can use to implement user authentication and authorization against an OAuth 2.0 authorization server like Gluu.
 
 ### Backend API(Protected Resources)
-We can also call it as a `Protected resources` or `Upstream App` or `target` or `backend APIs`. In this blog, I am using a demo Node.js App, available [here](https://github.com/GluuFederation/tutorials/tree/master/other-utility-projects/code/node/gg-upstream-app-node). You should have to deploy this app on the Gluu-Gateway machine. This is your backend application that you want to secure and used by your frontend application e.g. mobile app, web frontend app.
+Also known as `Protected resources`, `Upstream App`, `target` or `backend API`. For this post, I am using a demo Node.js application available [here](https://github.com/GluuFederation/tutorials/tree/master/other-utility-projects/code/node/gg-upstream-app-node). This is the backend application which is called by the frontend software client.
 
 ### Angular Client
 I am using Angular Client to access protected resources. This is your Frontend application which requests to Gluu Gateway. Check blog [Single Page Application SSO With Gluu CE using AppAuth JS](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/tutorials/SPA-SSO-with-Gluu-CE-using-AppAuth-JS.md) for detail configuration and implementation. You can use your application, overall you need an application that will request to GG protected API.
@@ -222,6 +224,14 @@ this.http.get('https://gluu.local.org:443/posts',
 
 If all is ok then you will get response from the GG.
 
-Gluu Gateway is a good fit for big complex data flow applications. For Small Applications, It over a burden to configure it.
+## Conclusion
+At a high level, implementing a piece of infrastructure like an API gateway makes sense when you have a lot of APIs. If you have just a few endpoints, it may be overkill. But there are advantages to this approach:
 
-Thank you !!!
+1. Policy enforcement is not in code — it’s in the HTTP routing infrastructure. That means you can change the required scopes without touching your code.
+1. Your backend APIs are not Internet facing
+1. You can implement other security, like limiting transaction volume (i.e. how many calls per hour, day etc can a client make).
+1. Developers don’t need to know anything about OAuth — they can just code the functionality they need, and focus on fine grain authorization.
+
+So this approach may not be for everyone. But GG is a great tool to have in your back pocket when the right use case presents itself.
+
+Thank you!
