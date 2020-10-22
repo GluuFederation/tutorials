@@ -103,4 +103,5 @@ After installation of GG you will get the following components:
     OXD exposes simple, static APIs web application developers can use to implement user authentication and authorization against an OAuth 2.0 authorization server like Gluu.
 
 ### Backend Web App(Protected Resources)
-Also known as `Protected resources`, `Upstream App`, `target` or `backend Web App`. For this post, I am using a demo Node.js application available [here](https://github.com/GluuFederation/tutorials/tree/master/other-utility-projects/code/node/gg-upstream-app-node). This is the backend application which is called by the frontend software client.
+Also known as `Protected resources`, `Upstream App`, `target` or `backend Web App`. For this post, I am using a demo Node.js application available [here](https://github.com/GluuFederation/tutorials/tree/master/other-utility-projects/code/node/gg-upstream-web-app-node). This is the backend application which is called by the frontend software client.
+
