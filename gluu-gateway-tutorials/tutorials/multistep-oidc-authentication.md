@@ -170,5 +170,43 @@ Follow these steps to add a route:
 - You will see `Gluu OIDC & UMA PEP` title and `+` icon in pop-up.
 - Click on the `+` icon and it will show the below form. Add the ACR expression as in the below screenshots.
     - OTP stepped-up auth for path `/payments/??`
-    - auth_ldap_server authentication for all other paths. Check here for more details about ACR expressions.
+    - `simple_password_auth` authentication for all other paths. Check [here](https://gluu.org/docs/gg/4.2/plugin/gluu-openid-connect-uma-pep/#dynamic-url-base-acrs-stepped-up-authentication) for more details about ACR expressions.
+
+![gg-oidc-plugin](https://user-images.githubusercontent.com/39133739/97168447-7f27df80-17ae-11eb-9714-d6f39a86021b.jpg)
+
+Woop!! Configuration is done here. Not even single line of code. Next, request the Kong proxy at `https://<your_host>` in the browser. In this example, the host is https://dev1.gluu.org.
+
+## Authentication
+
+1. Once you send a request to the Kong proxy, the plugin will redirect the request to the OP side. The OP will request for the `username` and `password`, because we added the `simple_password_auth` ACR for any path /??.
+
+    ![auth-step1](https://gluu.org/docs/gg/4.2/img/oidc-demo10.png)
+
+    After successful authentication, the OP will display all requested permissions. Click `Allow`.
+
+    ![auth-step2](https://gluu.org/docs/gg/4.2/img/oidc-demo11.png)
+
+1. After clicking allow, you will get back to the Kong proxy and the plugin will serve the default home page of the upstream service.
+
+    ![auth-step3](https://gluu.org/docs/gg/4.2/img/oidc-demo12.png)
+
+    Click on `Flights`. It is also in the `/??` path, so the user already has permission to access this resource.
+
+    ![auth-step4](https://gluu.org/docs/gg/4.2/img/oidc-demo13.png)
+
+1. Now click `Payments`, on which we added the `OTP` stepped-up authentication. The plugin will redirect again to the OP. As per the OTP script, it will ask for the username and password.
+
+    ![auth-step5](https://gluu.org/docs/gg/4.2/img/oidc-demo10.png)
+
+    After successful authentication, the OP Server asks you to enroll in a device. Scan the displayed QR Code in an authenticator application, then click on Finish. Check the [Gluu CE docs](https://gluu.org/docs/ce/authn-guide/otp/#recommended-otp-apps) for supported OTP applications.
+
+    ![auth-step6](https://gluu.org/docs/gg/4.2/img/oidc-demo15.png)
+
+    After successful enrollment, it will prompt to enter the OTP. Enter the OTP from the authenticator application and click on Login.
+
+    ![auth-step7](https://gluu.org/docs/gg/4.2/img/oidc-demo14.png)
+
+1. After OTP authentication, the OP server will redirect back to the Kong proxy and serve the Payments page.
+
+    ![auth-step8](https://gluu.org/docs/gg/4.2/img/oidc-demo16.png)
 
