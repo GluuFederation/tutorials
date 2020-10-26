@@ -210,3 +210,14 @@ Woop!! Configuration is done here. Not even single line of code. Next, request t
 
     ![auth-step8](https://gluu.org/docs/gg/4.2/img/oidc-demo16.png)
 
+## Conclusion
+At a high level, implementing a piece of infrastructure like an API or Web gateway makes sense when you have a lot of APIs. If you have just a few endpoints, it may be overkill. But there are advantages to this approach:
+
+1. Policy enforcement is not in code — it’s in the HTTP routing infrastructure. That means you can change the required scopes without touching your code.
+1. Your backend web app is not Internet-facing
+1. You can implement other security, like limiting transaction volume (i.e. how many calls per hour, day etc can a client make).
+1. Developers don’t need to know anything about OpenID Connect OAuth — they can just code the functionality they need, and focus on fine grain authorization.
+
+So this approach may not be for everyone. But GG is a great tool to have in your back pocket when the right use case presents itself.
+
+Thank you!
