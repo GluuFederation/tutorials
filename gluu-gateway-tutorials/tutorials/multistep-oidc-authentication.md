@@ -8,7 +8,7 @@ Gluu Gateway (GG) is an authentication and authorization solution for APIs and w
 
 GG bundles the open-source [Kong Community Edition 2.x Gateway](https://konghq.com/community/) for its core functionality and adds a GUI and custom plugins to enable access management policy enforcement using OAuth, UMA, OpenID Connect, and [Open Policy Agent](https://www.openpolicyagent.org/) (“OPA”). In addition, GG supports the broader ecosystem of [Kong plugins](https://docs.konghq.com/hub/) to enable API rate limiting, logging, and many other capabilities.
 
-In this blog, I am focusing on securing a Web application. To accomplish this, I will use the **gluu-openid-conenct** plugin to authenticate the request using an **OpenID Connect Authorization Code Flow**. Also for the page `/payments/`, I am adding `OTP` auth as a one more authentication step. There are some more user authentications available in Gluu Server. Check [Gluu Server docs here](https://gluu.org/docs/gluu-server/4.2/authn-guide/intro/) for more details.
+In this blog, I am focusing on securing a Web application. To accomplish this, I will use the **gluu-openid-conenct** plugin to authenticate the request using an **OpenID Connect Authorization Code Flow**. Also for the page `/payments`, I am adding `OTP` auth as a one more authentication step. There are some more user authentications available in Gluu Server. Check [Gluu Server docs here](https://gluu.org/docs/gluu-server/4.2/authn-guide/intro/) for more details.
 
 You can read more about the [OpenID Connect OAuth 2.0 Overview and Security Flows](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/tutorials/OpenID-Connect-OAuth-2.0-Overview-and-Security-Flows.md) for a more detailed description of the terms. If you’re an Angular guru, you may also want to check out the [Single Page Application SSO With Gluu CE using AppAuth JS](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/tutorials/SPA-SSO-with-Gluu-CE-using-AppAuth-JS.md). If you are having API application then check [Secure API(backend) application using **Gluu Gateway** and **OAuth plugins**](https://github.com/GluuFederation/tutorials/blob/master/gluu-gateway-tutorials/tutorials/Secure-API-backend-application-using-Gluu-Gateway-and-OAuth-plugins.md)
 
@@ -16,7 +16,7 @@ You can read more about the [OpenID Connect OAuth 2.0 Overview and Security Flow
 
 Flow is pretty simple because you don't want to write single line of code. You just need to configure the plugin, add multistep auth and done. 
 
-User first authenticate with Gluu OpenID Connect server. When user do a payments i.e. try to access `/payments/` page, it will again prompt user to enter `OTP` and if all ok then allow access.
+User first authenticate with Gluu OpenID Connect server. When user do a payments i.e. try to access `/payments` page, it will again prompt user to enter `OTP` and if all ok then allow access.
 
 ![OpenID Connect Multistep Authentication with Gluu Gateway](https://user-images.githubusercontent.com/39133739/96872121-d36e4f00-1490-11eb-8fde-0a6039f26100.png)
 
@@ -68,7 +68,7 @@ GG->User: Allow to do payments
 
 - The request hits Gluu Gateway first — it is the Internet facing endpoint/page.
 
-- As per the configuration, GG will behave and proceed authentication flow.
+- As per the configuration, GG will behave and proceed the OpenID Connect Code Authentication Flow.
 
 ## Prerequisites
 
@@ -104,4 +104,71 @@ After installation of GG you will get the following components:
 
 ### Backend Web App(Protected Resources)
 Also known as `Protected resources`, `Upstream App`, `target` or `backend Web App`. For this post, I am using a demo Node.js application available [here](https://github.com/GluuFederation/tutorials/tree/master/other-utility-projects/code/node/gg-upstream-web-app-node). This is the backend application which is called by the frontend software client.
+
+## Configuration
+
+### Gluu Server enable OTP Auth
+
+First, add OTP stepped-up authentication by enabling the OTP ACR in the OP Server. Configure the following settings inside your Gluu Server:
+
+1. In `oxTrust`, navigate to `Configuration` > `Person Authentication Scripts`
+
+1. Enable the `otp` script
+
+    ![gluu-otp-auth](https://gluu.org/docs/gg/4.2/img/oidc-demo9.png)
+
+1. Now just confirm that it is enabled successfully by checking your OP discovery endpoint `<your_op_server>/.well-known/openid-configuration`, it should show otp in the `acr_values_supported` property.
+
+### Gluu Gateway configuration
+
+we are going to register and protect the whole upstream service (the website) using gluu-openid-connect plugin and for `/payments` path with the `OTP` ACR. As a result, a request for `/payments` will ask for an additional OTP authentication step to access the resource.
+
+There are 3 Steps to configure GG:
+
+1. Configure Service
+2. Configure Route
+3. Configure `gluu-openid-connect` plugin
+
+#### 1. Configure Service
+
+You need to first register your Web Application into GG as a Service.
+
+Follow these steps to add a Service using GG UI:
+
+- Click `SERVICES` on left panel
+- Click on `+ ADD NEW SERVICE` button
+- Fill in the following boxes:
+    - Name: oidc-steppedup-demo
+    - URL: **http://localhost:4400**, register as per your web application configuration. My web app is runnig on 4400 port.
+
+![add-oidc-service](https://gluu.org/docs/gg/4.2/img/oidc-demo1.png)
+
+#### 2. Configure Route
+
+Follow these steps to add a route:
+
+- Click on the `oidc-steppedup-demo` service
+
+- Click `Routes`
+
+- Click the `+ ADD ROUTE` button
+
+- Fill in the following boxes:
+    - Name: oidc-steppedup-demo
+    - Hosts: <your-server-host>, Tip: Press Enter to accept value. This tutorial uses a server with an updated `/etc/hosts` file. This is the host that will be requested in the browser after configuration. If using live servers, register the domain host instead. The rest of the tutorial will use `dev1.gluu.org` as an example, replace it with your host. Check the Kong docs for more routing capabilities.
+
+![add-oidc-route](https://user-images.githubusercontent.com/39133739/97156070-3109e080-179c-11eb-81e5-1f6a17a6005a.png)
+
+#### 3.Configure Plugin
+
+Follow these steps to add a route:
+
+- Click `ROUTES` on the left panel
+- Click on the route id/name with `dev1.gluu.org` as the host
+- Click on Plugins
+- Click on `+ ADD PLUGIN` button
+- You will see `Gluu OIDC & UMA PEP` title and `+` icon in pop-up.
+- Click on the `+` icon and it will show the below form. Add the ACR expression as in the below screenshots.
+    - OTP stepped-up auth for path `/payments/??`
+    - auth_ldap_server authentication for all other paths. Check here for more details about ACR expressions.
 
