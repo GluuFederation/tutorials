@@ -155,7 +155,7 @@ Follow these steps to add a route:
 
 - Fill in the following boxes:
     - Name: oidc-steppedup-demo
-    - Hosts: <your-server-host>, Tip: Press Enter to accept value. This tutorial uses a server with an updated `/etc/hosts` file. This is the host that will be requested in the browser after configuration. If using live servers, register the domain host instead. The rest of the tutorial will use `dev1.gluu.org` as an example, replace it with your host. Check the Kong docs for more routing capabilities.
+    - Hosts: <your-server-host>, Tip: Press Enter to accept value. This tutorial uses a server with an updated `/etc/hosts` file. This is the host that will be requested in the browser after configuration. If you are using live servers, register the domain host instead. The rest of the tutorial will use `dev1.gluu.org` as an example, replace it with your host. Check the Kong docs for more routing capabilities.
 
 ![add-oidc-route](https://user-images.githubusercontent.com/39133739/97156070-3109e080-179c-11eb-81e5-1f6a17a6005a.png)
 
