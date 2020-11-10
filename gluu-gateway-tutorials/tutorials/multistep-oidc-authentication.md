@@ -73,10 +73,10 @@ GG->User: Allow to do payments
 ## Prerequisites
 
 ### Gluu Server 
-This is our OAuth Authorization Server. The Client software, or Relying Party (“RP”) will get an access token from the Gluu Server /token endpoint — requesting the required scopes. So the first step is to install a Gluu Server, if you don’t already have one. There are a number of ways to do this — you can use one of the Linux packages (Ubuntu, Centos, Red Hat or Debian), you can use Docker, or you can even use Kubernetes. Probably the simplest way is to use the Linux packages, which install all the components of the Gluu Server in a simple file system container (in /opt/gluu-server). This is normally a three step process: install the package, start the gluu server, run setup. But for detailed instructions, see the Installation Guide for the current version in the official [Gluu Server documentation](https://gluu.org/docs).
+This is our OpenID Connect OAuth Authorization Server. The Client software Gluu Gateway(Relying Party - "RP") will request to Gluu Server for user authentication. So the first step is to install a Gluu Server, if you don’t already have one. There are a number of ways to do this — you can use one of the Linux packages (Ubuntu, Centos, Red Hat or Debian), you can use Docker, or you can even use Kubernetes. Probably the simplest way is to use the Linux packages, which install all the components of the Gluu Server in a simple file system container (in /opt/gluu-server). This is normally a three step process: install the package, start the gluu server, run setup. But for detailed instructions, see the Installation Guide for the current version in the official [Gluu Server documentation](https://gluu.org/docs).
 
 ### Gluu Gateway(GG)
-In OAuth jargon, GG is our Resource Server (“RS”). For example, it publishes the endpoints that the Client will call, presenting the access token. Gluu Gateway also has a number of distributions. See the docs for [Gluu Gateway](https://gluu.org/docs/gg/4.2) to pick the distribution that makes the most sense for you. Note: you probably want to install GG on a different VM then your Gluu Server. If you do install GG on the same VM, I would suggest setting up a different virtual ethernet interface and making sure that the GG processes bind to this IP. This is a little out of scope of this howto article… so the easiest things is to probably just use a different VM!
+In OAuth jargon, GG is our Resource Server ("RS") and also Relying Party ("RP"). For example, It expose open proxy endpoint to your users and your users first hit GG to access resources. Gluu Gateway also has a number of distributions. See the docs for [Gluu Gateway](https://gluu.org/docs/gg/4.2) to pick the distribution that makes the most sense for you. Note: you probably want to install GG on a different VM then your Gluu Server. If you do install GG on the same VM, I would suggest setting up a different virtual ethernet interface and making sure that the GG processes bind to this IP. This is a little out of scope of this howto article… so the easiest things is to probably just use a different VM!
 
 After installation of GG you will get the following components:
 
@@ -213,7 +213,7 @@ Woop!! Configuration is done here. Not even single line of code. Next, request t
 ## Conclusion
 At a high level, implementing a piece of infrastructure like an API or Web gateway makes sense when you have a lot of APIs. If you have just a few endpoints, it may be overkill. But there are advantages to this approach:
 
-1. Policy enforcement is not in code — it’s in the HTTP routing infrastructure. That means you can change the required scopes without touching your code.
+1. Multiple authentication is not in code — it’s in the HTTP routing infrastructure. That means you can change the authentication methods without touching your code.
 1. Your backend web app is not Internet-facing
 1. You can implement other security, like limiting transaction volume (i.e. how many calls per hour, day etc can a client make).
 1. Developers don’t need to know anything about OpenID Connect OAuth — they can just code the functionality they need, and focus on fine grain authorization.
