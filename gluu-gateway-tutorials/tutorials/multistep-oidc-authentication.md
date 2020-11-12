@@ -1,6 +1,6 @@
 # OpenID Connect Multistep Authentication with Gluu Gateway
 
-You can now secure any API or web application with **zero lines of code** using a free open source proxy called [Gluu Gateway](https://gateway.gluu.org/). As application developers, we want to focus on core functionality — not security. Putting a proxy in front of web applications or API’s to enforce security is a well-trodden path to securing content. There are many excellent proxies out there that can help you do this. Gluu Gateway has some unique features —it is the only proxy to support the [User Managed Access protocol](https://kantarainitiative.org/confluence/display/uma/Home), which is handy if you need to interact with a user post-authentication (e.g., for consent). It can handle both simple and complex requirements for authorization, making it an interesting option to help you secure your web content.
+You can now secure any API or web application with **zero lines of code** using a free open source proxy called [Gluu Gateway](https://gateway.gluu.org/). As application developers, we want to focus on core functionality — not security. Putting a proxy in front of web applications or API’s to enforce security is a well-trodden path to securing content. There are many excellent proxies out there that can help you do this. Gluu Gateway has some unique features —it is the only proxy to support the [User Managed Access protocol](https://kantarainitiative.org/confluence/display/uma/Home), which is handy if you need to interact with a user post-authentication (e.g. for consent). It can handle both simple and complex requirements for authorization, making it an interesting option to help you secure your web content.
 
 ## What is Gluu Gateway?
 
@@ -8,15 +8,17 @@ Gluu Gateway (GG) is an authentication and authorization solution for APIs and w
 
 GG bundles the open-source [Kong Community Edition 2.x Gateway](https://konghq.com/community/) for its core functionality and adds a GUI and custom plugins to enable access management policy enforcement using OAuth, UMA, OpenID Connect, and [Open Policy Agent](https://www.openpolicyagent.org/) (“OPA”). In addition, GG supports the broader ecosystem of [Kong plugins](https://docs.konghq.com/hub/) to enable API rate limiting, logging, and many other capabilities.
 
-In this blog, I am focusing on securing a Web application. To accomplish this, I will use the **gluu-openid-conenct** plugin to authenticate the request using an **OpenID Connect Authorization Code Flow**. Also for the page `/payments`, I am adding `OTP` auth as a one more authentication step. There are some more user authentications available in Gluu Server. Check [Gluu Server docs here](https://gluu.org/docs/gluu-server/4.2/authn-guide/intro/) for more details.
+In this blog, I am focusing on securing a Web application. To accomplish this, I will use the Gluu Gateway openid connect plugin to authenticate a request using the **Code Flow**. One nice feature of Gluu Gateway is the ability to implement "stepped-up authentication" for a part of the site. In my example, the `/payments` page requires `OTP` authentication. Gluu ships with many built in open and third party authentications solutions, including OTP, FIDO, Duo, and even facial recognition using BioID. Check [Gluu Server docs here](https://gluu.org/docs/gluu-server/4.2/authn-guide/intro/) for more details. If you need a portal to enable end users to manage their 2FA credentials, you may also want to look at the [Gluu Casa](https://casa.gluu.org) component, which is now included in the Gluu Server 4.2.x Community and Cloud Native editions.  
 
 You can read more about the [OpenID Connect OAuth 2.0 Overview and Security Flows](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/tutorials/OpenID-Connect-OAuth-2.0-Overview-and-Security-Flows.md) for a more detailed description of the terms. If you’re an Angular guru, you may also want to check out the [Single Page Application SSO With Gluu CE using AppAuth JS](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/tutorials/SPA-SSO-with-Gluu-CE-using-AppAuth-JS.md). If you are having API application then check [Secure API(backend) application using **Gluu Gateway** and **OAuth plugins**](https://github.com/GluuFederation/tutorials/blob/master/gluu-gateway-tutorials/tutorials/Secure-API-backend-application-using-Gluu-Gateway-and-OAuth-plugins.md)
 
 ## Flow
 
-Flow is pretty simple because you don't want to write single line of code. You just need to configure the plugin, add multistep auth and done. 
+The flow is pretty simple because you don't need to write a single line of code. You just need to configure the plugin, add multi-step auth is done! 
 
-User first authenticate with Gluu OpenID Connect server. When user do a payments i.e. try to access `/payments` page, it will again prompt user to enter `OTP` and if all ok then allow access.
+The user first authenticates. When trying to access the `/payments` page, GG will elevate the authentication, for example by requiring an `OTP`token (or FIDO, or whatever mechanism you configure, by specifying the respective `acr_values` param). 
+
+Below is a sequence diagram if you are the type of person who likes these kind of things:
 
 ![OpenID Connect Multistep Authentication with Gluu Gateway](https://user-images.githubusercontent.com/39133739/96872121-d36e4f00-1490-11eb-8fde-0a6039f26100.png)
 
@@ -25,44 +27,45 @@ https://sequencediagram.org
 
 bottomparticipants
 
-title OpenID Connect Multistep Authentication with Gluu Gateway
+title OpenID Connect Authentication with Gluu Gateway
 
 actor "++**User**++" as User #yellow
+participant Browser
 fontawesome5solid f085 "++**Gluu Gateway**++" as GG #lightgreen
-fontawesome5solid f5fd "++**Gluu OIDC Server**++" as OIDC #green
+fontawesome5solid f5fd "++**OpenID Provider**++" as OP #green
 fontawesome5solid f022 "++**Backend Web App**++" as UpstreamApp #tomato
 
-User->GG: login request or directly request \nfor protected resources \nusing browser or mobile app
 
+User->Browser: 
+Browser->GG: request for protected resources \nusing browser or mobile app
 
-User->GG: login request or directly request \nfor protected resources \nusing browser or mobile app
-GG->OIDC: Redirect to **you_op_server.com/authorize** endpoint
+GG->Browser: Redirect to OpenID Provider /authorize endpoint
+Browser->OP: 
+OP->Browser: Present Login Page
+User->Browser: Assert creds
+Browser->OP: Send creds
+OP->OP: Validate creds
+note over OP#lightgreen: If creds are ok...
+OP->Browser: redirect browser to redirect_uri with code and state
+Browser->GG: code / state
+GG->GG: validate state
+GG->OP: call /token endpoint, authenticate client, send code 
+OP->OP: lookup code
+OP->GG: return access token, id_token JWT
+GG->OP: call /userinfo endpoint
+OP->GG: Return Userinfo JWT
 
-note over OIDC#lightgreen: Auth Process Started \ne.g. Login page
-note over OIDC#lightgreen: User enter credentials
-note over OIDC#lightgreen: OIDC Server Authenticate the user and \nif all is ok then redirect to GG(RP) with **code** and **state
-
-
-GG->OIDC: Redirected to GG \n**your_rp.com/redirect_uri?code=[string]&state=[string]**
-GG->OIDC: Request to \n**your_op_server.com/token** endpoint
-GG->OIDC: Request to \n**your_op_server.com/userinfo** endpoint with **access_token** 
-OIDC->GG: Return user details
-GG->GG: verify authenticate the user
-
-GG<->UpstreamApp: Request and take a response
-GG->User: Allow login or access to resources
-User->GG: Request for **/payments** 
-GG->GG: 
- 
-note over GG#lightgreen: GG checks user is already authenticated\nIf yes then intiate step up auth e.g. OTP
-GG->OIDC: Request again but now for OTP auth
-OIDC->OIDC: Validate and verify OTP and allow
-OIDC->GG: Redirected to GG with new **code** and **state**
-GG->GG: 
-note over GG#lightgreen: GG gets new token and save user state \ni.e. User passed OTP auth so once \nuser again request for payments \nGG will not start again OTP auth process
-
-GG<->UpstreamApp: Request and take a response
-GG->User: Allow to do payments
+GG->GG: Evaluate access: allow or deny? 
+note over GG: If allow
+GG<->UpstreamApp: Request content
+User->GG: Request for **/payments** i.e.
+note over GG#lightgreen: Oh! This requires a higher level of assurance!\nNeed stepped up authentication!
+GG->Browser: Redirect to /authorize?prompt=loginL&acr_values=otp\nto re-authneticate
+Browser->OP: 
+note over OP,GG: Rinse and repeat flow as above...\nthis time with a different acr_values param 
+OP->GG: new access token, id_token
+GG<->UpstreamApp: Request content
+GG->Browser: Send content
 
 ```
 
@@ -70,10 +73,10 @@ GG->User: Allow to do payments
 
 - As per the configuration, GG will behave and proceed the OpenID Connect Code Authentication Flow.
 
-## Prerequisites
+## Pre-requisites
 
-### Gluu Server 
-This is our OpenID Connect OAuth Authorization Server. The Client software Gluu Gateway(Relying Party - "RP") will request to Gluu Server for user authentication. So the first step is to install a Gluu Server, if you don’t already have one. There are a number of ways to do this — you can use one of the Linux packages (Ubuntu, Centos, Red Hat or Debian), you can use Docker, or you can even use Kubernetes. Probably the simplest way is to use the Linux packages, which install all the components of the Gluu Server in a simple file system container (in /opt/gluu-server). This is normally a three step process: install the package, start the gluu server, run setup. But for detailed instructions, see the Installation Guide for the current version in the official [Gluu Server documentation](https://gluu.org/docs).
+### OpenID Provider
+This is our Gluu Server, or any compliant OpenID Provider. The Client software Gluu Gateway(Relying Party - "RP") will request to Gluu Server for user authentication. So the first step is to install a Gluu Server, if you don’t already have one. There are a number of ways to do this — you can use one of the Linux packages (Ubuntu, Centos, Red Hat or Debian), you can use Docker, or you can even use Kubernetes. Probably the simplest way is to use the Linux packages, which install all the components of the Gluu Server in a simple file system container (in /opt/gluu-server). This is normally a three step process: install the package, start the gluu server, run setup. But for detailed instructions, see the Installation Guide for the current version in the official [Gluu Server documentation](https://gluu.org/docs).
 
 ### Gluu Gateway(GG)
 In OAuth jargon, GG is our Resource Server ("RS") and also Relying Party ("RP"). For example, It expose open proxy endpoint to your users and your users first hit GG to access resources. Gluu Gateway also has a number of distributions. See the docs for [Gluu Gateway](https://gluu.org/docs/gg/4.2) to pick the distribution that makes the most sense for you. Note: you probably want to install GG on a different VM then your Gluu Server. If you do install GG on the same VM, I would suggest setting up a different virtual ethernet interface and making sure that the GG processes bind to this IP. This is a little out of scope of this howto article… so the easiest things is to probably just use a different VM!
