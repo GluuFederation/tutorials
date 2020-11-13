@@ -50,22 +50,23 @@ OP->Browser: redirect browser to redirect_uri with code and state
 Browser->GG: code / state
 GG->GG: validate state
 GG->OP: call /token endpoint, authenticate client, send code 
-OP->OP: lookup code
+OP->OP: validated client creds / lookup code
 OP->GG: return access token, id_token JWT
-GG->OP: call /userinfo endpoint
+GG->OP: call /userinfo endpoint with access_token
 OP->GG: Return Userinfo JWT
 
 GG->GG: Evaluate access: allow or deny? 
 note over GG: If allow
-GG<->UpstreamApp: Request content
-User->GG: Request for **/payments** i.e.
+GG<->UpstreamApp: Serve content
+GG->Browser: Serve content
+User->GG: Request for **/payments**
 note over GG#lightgreen: Oh! This requires a higher level of assurance!\nNeed stepped up authentication!
-GG->Browser: Redirect to /authorize?prompt=loginL&acr_values=otp\nto re-authneticate
+GG->Browser: Redirect to /authorize?prompt=login&acr_values=otp
 Browser->OP: 
 note over OP,GG: Rinse and repeat flow as above...\nthis time with a different acr_values param 
 OP->GG: new access token, id_token
-GG<->UpstreamApp: Request content
-GG->Browser: Send content
+GG<->UpstreamApp: Serve content
+GG->Browser: Serve content
 
 ```
 
@@ -76,14 +77,14 @@ GG->Browser: Send content
 ## Pre-requisites
 
 ### OpenID Provider
-This is our Gluu Server, or any compliant OpenID Provider. The Client software Gluu Gateway(Relying Party - "RP") will request to Gluu Server for user authentication. So the first step is to install a Gluu Server, if you don’t already have one. There are a number of ways to do this — you can use one of the Linux packages (Ubuntu, Centos, Red Hat or Debian), you can use Docker, or you can even use Kubernetes. Probably the simplest way is to use the Linux packages, which install all the components of the Gluu Server in a simple file system container (in /opt/gluu-server). This is normally a three step process: install the package, start the gluu server, run setup. But for detailed instructions, see the Installation Guide for the current version in the official [Gluu Server documentation](https://gluu.org/docs).
+This is our Gluu Server--or any [conformant](https://openid.net/certification/) OpenID Provider (or "OP"). If you need an OP for testing, the Gluu Server has a number of distributions. It's easy to install--normally a three step process: install the software, start the service, run setup. But for detailed instructions, see the [Gluu Server documentation](https://gluu.org/docs).
 
 ### Gluu Gateway(GG)
-In OAuth jargon, GG is our Resource Server ("RS") and also Relying Party ("RP"). For example, It expose open proxy endpoint to your users and your users first hit GG to access resources. Gluu Gateway also has a number of distributions. See the docs for [Gluu Gateway](https://gluu.org/docs/gg/4.2) to pick the distribution that makes the most sense for you. Note: you probably want to install GG on a different VM then your Gluu Server. If you do install GG on the same VM, I would suggest setting up a different virtual ethernet interface and making sure that the GG processes bind to this IP. This is a little out of scope of this howto article… so the easiest things is to probably just use a different VM!
+In OAuth jargon, GG is our Resource Server ("RS"). In OpenID jargon, it's the Relying Party ("RP"). Gluu Gateway also has a number of distributions. See the docs for [Gluu Gateway](https://gluu.org/docs/gg/4.2) to pick the distribution that makes the most sense for you. Note, you probably want to install GG on a different server then your Gluu Server. If you do install GG on the same VM, I would suggest setting up a different virtual ethernet interface and making sure that the GG processes bind to this IP. This is a little out of scope of this howto article… so the easiest things is to probably just use a different server!
 
-After installation of GG you will get the following components:
+After installation of GG you will find the following components:
 
-- [Kong Community Edition 2.x](https://konghq.com)
+- [Kong Community Edition 2.x](https://konghq.com/community/)
 
     Kong Provides the core API gateway functionality. This is the software which handles the request, applies the security plugins, and enforces the security policy per the plugin configuration
 
@@ -93,17 +94,17 @@ After installation of GG you will get the following components:
 
     `Proxy Endpoint` is your final endpoint which accept request from clients. In our case, the angular application calling this endpoint for protected resources.
 
-- [GG UI](https://gluu.org/docs/gg/4.2/admin-guide/getting-started/)
+- [Gluu Gateway UI](https://gluu.org/docs/gg/4.2/admin-guide/getting-started/)
 
-    It is Admin GG UI Panel. Where you can configure your backend API, routes, consumer, and plugins.
+    This is the Admin web interface where you can configure your backend API, routes, consumer, and plugins. Note: the admin UI just calls the Kong Admin Endpoint. So anything you can do in the UI, you can do via API's. There is even a log in the Admin UI which tells you the equivalent curl command you could have made. 
 
 - [Gluu Plugins](https://gluu.org/docs/gg/4.2/admin-guide/enable-plugins/)
 
-    Gluu Gateway provides many plugins. [Check here for list](https://gluu.org/docs/gg/4.2/admin-guide/enable-plugins/). We are only using the `gluu-oauth-auth` plugin for request authentication.  
+    Gluu Gateway provides several plugins. [Check here for list](https://gluu.org/docs/gg/4.2/admin-guide/enable-plugins/). We are only using the `gluu-oauth-auth` plugin for request authentication.  
 
 - [OXD](https://gluu.org/docs/oxd/)
 
-    OXD exposes simple, static APIs web application developers can use to implement user authentication and authorization against an OAuth 2.0 authorization server like Gluu.
+    OXD exposes simple, static APIs web application developers can use to implement user authentication and authorization against an OAuth 2.0 authorization server like Gluu. The Gluu Plugins call oxd API's. This reduced the amount of protocol code in the Kong plugins. 
 
 ### Backend Web App(Protected Resources)
 Also known as `Protected resources`, `Upstream App`, `target` or `backend Web App`. For this post, I am using a demo Node.js application available [here](https://github.com/GluuFederation/tutorials/tree/master/other-utility-projects/code/node/gg-upstream-web-app-node). This is the backend application which is called by the frontend software client.
@@ -120,7 +121,7 @@ First, add OTP stepped-up authentication by enabling the OTP ACR in the OP Serve
 
     ![gluu-otp-auth](https://gluu.org/docs/gg/4.2/img/oidc-demo9.png)
 
-1. Now just confirm that it is enabled successfully by checking your OP discovery endpoint `<your_op_server>/.well-known/openid-configuration`, it should show otp in the `acr_values_supported` property.
+1. Now just confirm that it is enabled successfully by checking your OP discovery endpoint `https://<your_op_server>/.well-known/openid-configuration`, it should show otp in the `acr_values_supported` property.
 
 ### Gluu Gateway configuration
 
