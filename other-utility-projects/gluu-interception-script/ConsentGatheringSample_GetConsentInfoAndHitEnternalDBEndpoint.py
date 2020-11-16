@@ -13,6 +13,8 @@ from org.gluu.oxauth.service import ClientService
 
 import java
 import random
+import urllib2
+import urllib
 
 class ConsentGathering(ConsentGatheringType):
 
@@ -46,15 +48,24 @@ class ConsentGathering(ConsentGatheringType):
             allowButton = context.getRequestParameters().get("authorizeForm:allowButton")
             if (allowButton != None) and (len(allowButton) > 0):
                 print "Consent-Gathering. Getting Userinfo"
+                # https://github.com/GluuFederation/oxAuth/blob/01fe85154c6015e38360cdebf1567912a30ec280/Server/src/main/java/org/gluu/oxauth/service/external/context/ConsentGatheringContext.java#L55
                 user = context.getUser()
                 if user:
                     print "Consent-Gathering. user: " + user.toString()
                     userService = context.getUserService()
-                    print "Consent-Gathering. displayName: " + userService.getCustomAttribute(user, "displayName").getValue()
+                    userDisplayName = userService.getCustomAttribute(user, "displayName").getValue()
+                    print "Consent-Gathering. displayName: " + userDisplayName
                     
                     client = context.getClient()
                     print "Consent-Gathering. client: " + client.toString()
-                    print "Consent-Gathering. client inum: " + client.getClientId()
+                    clientId = client.getClientId()
+                    print "Consent-Gathering. client inum: " + clientId
+                    print "Consent-Gathering. Calling API: "
+                    url = 'http://localhost:3000/users'
+                    data = urllib.urlencode({'name' : userDisplayName, 'client_id'  : clientId})
+                    req = urllib2.Request(url, data)
+                    response = urllib2.urlopen(req)
+                    print response.read()
                 else:
                     print "Consent-Gathering. user: is null"
 
