@@ -45,19 +45,14 @@ class ConsentGathering(ConsentGatheringType):
             allowButton = context.getRequestParameters().get("authorizeForm:allowButton")
             if (allowButton != None) and (len(allowButton) > 0):
                 print "Consent-Gathering. Getting Userinfo"
-                userService = CdiUtil.bean(UserService)
-                print "Consent-Gathering. userService: " + userService.toString()
-                grant = context.getGrantOfIntrospectionToken()
-                if grant:
-                    print "Consent-Gathering. grant: " + grant.toString()
-                else:
-                    print "Consent-Gathering. grant is null"
-                user = grant.getUser()
+                user = context.getUser()
                 if user:
                     print "Consent-Gathering. user: " + user.toString()
+                    userService = context.getUserService()
+                    print "Consent-Gathering. displayName: " + userService.getCustomAttribute(user, "displayName").getValue()
                 else:
                     print "Consent-Gathering. user: is null"
-        
+
                 print "Consent-Gathering. Authorization success for step 1"
                 return True
 
@@ -81,5 +76,5 @@ class ConsentGathering(ConsentGatheringType):
     def getPageForStep(self, step, context):
         if step == 1:
             return "/authz/authorize.xhtml"
-        
+
         return ""
