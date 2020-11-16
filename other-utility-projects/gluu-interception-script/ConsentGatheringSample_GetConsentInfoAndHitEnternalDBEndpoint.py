@@ -9,6 +9,7 @@ from org.gluu.oxauth.security import Identity
 from org.gluu.model.custom.script.type.authz import ConsentGatheringType
 from org.gluu.util import StringHelper
 from org.gluu.oxauth.service import UserService
+from org.gluu.oxauth.service import ClientService
 
 import java
 import random
@@ -50,6 +51,10 @@ class ConsentGathering(ConsentGatheringType):
                     print "Consent-Gathering. user: " + user.toString()
                     userService = context.getUserService()
                     print "Consent-Gathering. displayName: " + userService.getCustomAttribute(user, "displayName").getValue()
+                    
+                    client = context.getClient()
+                    print "Consent-Gathering. client: " + client.toString()
+                    print "Consent-Gathering. client inum: " + client.getClientId()
                 else:
                     print "Consent-Gathering. user: is null"
 
