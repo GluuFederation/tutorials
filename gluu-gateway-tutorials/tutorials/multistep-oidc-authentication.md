@@ -30,7 +30,7 @@ bottomparticipants
 title OpenID Connect Authentication with Gluu Gateway
 
 actor "++**User**++" as User #yellow
-participant Browser
+fontawesome5solid f2d0 "++**Browser**++" as Browser #darkcyan
 fontawesome5solid f085 "++**Gluu Gateway**++" as GG #lightgreen
 fontawesome5solid f5fd "++**OpenID Provider**++" as OP #green
 fontawesome5solid f022 "++**Backend Web App**++" as UpstreamApp #tomato
@@ -67,7 +67,6 @@ note over OP,GG: Rinse and repeat flow as above...\nthis time with a different a
 OP->GG: new access token, id_token
 GG<->UpstreamApp: Serve content
 GG->Browser: Serve content
-
 ```
 
 - The request hits Gluu Gateway first — it is the Internet facing endpoint/page.
