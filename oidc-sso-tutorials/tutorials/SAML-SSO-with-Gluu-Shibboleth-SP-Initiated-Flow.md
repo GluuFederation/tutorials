@@ -59,7 +59,7 @@ SP->user: Verify user and allow access to use protected data
 
 We are here making our custom SP(Nodejs App) which requests IDP for user authentication. We are using `Passport-SAML` to make it easy. 
 
-> For demo, I've created and using [node-passport](https://github.com/kdhttps/node-passport) as a Service Provider, Code is [here](https://github.com/kdhttps/node-passport).
+> For demo, I've created and using [node-passport](https://github.com/GluuFederation/tutorials/tree/master/oidc-sso-tutorials/code/node/node-gluu-sso) as a Service Provider, Code is [here](https://github.com/GluuFederation/tutorials/tree/master/oidc-sso-tutorials/code/node/node-gluu-sso).
 
 * As per my code, Node SP is running on `http://localhost:4200`
 * Gluu IDP is running on `https://gluu.mali.org`
@@ -117,7 +117,7 @@ In this step, we will generate the SP metadata and register it into Gluu IDP as 
 
 I've created the Node CLI Program where you can easily pass some certs details and generate an SP metadata file.
 
-The program is [here](https://github.com/kdhttps/node-passport/blob/master/utils/generate-service-provider-metadata.js)
+The program is [here](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/code/node/node-gluu-sso/utils/generate-service-provider-metadata.js)
 
 You need to set two certs in file.
 
@@ -165,7 +165,7 @@ In `passport_saml` script there is one more option for SAML ACRs `Select SAML AC
 
 ### Step 7 SP Configuration: Authentication request in Node App
 
-This is available in code [here](https://github.com/kdhttps/node-passport). Let's take a quick look again.
+This is available in code [here](https://github.com/GluuFederation/tutorials/tree/master/oidc-sso-tutorials/code/node/node-gluu-sso). Let's take a quick look again.
 
 ```js
 router.get(`/auth/saml/`, passport.authenticate('saml', {}))
