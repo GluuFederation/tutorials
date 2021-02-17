@@ -1,5 +1,5 @@
 const fs = require('fs')
-const SAMLStrategy = require('../config/passport-setup').oPassportOIDCStrategy
+const SAMLStrategy = require('../config/passport-setup').oPassportSAMLStrategy
 
 // decryptionCert from your idp - /etc/certs/passport-sp.crt in Gluu CE Case
 const decryptionCertContent = `-----BEGIN CERTIFICATE-----
