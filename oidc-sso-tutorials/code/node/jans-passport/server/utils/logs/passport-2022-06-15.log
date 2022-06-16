@@ -1,0 +1,414 @@
+2022-06-15 14:08:20.503+0530 [INFO]     Loggers reconfigured
+2022-06-15 14:08:20.505+0530 [INFO]     Reconfiguring providers
+2022-06-15 14:08:20.509+0530 [ERROR]    uncaughtException: Cannot read properties of undefined (reading 'spTLSKey')
+TypeError: Cannot read properties of undefined (reading 'spTLSKey')
+    at /home/kd/Documents/node/gluu-passport/server/extra-passport-params.js:15:52
+    at /home/kd/Documents/node/gluu-passport/node_modules/ramda/src/once.js:40:17
+    at /home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_arity.js:6:19
+    at Object.get (/home/kd/Documents/node/gluu-passport/server/extra-passport-params.js:92:56)
+    at mergeProperty (/home/kd/Documents/node/gluu-passport/server/providers.js:180:43)
+    at /home/kd/Documents/node/gluu-passport/server/providers.js:188:60
+    at forEach (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/forEach.js:53:5)
+    at /home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_checkForMethod.js:25:72
+    at Object.f2 [as forEach] (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_curry2.js:34:14)
+    at /home/kd/Documents/node/gluu-passport/server/providers.js:188:27
+    at forEach (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/forEach.js:53:5)
+    at /home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_checkForMethod.js:25:72
+    at Object.f2 [as forEach] (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_curry2.js:34:14)
+    at fillMissingData (/home/kd/Documents/node/gluu-passport/server/providers.js:188:5)
+    at Object.setup (/home/kd/Documents/node/gluu-passport/server/providers.js:267:5)
+    at init (/home/kd/Documents/node/gluu-passport/server/app.js:19:13)
+2022-06-15 14:09:28.558+0530 [INFO]     Loggers reconfigured
+2022-06-15 14:09:28.560+0530 [INFO]     Reconfiguring providers
+2022-06-15 14:09:28.563+0530 [ERROR]    uncaughtException: Cannot read properties of undefined (reading 'spTLSKey')
+TypeError: Cannot read properties of undefined (reading 'spTLSKey')
+    at /home/kd/Documents/node/gluu-passport/server/extra-passport-params.js:15:52
+    at /home/kd/Documents/node/gluu-passport/node_modules/ramda/src/once.js:40:17
+    at /home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_arity.js:6:19
+    at Object.get (/home/kd/Documents/node/gluu-passport/server/extra-passport-params.js:92:56)
+    at mergeProperty (/home/kd/Documents/node/gluu-passport/server/providers.js:180:43)
+    at /home/kd/Documents/node/gluu-passport/server/providers.js:188:60
+    at forEach (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/forEach.js:53:5)
+    at /home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_checkForMethod.js:25:72
+    at Object.f2 [as forEach] (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_curry2.js:34:14)
+    at /home/kd/Documents/node/gluu-passport/server/providers.js:188:27
+    at forEach (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/forEach.js:53:5)
+    at /home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_checkForMethod.js:25:72
+    at Object.f2 [as forEach] (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_curry2.js:34:14)
+    at fillMissingData (/home/kd/Documents/node/gluu-passport/server/providers.js:188:5)
+    at Object.setup (/home/kd/Documents/node/gluu-passport/server/providers.js:267:5)
+    at init (/home/kd/Documents/node/gluu-passport/server/app.js:19:13)
+2022-06-15 14:10:30.469+0530 [INFO]     Loggers reconfigured
+2022-06-15 14:10:30.471+0530 [INFO]     Reconfiguring providers
+2022-06-15 14:10:30.474+0530 [ERROR]    uncaughtException: Cannot read properties of undefined (reading 'spTLSKey')
+TypeError: Cannot read properties of undefined (reading 'spTLSKey')
+    at /home/kd/Documents/node/gluu-passport/server/extra-passport-params.js:15:52
+    at /home/kd/Documents/node/gluu-passport/node_modules/ramda/src/once.js:40:17
+    at /home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_arity.js:6:19
+    at Object.get (/home/kd/Documents/node/gluu-passport/server/extra-passport-params.js:92:56)
+    at mergeProperty (/home/kd/Documents/node/gluu-passport/server/providers.js:180:43)
+    at /home/kd/Documents/node/gluu-passport/server/providers.js:188:60
+    at forEach (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/forEach.js:53:5)
+    at /home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_checkForMethod.js:25:72
+    at Object.f2 [as forEach] (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_curry2.js:34:14)
+    at /home/kd/Documents/node/gluu-passport/server/providers.js:188:27
+    at forEach (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/forEach.js:53:5)
+    at /home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_checkForMethod.js:25:72
+    at Object.f2 [as forEach] (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_curry2.js:34:14)
+    at fillMissingData (/home/kd/Documents/node/gluu-passport/server/providers.js:188:5)
+    at Object.setup (/home/kd/Documents/node/gluu-passport/server/providers.js:267:5)
+    at init (/home/kd/Documents/node/gluu-passport/server/app.js:19:13)
+2022-06-15 14:12:35.487+0530 [INFO]     Loggers reconfigured
+2022-06-15 14:12:35.490+0530 [INFO]     Reconfiguring providers
+2022-06-15 14:12:35.493+0530 [ERROR]    uncaughtException: Cannot read properties of undefined (reading 'spTLSKey')
+TypeError: Cannot read properties of undefined (reading 'spTLSKey')
+    at /home/kd/Documents/node/gluu-passport/server/extra-passport-params.js:15:52
+    at /home/kd/Documents/node/gluu-passport/node_modules/ramda/src/once.js:40:17
+    at /home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_arity.js:6:19
+    at Object.get (/home/kd/Documents/node/gluu-passport/server/extra-passport-params.js:92:56)
+    at mergeProperty (/home/kd/Documents/node/gluu-passport/server/providers.js:180:43)
+    at /home/kd/Documents/node/gluu-passport/server/providers.js:188:60
+    at forEach (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/forEach.js:53:5)
+    at /home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_checkForMethod.js:25:72
+    at Object.f2 [as forEach] (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_curry2.js:34:14)
+    at /home/kd/Documents/node/gluu-passport/server/providers.js:188:27
+    at forEach (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/forEach.js:53:5)
+    at /home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_checkForMethod.js:25:72
+    at Object.f2 [as forEach] (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_curry2.js:34:14)
+    at fillMissingData (/home/kd/Documents/node/gluu-passport/server/providers.js:188:5)
+    at Object.setup (/home/kd/Documents/node/gluu-passport/server/providers.js:267:5)
+    at init (/home/kd/Documents/node/gluu-passport/server/app.js:19:13)
+2022-06-15 14:12:47.146+0530 [INFO]     Loggers reconfigured
+2022-06-15 14:12:47.151+0530 [INFO]     Reconfiguring providers
+2022-06-15 14:12:47.154+0530 [ERROR]    uncaughtException: Cannot read properties of undefined (reading 'spTLSKey')
+TypeError: Cannot read properties of undefined (reading 'spTLSKey')
+    at /home/kd/Documents/node/gluu-passport/server/extra-passport-params.js:15:52
+    at /home/kd/Documents/node/gluu-passport/node_modules/ramda/src/once.js:40:17
+    at /home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_arity.js:6:19
+    at Object.get (/home/kd/Documents/node/gluu-passport/server/extra-passport-params.js:92:56)
+    at mergeProperty (/home/kd/Documents/node/gluu-passport/server/providers.js:180:43)
+    at /home/kd/Documents/node/gluu-passport/server/providers.js:188:60
+    at forEach (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/forEach.js:53:5)
+    at /home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_checkForMethod.js:25:72
+    at Object.f2 [as forEach] (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_curry2.js:34:14)
+    at /home/kd/Documents/node/gluu-passport/server/providers.js:188:27
+    at forEach (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/forEach.js:53:5)
+    at /home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_checkForMethod.js:25:72
+    at Object.f2 [as forEach] (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_curry2.js:34:14)
+    at fillMissingData (/home/kd/Documents/node/gluu-passport/server/providers.js:188:5)
+    at Object.setup (/home/kd/Documents/node/gluu-passport/server/providers.js:267:5)
+    at init (/home/kd/Documents/node/gluu-passport/server/app.js:20:13)
+2022-06-15 14:22:19.791+0530 [INFO]     Loggers reconfigured
+2022-06-15 14:24:10.661+0530 [INFO]     Reconfiguring providers
+2022-06-15 14:24:34.469+0530 [ERROR]    uncaughtException: Cannot read property 'spTLSKey' of undefined
+TypeError: Cannot read property 'spTLSKey' of undefined
+    at /home/kd/Documents/node/gluu-passport/server/extra-passport-params.js:15:52
+    at /home/kd/Documents/node/gluu-passport/node_modules/ramda/src/once.js:40:17
+    at /home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_arity.js:6:19
+    at Object.get (/home/kd/Documents/node/gluu-passport/server/extra-passport-params.js:92:56)
+    at mergeProperty (/home/kd/Documents/node/gluu-passport/server/providers.js:180:43)
+    at /home/kd/Documents/node/gluu-passport/server/providers.js:188:60
+    at forEach (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/forEach.js:53:5)
+    at /home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_checkForMethod.js:25:72
+    at Object.f2 [as forEach] (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_curry2.js:34:14)
+    at /home/kd/Documents/node/gluu-passport/server/providers.js:188:27
+    at forEach (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/forEach.js:53:5)
+    at /home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_checkForMethod.js:25:72
+    at Object.f2 [as forEach] (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_curry2.js:34:14)
+    at fillMissingData (/home/kd/Documents/node/gluu-passport/server/providers.js:188:5)
+    at Object.setup (/home/kd/Documents/node/gluu-passport/server/providers.js:267:5)
+    at init (/home/kd/Documents/node/gluu-passport/server/app.js:19:13)
+2022-06-15 14:42:38.201+0530 [INFO]     Loggers reconfigured
+2022-06-15 14:42:40.710+0530 [INFO]     Reconfiguring providers
+2022-06-15 14:42:43.907+0530 [ERROR]    uncaughtException: Cannot read property 'spTLSKey' of undefined
+TypeError: Cannot read property 'spTLSKey' of undefined
+    at /home/kd/Documents/node/gluu-passport/server/extra-passport-params.js:15:52
+    at /home/kd/Documents/node/gluu-passport/node_modules/ramda/src/once.js:40:17
+    at /home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_arity.js:6:19
+    at Object.get (/home/kd/Documents/node/gluu-passport/server/extra-passport-params.js:92:56)
+    at mergeProperty (/home/kd/Documents/node/gluu-passport/server/providers.js:180:43)
+    at /home/kd/Documents/node/gluu-passport/server/providers.js:188:60
+    at forEach (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/forEach.js:53:5)
+    at /home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_checkForMethod.js:25:72
+    at Object.f2 [as forEach] (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_curry2.js:34:14)
+    at /home/kd/Documents/node/gluu-passport/server/providers.js:188:27
+    at forEach (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/forEach.js:53:5)
+    at /home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_checkForMethod.js:25:72
+    at Object.f2 [as forEach] (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_curry2.js:34:14)
+    at fillMissingData (/home/kd/Documents/node/gluu-passport/server/providers.js:188:5)
+    at Object.setup (/home/kd/Documents/node/gluu-passport/server/providers.js:267:5)
+    at init (/home/kd/Documents/node/gluu-passport/server/app.js:20:13)
+2022-06-15 14:45:22.736+0530 [INFO]     Loggers reconfigured
+2022-06-15 14:45:22.746+0530 [INFO]     Reconfiguring providers
+2022-06-15 14:45:22.754+0530 [ERROR]    uncaughtException: Cannot read properties of undefined (reading 'serverURI')
+TypeError: Cannot read properties of undefined (reading 'serverURI')
+    at fillMissingData (/home/kd/Documents/node/gluu-passport/server/providers.js:200:34)
+    at Object.setup (/home/kd/Documents/node/gluu-passport/server/providers.js:271:5)
+    at init (/home/kd/Documents/node/gluu-passport/server/app.js:20:13)
+    at Object.<anonymous> (/home/kd/Documents/node/gluu-passport/server/app.js:27:1)
+    at Module._compile (node:internal/modules/cjs/loader:1101:14)
+    at Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)
+    at node:internal/main/run_main_module:17:47
+2022-06-15 14:50:36.617+0530 [INFO]     Loggers reconfigured
+2022-06-15 14:50:36.622+0530 [INFO]     Reconfiguring providers
+2022-06-15 14:50:36.630+0530 [ERROR]    uncaughtException: Cannot read properties of undefined (reading 'serverURI')
+TypeError: Cannot read properties of undefined (reading 'serverURI')
+    at fillMissingData (/home/kd/Documents/node/gluu-passport/server/providers.js:200:34)
+    at Object.setup (/home/kd/Documents/node/gluu-passport/server/providers.js:271:5)
+    at init (/home/kd/Documents/node/gluu-passport/server/app.js:20:13)
+    at Object.<anonymous> (/home/kd/Documents/node/gluu-passport/server/app.js:27:1)
+    at Module._compile (node:internal/modules/cjs/loader:1101:14)
+    at Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)
+    at node:internal/main/run_main_module:17:47
+2022-06-15 14:51:38.104+0530 [INFO]     Loggers reconfigured
+2022-06-15 14:51:38.109+0530 [INFO]     Reconfiguring providers
+2022-06-15 14:51:38.112+0530 [ERROR]    uncaughtException: Cannot read properties of undefined (reading 'serverURI')
+TypeError: Cannot read properties of undefined (reading 'serverURI')
+    at fillMissingData (/home/kd/Documents/node/gluu-passport/server/providers.js:196:34)
+    at Object.setup (/home/kd/Documents/node/gluu-passport/server/providers.js:267:5)
+    at init (/home/kd/Documents/node/gluu-passport/server/app.js:20:13)
+    at Object.<anonymous> (/home/kd/Documents/node/gluu-passport/server/app.js:27:1)
+    at Module._compile (node:internal/modules/cjs/loader:1101:14)
+    at Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)
+    at node:internal/main/run_main_module:17:47
+2022-06-15 14:52:53.470+0530 [INFO]     Loggers reconfigured
+2022-06-15 14:52:53.474+0530 [INFO]     Reconfiguring providers
+2022-06-15 14:52:53.479+0530 [INFO]     Server listening on https://gluu.mali.org:8090
+2022-06-15 14:54:02.350+0530 [INFO]     Loggers reconfigured
+2022-06-15 14:54:02.354+0530 [INFO]     Reconfiguring providers
+2022-06-15 14:54:02.355+0530 [INFO]     Setting up strategy for provider p2-oidc
+2022-06-15 14:54:02.356+0530 [DEBUG]    Provider data is
+{
+    "id": "p2-oidc",
+    "displayName": "p2-oidc",
+    "type": "openid-client",
+    "mapping": "openid-client",
+    "passportStrategyId": "openid-client",
+    "enabled": true,
+    "callbackUrl": "https://gluu.mali.org/passport/auth/p2-oidc/callback",
+    "requestForEmail": false,
+    "emailLinkingSafe": false,
+    "options": {
+        "client_id": "xxxxxxxxxx-xxxxxxxx-xxxxxxx",
+        "client_secret": "xxxxxxxxxxxxxxxxxxx",
+        "scope": "[\"openid\", \"email\", \"profile\"]",
+        "issuer": "https://p2.gluu.org",
+        "token_endpoint_auth_method": "client_secret_post"
+    }
+}
+2022-06-15 14:54:02.356+0530 [INFO]     Loading node strategy module openid-client
+2022-06-15 14:54:02.356+0530 [VERBOSE]  Adding to list of known strategies
+2022-06-15 14:54:02.357+0530 [INFO]     Setting up strategy for provider google
+2022-06-15 14:54:02.357+0530 [DEBUG]    Provider data is
+{
+    "id": "google",
+    "displayName": "google",
+    "type": "oauth",
+    "mapping": "google",
+    "passportStrategyId": "passport-google-oauth2",
+    "enabled": true,
+    "callbackUrl": "https://gluu.mali.org/passport/auth/google/callback",
+    "requestForEmail": false,
+    "emailLinkingSafe": false,
+    "options": {
+        "clientID": "248309610635-ijule410k1b34805a91uo64vnp70okhs.apps.googleusercontent.com",
+        "clientSecret": "Fuzb79Qr11k5Ki1u3BsdJCg8"
+    }
+}
+2022-06-15 14:54:02.357+0530 [INFO]     Loading node strategy module passport-google-oauth2
+2022-06-15 14:54:02.374+0530 [VERBOSE]  Adding to list of known strategies
+2022-06-15 14:54:02.377+0530 [INFO]     Server listening on https://gluu.mali.org:8090
+2022-06-15 14:54:02.380+0530 [ERROR]    uncaughtException: First argument to _arity must be a non-negative integer no greater than ten
+Error: First argument to _arity must be a non-negative integer no greater than ten
+    at _arity (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_arity.js:60:13)
+    at curryN (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/curryN.js:67:10)
+    at Object.f2 [as curryN] (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_curry2.js:34:14)
+    at getVerifyFunction (/home/kd/Documents/node/gluu-passport/server/providers.js:53:12)
+    at setupStrategy (/home/kd/Documents/node/gluu-passport/server/providers.js:84:18)
+    at forEach (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/forEach.js:53:5)
+    at /home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_checkForMethod.js:25:72
+    at Object.f2 [as forEach] (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_curry2.js:34:14)
+    at Object.setup (/home/kd/Documents/node/gluu-passport/server/providers.js:270:7)
+    at init (/home/kd/Documents/node/gluu-passport/server/app.js:21:15)
+    at Object.<anonymous> (/home/kd/Documents/node/gluu-passport/server/app.js:31:1)
+    at Module._compile (node:internal/modules/cjs/loader:1101:14)
+    at Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)
+2022-06-15 14:54:02.381+0530 [ERROR]    uncaughtException: First argument to _arity must be a non-negative integer no greater than ten
+Error: First argument to _arity must be a non-negative integer no greater than ten
+    at _arity (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_arity.js:60:13)
+    at curryN (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/curryN.js:67:10)
+    at Object.f2 [as curryN] (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_curry2.js:34:14)
+    at getVerifyFunction (/home/kd/Documents/node/gluu-passport/server/providers.js:53:12)
+    at setupStrategy (/home/kd/Documents/node/gluu-passport/server/providers.js:84:18)
+    at forEach (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/forEach.js:53:5)
+    at /home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_checkForMethod.js:25:72
+    at Object.f2 [as forEach] (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_curry2.js:34:14)
+    at Object.setup (/home/kd/Documents/node/gluu-passport/server/providers.js:270:7)
+    at init (/home/kd/Documents/node/gluu-passport/server/app.js:21:15)
+    at Object.<anonymous> (/home/kd/Documents/node/gluu-passport/server/app.js:31:1)
+    at Module._compile (node:internal/modules/cjs/loader:1101:14)
+    at Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)
+2022-06-15 14:54:21.564+0530 [INFO]     Loggers reconfigured
+2022-06-15 14:54:21.569+0530 [INFO]     Reconfiguring providers
+2022-06-15 14:54:21.570+0530 [INFO]     Setting up strategy for provider p2-oidc
+2022-06-15 14:54:21.571+0530 [DEBUG]    Provider data is
+{
+    "id": "p2-oidc",
+    "displayName": "p2-oidc",
+    "type": "openid-client",
+    "mapping": "openid-client",
+    "passportStrategyId": "openid-client",
+    "enabled": true,
+    "callbackUrl": "https://gluu.mali.org/passport/auth/p2-oidc/callback",
+    "requestForEmail": false,
+    "emailLinkingSafe": false,
+    "options": {
+        "client_id": "xxxxxxxxxx-xxxxxxxx-xxxxxxx",
+        "client_secret": "xxxxxxxxxxxxxxxxxxx",
+        "scope": "[\"openid\", \"email\", \"profile\"]",
+        "issuer": "https://p2.gluu.org",
+        "token_endpoint_auth_method": "client_secret_post"
+    }
+}
+2022-06-15 14:54:21.571+0530 [INFO]     Loading node strategy module openid-client
+2022-06-15 14:54:21.572+0530 [VERBOSE]  Adding to list of known strategies
+2022-06-15 14:54:21.573+0530 [INFO]     Setting up strategy for provider google
+2022-06-15 14:54:21.573+0530 [DEBUG]    Provider data is
+{
+    "id": "google",
+    "displayName": "google",
+    "type": "oauth",
+    "mapping": "google",
+    "passportStrategyId": "passport-google-oauth2",
+    "enabled": true,
+    "callbackUrl": "https://gluu.mali.org/passport/auth/google/callback",
+    "requestForEmail": false,
+    "emailLinkingSafe": false,
+    "options": {
+        "clientID": "248309610635-ijule410k1b34805a91uo64vnp70okhs.apps.googleusercontent.com",
+        "clientSecret": "Fuzb79Qr11k5Ki1u3BsdJCg8"
+    }
+}
+2022-06-15 14:54:21.573+0530 [INFO]     Loading node strategy module passport-google-oauth2
+2022-06-15 14:54:21.583+0530 [VERBOSE]  Adding to list of known strategies
+2022-06-15 14:54:21.586+0530 [INFO]     Server listening on https://gluu.mali.org:8090
+2022-06-15 14:54:21.590+0530 [ERROR]    uncaughtException: First argument to _arity must be a non-negative integer no greater than ten
+Error: First argument to _arity must be a non-negative integer no greater than ten
+    at _arity (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_arity.js:60:13)
+    at curryN (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/curryN.js:67:10)
+    at Object.f2 [as curryN] (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_curry2.js:34:14)
+    at getVerifyFunction (/home/kd/Documents/node/gluu-passport/server/providers.js:53:12)
+    at setupStrategy (/home/kd/Documents/node/gluu-passport/server/providers.js:84:18)
+    at forEach (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/forEach.js:53:5)
+    at /home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_checkForMethod.js:25:72
+    at Object.f2 [as forEach] (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_curry2.js:34:14)
+    at Object.setup (/home/kd/Documents/node/gluu-passport/server/providers.js:270:7)
+    at init (/home/kd/Documents/node/gluu-passport/server/app.js:21:15)
+    at Object.<anonymous> (/home/kd/Documents/node/gluu-passport/server/app.js:31:1)
+    at Module._compile (node:internal/modules/cjs/loader:1101:14)
+    at Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)
+2022-06-15 14:54:21.591+0530 [ERROR]    uncaughtException: First argument to _arity must be a non-negative integer no greater than ten
+Error: First argument to _arity must be a non-negative integer no greater than ten
+    at _arity (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_arity.js:60:13)
+    at curryN (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/curryN.js:67:10)
+    at Object.f2 [as curryN] (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_curry2.js:34:14)
+    at getVerifyFunction (/home/kd/Documents/node/gluu-passport/server/providers.js:53:12)
+    at setupStrategy (/home/kd/Documents/node/gluu-passport/server/providers.js:84:18)
+    at forEach (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/forEach.js:53:5)
+    at /home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_checkForMethod.js:25:72
+    at Object.f2 [as forEach] (/home/kd/Documents/node/gluu-passport/node_modules/ramda/src/internal/_curry2.js:34:14)
+    at Object.setup (/home/kd/Documents/node/gluu-passport/server/providers.js:270:7)
+    at init (/home/kd/Documents/node/gluu-passport/server/app.js:21:15)
+    at Object.<anonymous> (/home/kd/Documents/node/gluu-passport/server/app.js:31:1)
+    at Module._compile (node:internal/modules/cjs/loader:1101:14)
+    at Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)
+2022-06-15 15:14:50.964+0530 [INFO]     Loggers reconfigured
+2022-06-15 15:14:50.969+0530 [INFO]     Reconfiguring providers
+2022-06-15 15:14:50.973+0530 [INFO]     Setting up strategy for provider p2-oidc
+2022-06-15 15:14:50.974+0530 [DEBUG]    Provider data is
+{
+    "id": "p2-oidc",
+    "displayName": "p2-oidc",
+    "type": "openid-client",
+    "mapping": "openid-client",
+    "passportStrategyId": "openid-client",
+    "enabled": true,
+    "callbackUrl": "https: //gluu.mali.org/passport/auth/p2-oidc/callback",
+    "requestForEmail": false,
+    "emailLinkingSafe": false,
+    "options": {
+        "client_id": "xxxxxxxxxx-xxxxxxxx-xxxxxxx",
+        "client_secret": "xxxxxxxxxxxxxxxxxxx",
+        "scope": [
+            "openid",
+            "email",
+            "profile"
+        ],
+        "issuer": "https: //p2.gluu.org",
+        "token_endpoint_auth_method": "client_secret_post",
+        "redirect_uris": [
+            "https://gluu.mali.org/passport/auth/p2-oidc/callback"
+        ]
+    },
+    "passportAuthnParams": {
+        "scope": "openid email profile"
+    },
+    "verifyCallbackArity": 3
+}
+2022-06-15 15:14:50.974+0530 [INFO]     Loading node strategy module openid-client
+2022-06-15 15:14:50.974+0530 [VERBOSE]  Adding to list of known strategies
+2022-06-15 15:14:50.978+0530 [INFO]     Setting up strategy for provider google
+2022-06-15 15:14:50.978+0530 [DEBUG]    Provider data is
+{
+    "id": "google",
+    "displayName": "google",
+    "type": "oauth",
+    "mapping": "google",
+    "passportStrategyId": "passport-google-oauth2",
+    "enabled": true,
+    "callbackUrl": "https://gluu.mali.org/passport/auth/google/callback",
+    "requestForEmail": false,
+    "emailLinkingSafe": false,
+    "options": {
+        "clientID": "248309610635-ijule410k1b34805a91uo64vnp70okhs.apps.googleusercontent.com",
+        "clientSecret": "Fuzb79Qr11k5Ki1u3BsdJCg8",
+        "callbackURL": "https://gluu.mali.org/passport/auth/google/callback",
+        "consumerKey": "248309610635-ijule410k1b34805a91uo64vnp70okhs.apps.googleusercontent.com",
+        "consumerSecret": "Fuzb79Qr11k5Ki1u3BsdJCg8",
+        "state": true
+    },
+    "passportAuthnParams": {
+        "scope": [
+            "https://www.googleapis.com/auth/userinfo.profile",
+            "https://www.googleapis.com/auth/userinfo.email"
+        ]
+    },
+    "verifyCallbackArity": 4
+}
+2022-06-15 15:14:50.979+0530 [INFO]     Loading node strategy module passport-google-oauth2
+2022-06-15 15:14:50.993+0530 [VERBOSE]  Adding to list of known strategies
+2022-06-15 15:14:50.999+0530 [INFO]     Server listening on https://gluu.mali.org:8090
+2022-06-15 15:14:51.001+0530 [DEBUG]    only valid absolute URLs can be requested
+2022-06-15 15:14:51.002+0530 [DEBUG]    Failed to fetch config from https: //p2.gluu.org/.well-known/openid-configuration OpenID Connect Discovery endpoint, Going for manual setup
+2022-06-15 15:14:51.006+0530 [DEBUG]    openid-client config: {"grant_types":["authorization_code"],"id_token_signed_response_alg":"RS256","authorization_signed_response_alg":"RS256","response_types":["code"],"token_endpoint_auth_method":"client_secret_post","client_id":"xxxxxxxxxx-xxxxxxxx-xxxxxxx","client_secret":"xxxxxxxxxxxxxxxxxxx","scope":["openid","email","profile"],"redirect_uris":["https://gluu.mali.org/passport/auth/p2-oidc/callback"]}

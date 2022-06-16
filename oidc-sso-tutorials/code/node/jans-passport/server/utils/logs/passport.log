@@ -1,0 +1,111 @@
+2022-06-16 15:36:23.009+0530 [INFO]     Loggers reconfigured
+2022-06-16 15:36:23.014+0530 [INFO]     Reconfiguring providers
+2022-06-16 15:36:23.016+0530 [INFO]     Setting up strategy for provider p2-oidc
+2022-06-16 15:36:23.016+0530 [DEBUG]    Provider data is
+{
+    "id": "p2-oidc",
+    "displayName": "p2-oidc",
+    "type": "openid-client",
+    "mapping": "openid-client",
+    "passportStrategyId": "openid-client",
+    "enabled": true,
+    "callbackUrl": "https: //gluu.mali.org/passport/auth/p2-oidc/callback",
+    "requestForEmail": false,
+    "emailLinkingSafe": false,
+    "options": {
+        "client_id": "xxxxxxxxxx-xxxxxxxx-xxxxxxx",
+        "client_secret": "xxxxxxxxxxxxxxxxxxx",
+        "scope": [
+            "openid",
+            "email",
+            "profile"
+        ],
+        "issuer": "https: //p2.gluu.org",
+        "token_endpoint_auth_method": "client_secret_post",
+        "redirect_uris": [
+            "https://gluu.mali.org/passport/auth/p2-oidc/callback"
+        ]
+    },
+    "passportAuthnParams": {
+        "scope": "openid email profile"
+    },
+    "verifyCallbackArity": 3
+}
+2022-06-16 15:36:23.016+0530 [INFO]     Loading node strategy module openid-client
+2022-06-16 15:36:23.016+0530 [VERBOSE]  Adding to list of known strategies
+2022-06-16 15:36:23.019+0530 [INFO]     Setting up strategy for provider google
+2022-06-16 15:36:23.019+0530 [DEBUG]    Provider data is
+{
+    "id": "google",
+    "displayName": "google",
+    "type": "oauth",
+    "mapping": "google",
+    "passportStrategyId": "passport-google-oauth2",
+    "enabled": true,
+    "callbackUrl": "https://gluu.mali.org/passport/auth/google/callback",
+    "requestForEmail": false,
+    "emailLinkingSafe": false,
+    "options": {
+        "clientID": "248309610635-ijule410k1b34805a91uo64vnp70okhs.apps.googleusercontent.com",
+        "clientSecret": "Fuzb79Qr11k5Ki1u3BsdJCg8",
+        "callbackURL": "https://gluu.mali.org/passport/auth/google/callback",
+        "consumerKey": "248309610635-ijule410k1b34805a91uo64vnp70okhs.apps.googleusercontent.com",
+        "consumerSecret": "Fuzb79Qr11k5Ki1u3BsdJCg8",
+        "state": true
+    },
+    "passportAuthnParams": {
+        "scope": [
+            "https://www.googleapis.com/auth/userinfo.profile",
+            "https://www.googleapis.com/auth/userinfo.email"
+        ]
+    },
+    "verifyCallbackArity": 4
+}
+2022-06-16 15:36:23.019+0530 [INFO]     Loading node strategy module passport-google-oauth2
+2022-06-16 15:36:23.029+0530 [VERBOSE]  Adding to list of known strategies
+2022-06-16 15:36:23.033+0530 [INFO]     Server listening on https://gluu.mali.org:8090
+2022-06-16 15:36:23.033+0530 [DEBUG]    only valid absolute URLs can be requested
+2022-06-16 15:36:23.034+0530 [DEBUG]    Failed to fetch config from https: //p2.gluu.org/.well-known/openid-configuration OpenID Connect Discovery endpoint, Going for manual setup
+2022-06-16 15:36:23.036+0530 [DEBUG]    openid-client config: {"grant_types":["authorization_code"],"id_token_signed_response_alg":"RS256","authorization_signed_response_alg":"RS256","response_types":["code"],"token_endpoint_auth_method":"client_secret_post","client_id":"xxxxxxxxxx-xxxxxxxx-xxxxxxx","client_secret":"xxxxxxxxxxxxxxxxxxx","scope":["openid","email","profile"],"redirect_uris":["https://gluu.mali.org/passport/auth/p2-oidc/callback"]}
+2022-06-16 15:36:40.708+0530 [VERBOSE]  Issuing token
+2022-06-16 15:36:40.720+0530 [INFO]     192.168.0.101 - GET /passport/token HTTP/1.1 200 201 - 13.911 ms
+2022-06-16 15:36:40.725+0530 [VERBOSE]  Validating token
+2022-06-16 15:36:40.728+0530 [VERBOSE]  Authenticating request against google
+2022-06-16 15:36:40.733+0530 [INFO]     192.168.0.101 - GET /passport/auth/google/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqd3QiOiI5NWFkMGFkMi1lYmM3LTRmNmUtYTlmOS1mZTBjNWUyYzAzN2IiLCJpYXQiOjE2NTUzNzQwMDAsImV4cCI6MTY1NTM3NDEyMH0.Y0YuWfbvhv1EDP4-YyLQPgdi6LfA0FpBrvXAxuN1Lys HTTP/1.1 302 0 - 9.187 ms
+2022-06-16 15:36:48.530+0530 [VERBOSE]  Authenticating request against google
+2022-06-16 15:36:52.297+0530 [DEBUG]    Raw profile is {"provider":"google","sub":"104460996025306056612","id":"104460996025306056612","displayName":"Kiran Mali","name":{"givenName":"Kiran","familyName":"Mali"},"given_name":"Kiran","family_name":"Mali","email_verified":true,"verified":true,"language":"en","email":"kdhttps@gmail.com","emails":[{"value":"kdhttps@gmail.com","type":"account"}],"photos":[{"value":"https://lh3.googleusercontent.com/a-/AOh14GjvQHa3BgVNjtUo1PS2VHfw34DGXuE4kglKR7ImJQ=s96-c","type":"default"}],"picture":"https://lh3.googleusercontent.com/a-/AOh14GjvQHa3BgVNjtUo1PS2VHfw34DGXuE4kglKR7ImJQ=s96-c","_raw":"{\n  \"sub\": \"104460996025306056612\",\n  \"name\": \"Kiran Mali\",\n  \"given_name\": \"Kiran\",\n  \"family_name\": \"Mali\",\n  \"picture\": \"https://lh3.googleusercontent.com/a-/AOh14GjvQHa3BgVNjtUo1PS2VHfw34DGXuE4kglKR7ImJQ\\u003ds96-c\",\n  \"email\": \"kdhttps@gmail.com\",\n  \"email_verified\": true,\n  \"locale\": \"en\"\n}","_json":{"sub":"104460996025306056612","name":"Kiran Mali","given_name":"Kiran","family_name":"Mali","picture":"https://lh3.googleusercontent.com/a-/AOh14GjvQHa3BgVNjtUo1PS2VHfw34DGXuE4kglKR7ImJQ=s96-c","email":"kdhttps@gmail.com","email_verified":true,"locale":"en"},"providerKey":"google"}
+2022-06-16 15:36:52.298+0530 [INFO]     Applying mapping 'google' to profile
+2022-06-16 15:36:52.300+0530 [DEBUG]    Resulting profile data is
+{
+    "uid": "104460996025306056612",
+    "mail": "kdhttps@gmail.com",
+    "cn": "Kiran Mali",
+    "displayName": "Kiran Mali",
+    "givenName": "Kiran",
+    "sn": "Mali"
+}
+2022-06-16 15:36:52.301+0530 [INFO]     post url: https://gluu.mali.org/oxauth/postlogin.htm
+2022-06-16 15:36:52.301+0530 [INFO]     User 104460996025306056612 authenticated with provider google
+2022-06-16 15:36:52.315+0530 [DEBUG]    Sending user data eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCIsImtpZCI6IjBjYTdkZGE3LTdkYTYtNDdmNS04OTMyLWJlZmZkOWQ1ZWFjNl9zaWdfcnM1MTIifQ.eyJpc3MiOiJodHRwczovL2dsdXUubWFsaS5vcmcvb3hhdXRoL3Bvc3Rsb2dpbi5odG0iLCJzdWIiOiIxMDQ0NjA5OTYwMjUzMDYwNTY2MTIiLCJhdWQiOiJodHRwczovL2dsdXUubWFsaS5vcmciLCJqdGkiOiJjN2M2ZmM0MC0yYjZhLTQyYTgtOGM4NC1iOWMzMDk1N2E0Y2MiLCJleHAiOjE2NTUzNzQwNDIuMzAyLCJpYXQiOjE2NTUzNzQwMTIzMDIsImRhdGEiOiIvZHdPRis2UG1IY1U0U0gvd2N2NWUwaWJiaVhXWWQwUSt1V21DYXVFUWtvUDZMZW1kT2MzWkJDQmcvT3lGREJHTzJhNXBLRUo0TWZrWWE2bkV0MUZ4RjdlVXFBNGtId1ZnRE1OWDB5LzM0SjFZM2F3Wld3VytscWNFWU1zMHRCN3BqUjVqQmhGendKZzFXanRoVkhpZ2pOd3gxcy9ReTl5aFV2MEZOY1kwMGlCVGw4NzhVemVWSGlUQkQzRW4xNFdFck5zRCtmalAvRzI3L3hpbVZBcmJrR1FVTXk1bWFIZCJ9.sxpkOueQr5noHRrojCM6hCBDHHKJuDkAbgoV3sV2ZzJn4Q6cpceO8mk9G2acdC14RobMNu2jl_RdHOPN7NDXF2pt23r6BsGl-AhjhLmLw2Se9hdgfJGlgH2JuK4HWx-V0mpTtUIiCFpEnoAHJagnVbDxB3hP2SMoekuUaZxXPuR9ipqtdlekXrpS-6HMfgJa18ucyXnU1TiV-1PEVvKtHAPQ__o3GpMNlQEvw7ZXUfrQUb4zs4AfMKKbUBIq5YAFxKRnxN9PT-Ox8Qm7NW5UT-1PaIIL88NNyg1mBl5BryYEbDHC05-o0TyjcY6PT20K884rdyp-D-sFalq8o5n8Hg to: https://gluu.mali.org/oxauth/postlogin.htm
+2022-06-16 15:36:52.320+0530 [INFO]     192.168.0.101 - GET /passport/auth/google/callback?state=GDCJHgrN6A6xoM0PBJW3DMuU&code=4%2F0AX4XfWgG0tNL948qUKq0duafyGkFyWWqhFWeZ7eggJQYWvDr2XZLiq5RVYVl37bFsQlLcw&scope=email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&authuser=0&prompt=none HTTP/1.1 200 1647 - 3789.583 ms
+2022-06-16 15:52:05.539+0530 [VERBOSE]  Issuing token
+2022-06-16 15:52:05.545+0530 [INFO]     192.168.0.101 - GET /passport/token HTTP/1.1 200 201 - 5.361 ms
+2022-06-16 15:52:05.552+0530 [VERBOSE]  Validating token
+2022-06-16 15:52:05.554+0530 [VERBOSE]  Authenticating request against google
+2022-06-16 15:52:05.557+0530 [INFO]     192.168.0.101 - GET /passport/auth/google/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqd3QiOiJiMjI2OGUyOC1kZWViLTQ4NzQtODhjMi01ZjljOTM3OWE3NTYiLCJpYXQiOjE2NTUzNzQ5MjUsImV4cCI6MTY1NTM3NTA0NX0.9M89BUPQvNbn4eben-9x68rcKsce5iTxWqiZbBVE0QM HTTP/1.1 302 0 - 5.282 ms
+2022-06-16 15:52:08.889+0530 [VERBOSE]  Authenticating request against google
+2022-06-16 15:52:09.298+0530 [DEBUG]    Raw profile is {"provider":"google","sub":"104460996025306056612","id":"104460996025306056612","displayName":"Kiran Mali","name":{"givenName":"Kiran","familyName":"Mali"},"given_name":"Kiran","family_name":"Mali","email_verified":true,"verified":true,"language":"en","email":"kdhttps@gmail.com","emails":[{"value":"kdhttps@gmail.com","type":"account"}],"photos":[{"value":"https://lh3.googleusercontent.com/a-/AOh14GjvQHa3BgVNjtUo1PS2VHfw34DGXuE4kglKR7ImJQ=s96-c","type":"default"}],"picture":"https://lh3.googleusercontent.com/a-/AOh14GjvQHa3BgVNjtUo1PS2VHfw34DGXuE4kglKR7ImJQ=s96-c","_raw":"{\n  \"sub\": \"104460996025306056612\",\n  \"name\": \"Kiran Mali\",\n  \"given_name\": \"Kiran\",\n  \"family_name\": \"Mali\",\n  \"picture\": \"https://lh3.googleusercontent.com/a-/AOh14GjvQHa3BgVNjtUo1PS2VHfw34DGXuE4kglKR7ImJQ\\u003ds96-c\",\n  \"email\": \"kdhttps@gmail.com\",\n  \"email_verified\": true,\n  \"locale\": \"en\"\n}","_json":{"sub":"104460996025306056612","name":"Kiran Mali","given_name":"Kiran","family_name":"Mali","picture":"https://lh3.googleusercontent.com/a-/AOh14GjvQHa3BgVNjtUo1PS2VHfw34DGXuE4kglKR7ImJQ=s96-c","email":"kdhttps@gmail.com","email_verified":true,"locale":"en"},"providerKey":"google"}
+2022-06-16 15:52:09.299+0530 [INFO]     Applying mapping 'google' to profile
+2022-06-16 15:52:09.300+0530 [DEBUG]    Resulting profile data is
+{
+    "uid": "104460996025306056612",
+    "mail": "kdhttps@gmail.com",
+    "cn": "Kiran Mali",
+    "displayName": "Kiran Mali",
+    "givenName": "Kiran",
+    "sn": "Mali"
+}
+2022-06-16 15:52:09.300+0530 [INFO]     post url: https://gluu.mali.org/oxauth/postlogin.htm
+2022-06-16 15:52:09.301+0530 [INFO]     User 104460996025306056612 authenticated with provider google
+2022-06-16 15:52:09.307+0530 [DEBUG]    Sending user data eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCIsImtpZCI6IjBjYTdkZGE3LTdkYTYtNDdmNS04OTMyLWJlZmZkOWQ1ZWFjNl9zaWdfcnM1MTIifQ.eyJpc3MiOiJodHRwczovL2dsdXUubWFsaS5vcmcvb3hhdXRoL3Bvc3Rsb2dpbi5odG0iLCJzdWIiOiIxMDQ0NjA5OTYwMjUzMDYwNTY2MTIiLCJhdWQiOiJodHRwczovL2dsdXUubWFsaS5vcmciLCJqdGkiOiJiYWU1ZjA3NC1kZWEyLTRkNjMtYTczYy1jYzQxYTA1ZDNjNGMiLCJleHAiOjE2NTUzNzQ5NTkuMzAxLCJpYXQiOjE2NTUzNzQ5MjkzMDEsImRhdGEiOiIvZHdPRis2UG1IY1U0U0gvd2N2NWUwaWJiaVhXWWQwUSt1V21DYXVFUWtvUDZMZW1kT2MzWkJDQmcvT3lGREJHTzJhNXBLRUo0TWZrWWE2bkV0MUZ4RjdlVXFBNGtId1ZnRE1OWDB5LzM0SjFZM2F3Wld3VytscWNFWU1zMHRCN3BqUjVqQmhGendKZzFXanRoVkhpZ2pOd3gxcy9ReTl5aFV2MEZOY1kwMGlCVGw4NzhVemVWSGlUQkQzRW4xNFdFck5zRCtmalAvRzI3L3hpbVZBcmJrR1FVTXk1bWFIZCJ9.IypoP2z1BfWG5pRh_y6rZn40qgi7P9cMSvAmipI7goi8uzJZsFuorbsub0EoBwK8_1ZTALQZQ7hfKYERidkZNU_5GKcqdYrinqicJBVaZwxamVQly8kITCpdpZrW03ev8vUvMjUcWIrmpqZVuVtB3XY8cKJpRCgmOr8psZrDOg8FzgKw0Ig3CX7ej9O4eScZ-ABIpwVCHvRXuOdCkgdpxKD97Hatx4CPTWQb5YJObzkrAiC8RR0igvLZF9-aJ5IxbiN8dbyWWTnD-oEZnhx4ghhQyB23Jw6Ft6ZV1HDOtzHhSxq6YMOrlG1ZFPk7cDbPgJp9tqwrjDNFqLRGYE7j8g to: https://gluu.mali.org/oxauth/postlogin.htm
+2022-06-16 15:52:09.313+0530 [INFO]     192.168.0.101 - GET /passport/auth/google/callback?state=eGIJVlZTP3bQOUk8dcUnA7oF&code=4%2F0AX4XfWgWUqR86CArUmLKh_ZXXBcACfPt5ioHn3lXfZNY3bOnpD2pCUIiJx4z4irjKFt-fA&scope=email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&authuser=0&prompt=none HTTP/1.1 200 1647 - 424.239 ms
