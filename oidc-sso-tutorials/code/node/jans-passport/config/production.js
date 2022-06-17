@@ -1,7 +1,7 @@
 module.exports = {
   providersFile: '/opt/gluu-server/etc/passport.json',
   logging: {
-    level: 'debug',
+    level: 'info',
     consoleLogOnly: false,
     activeMQConf: {
       enabled: false,
