@@ -6,6 +6,7 @@ const misc = require('./utils/misc')
 const logger = require('./utils/logging')
 const base64url = require('base64url')
 const querystring = require('querystring')
+const config = require('config')
 
 function createAuthzRequest (user, iiconfig, provider) {
   logger.log2('debug', 'idp-initiated.createAuthzRequest: entered function ')
@@ -39,7 +40,7 @@ function createAuthzRequest (user, iiconfig, provider) {
     const now = new Date().getTime()
     const clientId = iiconfig.openidclient.clientId
     const jwt = misc.getRpJWT({
-      iss: global.config.serverURI,
+      iss: config.get('opServerURI'),
       sub: user.uid,
       aud: clientId,
       jti: uuidv4(),

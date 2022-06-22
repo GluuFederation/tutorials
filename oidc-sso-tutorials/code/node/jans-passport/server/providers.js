@@ -194,7 +194,7 @@ function fillMissingData (providers) {
     const strategyId = provider.passportStrategyId
     const isSaml = strategyId === 'passport-saml'
     const callbackUrl = R.defaultTo(options.callbackUrl, options.callbackURL)
-    const prefix = config.get('serverURI') + '/passport/auth'
+    const prefix = config.get('opServerURI') + '/passport/auth'
 
     if (isSaml) {
       // Different casing in saml

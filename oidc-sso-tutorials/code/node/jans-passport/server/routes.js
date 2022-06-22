@@ -175,7 +175,7 @@ function callbackResponse (req, res) {
   const jwt = misc.getRpJWT({
     iss: postUrl,
     sub: sub,
-    aud: config.get('serverURI'),
+    aud: config.get('opServerURI'),
     jti: uuidv4(),
     exp: now / 1000 + 30,
     iat: now,

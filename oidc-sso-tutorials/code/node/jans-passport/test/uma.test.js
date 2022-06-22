@@ -9,8 +9,8 @@ const jwt = require('jsonwebtoken')
 
 const assert = chai.assert
 const passportConfigAuthorizedResponse = config.get('passportConfigAuthorizedResponse')
-const umaConfigURL = passportConfigAuthorizedResponse.conf.serverURI + '/.well-known/uma2-configuration'
-const umaConfigTokenEndpoint = passportConfigAuthorizedResponse.conf.serverURI + '/oxauth/restv1/token'
+const umaConfigURL = passportConfigAuthorizedResponse.conf.opServerURI + '/.well-known/uma2-configuration'
+const umaConfigTokenEndpoint = passportConfigAuthorizedResponse.conf.opServerURI + '/oxauth/restv1/token'
 const passportConfig = config.get('passportConfig')
 const passportConfigurationEndpoint = passportConfig.configurationEndpoint
 const mockTicket = '016f84e8-f9b9-11e0-bd6f-0021cc6004de'

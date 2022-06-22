@@ -11,7 +11,6 @@ const app = appFactoryInstance.createApp()
 const loggingConfig = config.get('logging')
 const providersFile = config.get('providersFile')
 const port = config.get('port')
-const serverURI = config.get('serverURI')
 
 function init () {
   logger.configure(loggingConfig)
@@ -23,8 +22,8 @@ function init () {
     console.log(e)
   }
   app.listen(port, () => {
-    logger.log2('info', `Server listening on ${serverURI}:${port}`)
-    console.log(`Server listening on ${serverURI}:${port}`)
+    logger.log2('info', `Server listening on localhost:${port}`)
+    console.log(`Server listening on localhost:${port}`)
   })
 }
 

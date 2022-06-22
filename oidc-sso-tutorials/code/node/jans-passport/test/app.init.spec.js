@@ -187,7 +187,7 @@ describe('app.init() - Initialization', () => {
       expect(response.body.conf).to.have.all.keys(
         'logging',
         'postProfileEndpoint',
-        'serverURI',
+        'opServerURI',
         'serverWebPort',
         'spTLSCert',
         'spTLSKey'
@@ -195,7 +195,7 @@ describe('app.init() - Initialization', () => {
     })
 
     it('server uri should be same from basic configuration file', () => {
-      expect(response.body.conf.serverURI).to.be.equal(gluuUrl)
+      expect(response.body.conf.opServerURI).to.be.equal(gluuUrl)
     })
 
     it('expect spTLSCert file to exist', () => {
