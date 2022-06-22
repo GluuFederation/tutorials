@@ -17,7 +17,6 @@ function init () {
   logger.configure(loggingConfig)
   // configure passport providers
   const providersConfig = require(providersFile)
-  console.log(port, '----------', loggingConfig, '-----------', providersConfig)
   try {
     providers.setup(providersConfig)
   } catch (e) {
