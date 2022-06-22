@@ -1,10 +1,11 @@
 const logger = require('../utils/logging')
+const config = require('config')
 
 const globalErrorHandler = (err, req, res, next) => {
   logger.log2('error', `Error: ${err}`)
   logger.log2('error', err.stack)
   res.redirect(
-  `${global.basicConfig.failureRedirectUrl}?failure=An error occurred`
+  `${config.get('failureRedirectUrl')}?failure=An error occurred`
   )
 }
 
