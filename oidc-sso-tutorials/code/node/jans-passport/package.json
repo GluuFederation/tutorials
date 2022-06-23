@@ -10,7 +10,7 @@
     ]
   },
   "engines": {
-    "node": ">=12.19.0 <=16.15.0"
+    "node": ">=12.19.0 <=16"
   },
   "scripts": {
     "start": "NODE_ENV=production node server/app.js",
