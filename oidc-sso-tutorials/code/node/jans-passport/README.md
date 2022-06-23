@@ -70,8 +70,8 @@ It is
     "requestForEmail": false,
     "emailLinkingSafe": false,
     "options": {
-      "clientID": "248309610635-ijule410k1b34805a91uo64vnp70okhs.apps.googleusercontent.com",
-      "clientSecret": "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"
+      "clientID": "xxxxxxxxxxxxxxxxxxxxxxxx",
+      "clientSecret": "xxxxxxxxxxxxxxxx"
     }
   }
 ]
