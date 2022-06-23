@@ -1,12 +1,17 @@
-# Inbound identity using Passport
+### Note: This is just a ruff work not ready for production.
 
+# Overview
 
-[![codecov](https://codecov.io/gh/GluuFederation/gluu-passport/branch/master/graph/badge.svg)](https://codecov.io/gh/GluuFederation/gluu-passport)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/4be3e45ab1054eaca3c1d5d64c3922f8)](https://www.codacy.com/gh/GluuFederation/gluu-passport/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=GluuFederation/gluu-passport&amp;utm_campaign=Badge_Grade)
+The [Janssen](https://github.com/JanssenProject/jans) platform provides the facility to make a fully customizable authentication flow. In this tutorial, We will guide you on how to add Inbound identity support in Janssen.
 
+## What is Inbound identity?
 
-Find the docs of this project at:
+You can add social login options, authentication, and add users to your Janssen server.
 
-- [Inbound SAML using Passport](https://gluu.org/docs/ce/authn-guide/passport/)
-- [Social Login using Passport](https://gluu.org/docs/ce/authn-guide/inbound-saml-passport/)
+![inbound-identity](https://user-images.githubusercontent.com/39133739/175252987-a4aef5f0-960f-4cdc-a9c2-ea8e12de1bef.png)
 
+# Prerequisites
+
+- A Jans-auth Server (installation instructions [here](https://github.com/JanssenProject/jans/tree/main/jans-linux-setup#readme))
+- The [Passport Social authentication script](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/code/node/jans-passport/passport-social-jans-script.py)
+- The [Jans Passport JS Project](https://github.com/GluuFederation/tutorials/tree/master/oidc-sso-tutorials/code/node/jans-passport)
