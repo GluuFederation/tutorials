@@ -15,6 +15,12 @@ You can add social login options, authentication, and add users to your Janssen 
 - A Jans-auth Server (installation instructions [here](https://github.com/JanssenProject/jans/tree/main/jans-linux-setup#readme))
 - The [Passport Social authentication script](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/code/node/jans-passport/passport-social-jans-script.py)
 - The [Jans Passport JS Project](https://github.com/GluuFederation/tutorials/tree/master/oidc-sso-tutorials/code/node/jans-passport)
+- External Social Provider credentials: we are going to integrate google as a external provider so create credentials from [google developer portal](https://console.developers.google.com/apis/credentials)
+- RP application: This is your application which will be used by your users and where you want to add this auth feature. 
+
+## Sample Authentication Flow diagram
+
+
 
 # Setup
 
@@ -49,11 +55,13 @@ Use [config/production.js](https://github.com/GluuFederation/tutorials/blob/mast
 | keyAlg | RSA algorithm which is used to generate/sign JWT. Recommended to use `RS512`. |
 | saltFile | Just a text file with random text. After janssen server installation you will get salt file at `/etc/jans/conf/salt`. Use this same file, during verification janssen use same salt file. It is used to encrypt user data which is inside jwt. Check [server/routes.js:L175](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/code/node/jans-passport/server/routes.js#L175) for details and implementation. |
 | postProfileEndpoint | e.g. https://[your.jans.server.com]/jans-auth/postlogin.htm, After getting userinfo jans-passport send user jwt to this endpoint for further auth flow. |
-| 
+| failureRedirectUrl | just in case anything fails at jans-passport side then redirect to failureRedirectUrl with error message. Keep it same as postProfileEndpoint. |
+
+check [config/production.js](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/code/node/jans-passport/config/production.js) for other application configurations.
 
 ### Exeternal Social Provider configurations
 
-It is 
+It is array of json object. Each object will be your provider. We are using [PassportJS](https://www.passportjs.org/). Below is the sample for google as a external social provider.
 
 ```js
 // passport.json
@@ -66,7 +74,7 @@ It is
     "mapping": "google",
     "passportStrategyId": "passport-google-oauth2",
     "enabled": true,
-    "callbackUrl": "https://gluu.mali.org/passport/auth/google/callback",
+    "callbackUrl": "https://your.jans.server.com/passport/auth/google/callback",
     "requestForEmail": false,
     "emailLinkingSafe": false,
     "options": {
@@ -76,3 +84,4 @@ It is
   }
 ]
 ```
+
