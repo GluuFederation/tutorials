@@ -8,7 +8,7 @@ The [Janssen](https://github.com/JanssenProject/jans) platform provides the faci
 
 You can add social login options, authentication, and add users to your Janssen server.
 
-![inbound-identity](https://user-images.githubusercontent.com/39133739/175252987-a4aef5f0-960f-4cdc-a9c2-ea8e12de1bef.png)
+![inbound-identity-simple-flow](https://user-images.githubusercontent.com/39133739/175252987-a4aef5f0-960f-4cdc-a9c2-ea8e12de1bef.png)
 
 # Prerequisites
 
@@ -20,7 +20,7 @@ You can add social login options, authentication, and add users to your Janssen 
 
 ## Sample Authentication Flow diagram
 
-
+![inbound-identity-app-flow](https://user-images.githubusercontent.com/39133739/175962105-724ef375-aa5b-4a2b-8fce-79a9351d0a8b.png)
 
 # Setup
 
@@ -85,3 +85,13 @@ It is array of json object. Each object will be your provider. We are using [Pas
 ]
 ```
 
+| Property | Description |
+|----------|-------------|
+| id | Unique string for your provider |
+| displayName | This name will be shown on auth page |
+| type | `oauth` and `openid-client`. Use `oauth` for all social logins |
+| mapping | this is mapping file name. you can find social mapping file name [here](https://github.com/GluuFederation/tutorials/tree/master/oidc-sso-tutorials/code/node/jans-passport/server/mappings) |
+| passportStrategyId | this is exactly your passport strategy name. List is [here]() |
+| enabled | If true, show provider otherwise not on auth login page |
+| callbackUrl | `https://<your_jans_server_fqdn>/passport/auth/<your_provider_id>/callback` replace with your id and jans-fqdn. Same URL you need to configure on your external provider side in client |
+| requestForEmail | If false, 
