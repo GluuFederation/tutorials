@@ -2,7 +2,7 @@ Note: This is just a ruff work not ready for production.
 
 # Overview
 
-The [Janssen](https://github.com/JanssenProject/jans) platform provides the facility to make a fully customizable authentication flow. In this tutorial, We will guide you on how to add Inbound identity support in Janssen.
+The [Janssen](https://github.com/JanssenProject/jans) platform provides the facility to make a fully customizable authentication flow. In this docs, We will guide you on how to add Inbound identity support in Janssen.
 
 ## What is Inbound identity?
 
@@ -62,20 +62,20 @@ Use [config/production.js](https://github.com/GluuFederation/tutorials/blob/mast
 
 | Property | Details |
 |-----|---------|
-| providersFile | JSON File path which contains all external social provider data. which will be use by jans-passport and jans-script. Check below section what exactly you need to add in this JSON file. |
+| providersFile | JSON File path which contains all external social provider data. which will be use by jans-passport and jans-script. [Check below section](#external-social-provider-configurations) what exactly you need to add in this JSON file. |
 | opServerURI | Your janssen server FQDN |
 | keyPath | RSA Private key file path. Check [instructions here](#generate-keystore) to create JKS Keystore. It is used to generate/sign jwt which has authenticated user data. jans-passport sends this JWT to jans-server on `/postlogin.html` endpoint after successful user auth. |
 | keyId | RSA Private key's keyId(KID). |
 | keyAlg | RSA algorithm which is used to generate/sign JWT. Recommended to use `RS512`. |
 | saltFile | Just a text file with random text. After janssen server installation you will get salt file at `/etc/jans/conf/salt`. Use this same file, during verification janssen use same salt file. It is used to encrypt user data which is inside jwt. Check [server/routes.js:L175](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/code/node/jans-passport/server/routes.js#L175) for details and implementation. |
-| postProfileEndpoint | e.g. https://[your.jans.server.com]/jans-auth/postlogin.htm, After getting userinfo jans-passport send user jwt to this endpoint for further auth flow. |
+| postProfileEndpoint | e.g. `https://[your.jans.server.com]/jans-auth/postlogin.htm`, After getting userinfo jans-passport send user jwt to this endpoint for further auth flow. |
 | failureRedirectUrl | just in case anything fails at jans-passport side then redirect to failureRedirectUrl with error message. Keep it same as postProfileEndpoint. |
 
 check [config/production.js](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/code/node/jans-passport/config/production.js) for other application configurations.
 
-### Exeternal Social Provider configurations
+### External Social Provider configurations
 
-It is array of json object. Each object will be your provider. We are using [PassportJS](https://www.passportjs.org/). Below is the sample for google as a external social provider.
+It is array of json object. Each object will be your provider. We are using [PassportJS](https://www.passportjs.org/). Below is the sample for google and facebook as a external social provider.
 
 ```js
 // passport.json
@@ -89,6 +89,21 @@ It is array of json object. Each object will be your provider. We are using [Pas
     "passportStrategyId": "passport-google-oauth2",
     "enabled": true,
     "callbackUrl": "https://your.jans.server.com/passport/auth/google/callback",
+    "requestForEmail": false,
+    "emailLinkingSafe": false,
+    "options": {
+      "clientID": "xxxxxxxxxxxxxxxxxxxxxxxx",
+      "clientSecret": "xxxxxxxxxxxxxxxx"
+    }
+  },
+  {
+    "id": "facebook",
+    "displayName": "facebook",
+    "type": "oauth",
+    "mapping": "facebook",
+    "passportStrategyId": "passport-facebook",
+    "enabled": true,
+    "callbackUrl": "https://your.jans.server.com/passport/auth/facebook/callback",
     "requestForEmail": false,
     "emailLinkingSafe": false,
     "options": {
