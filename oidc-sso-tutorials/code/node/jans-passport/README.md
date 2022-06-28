@@ -140,5 +140,19 @@ For seamless flow, we used apache proxy pass to configure jans-passport with jan
 </Location>
 ```
 
-Now you will get idea why we have jans-fqdn in passport callback url.
+Now you will get idea why we have jans-fqdn in passport provider callback url config.
+
+
+## Add passport-social script
+
+Download the script from [here](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/code/node/jans-passport/passport-social-jans-script.py) and add it to jans using jans-cli. After jans installation you will get jans-cli. 
+Follow the [instructions here](https://github.com/JanssenProject/jans-cli/blob/main/docs/cli/cli-custom-scripts.md#update-an-existing-custom-script) to add custom script in jans.
+
+The custom script has the following properties:
+
+| Property | Description |
+|----------|-------------|
+| key_store_file | keystore file path. Use this instructions to create keystore. |
+| key_store_password | keystore file secret password |
+| providers_json_file | provider json file which you are also using for jans-passport config. |
 
