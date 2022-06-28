@@ -41,9 +41,19 @@ npm install
 
 ```sh
 # run project in background
-
 npm i -g pm2
 pm2 start 'npm start'
+```
+
+```sh
+# list app to find id
+pm2 list
+
+# stop project
+pm2 stop <id>
+
+# restart project
+pm2 restart <id>
 ```
 
 ### Jans passport configurations
@@ -93,8 +103,42 @@ It is array of json object. Each object will be your provider. We are using [Pas
 |----------|-------------|
 | id | Unique string for your provider |
 | displayName | This name will be shown on auth page |
-| type | `oauth` and `openid-client`. Use `oauth` for all social logins |
+| type | Use `oauth` for all social logins |
 | mapping | this is mapping file name. you can find social mapping file name [here](https://github.com/GluuFederation/tutorials/tree/master/oidc-sso-tutorials/code/node/jans-passport/server/mappings) |
-| passportStrategyId | this is exactly your passport strategy name. List is [here]() |
+| passportStrategyId | this is exactly your passport strategy name. List is [here](#strategies-and-configurations) |
 | enabled | If true, show provider otherwise not on auth login page |
-| callbackUrl | `https://<your_jans_server_fqdn>/passport/auth/<your_provider_id>/callback` replace with your id and jans-fqdn. Same URL you need to configure on your external provider side in client |
+| callbackUrl | `https://<your_jans_server_fqdn>/passport/auth/<your_provider_id>/callback` replace with your id and jans-fqdn. Same URL you need to configure on your external provider side in client. |
+| requestForEmail | It is not required to be `true`. If you set to true then it will prompt user to enter email. |
+| emailLinkingSafe | It is not required to be `true`. If you want to link to existing users then set it to true |
+| options | For social provider you just need to set two property inside `options` i.e. `clientID` and `clientSecret` |
+
+### Strategies and configurations
+
+Below strategies are already available in jans-passport.
+
+| Provider | Strategy Id | Mapping |
+|----------|-------------|---------|
+| Apple | @nicokaiser/passport-apple | apple |
+| Google | passport-google-oauth2 | google |
+| Facebook | passport-facebook | facebook |
+| GitHub | passport-github | github |
+| Twitter | passport-twitter | tritter |
+| LinkedIn | @sokratis/passport-linkedin-oauth2 | linkedin |
+| Tumblr | passport-tumblr | tumblr |
+| Dropbox | passport-dropbox-oauth2 | dropbox |
+| Windows Live | passport-windowslive | windowslive |
+
+## Apache proxy setup
+
+For seamless flow, we used apache proxy pass to configure jans-passport with jans-server. Add below configuration in jans apache and restart apache.
+
+```
+<Location /passport>
+    ProxyPass http://localhost:8090/passport retry=5 connectiontimeout=60 timeout=60
+    Order deny,allow
+    Allow from all
+</Location>
+```
+
+Now you will get idea why we have jans-fqdn in passport callback url.
+
