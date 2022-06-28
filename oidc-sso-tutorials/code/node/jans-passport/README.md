@@ -231,3 +231,6 @@ nualRv0U2Y5EYkekj180KnAR
 
 we need this file for jans-passport `keyPath` config.
 
+## RP application notes
+
+RP(Relying party) is application which will be used by your users where you want to add authentication and protect resources. Once you intiate auth request from your RP Application make sure to add `acr_values=passport-social` in request. acr_values is your script name as configured above.
