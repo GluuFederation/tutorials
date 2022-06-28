@@ -64,8 +64,8 @@ Use [config/production.js](https://github.com/GluuFederation/tutorials/blob/mast
 |-----|---------|
 | providersFile | JSON File path which contains all external social provider data. which will be use by jans-passport and jans-script. Check below section what exactly you need to add in this JSON file. |
 | opServerURI | Your janssen server FQDN |
-| keyPath | RSA Private key file path. It is used to generate/sign jwt which has authenticated user data. jans-passport sends this JWT to jans-server on `/postlogin.html` endpoint after successful user auth. |
-| keyId | RSA Private key's keyId. |
+| keyPath | RSA Private key file path. Check [instructions here](#generate-keystore) to create JKS Keystore. It is used to generate/sign jwt which has authenticated user data. jans-passport sends this JWT to jans-server on `/postlogin.html` endpoint after successful user auth. |
+| keyId | RSA Private key's keyId(KID). |
 | keyAlg | RSA algorithm which is used to generate/sign JWT. Recommended to use `RS512`. |
 | saltFile | Just a text file with random text. After janssen server installation you will get salt file at `/etc/jans/conf/salt`. Use this same file, during verification janssen use same salt file. It is used to encrypt user data which is inside jwt. Check [server/routes.js:L175](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/code/node/jans-passport/server/routes.js#L175) for details and implementation. |
 | postProfileEndpoint | e.g. https://[your.jans.server.com]/jans-auth/postlogin.htm, After getting userinfo jans-passport send user jwt to this endpoint for further auth flow. |
@@ -156,3 +156,53 @@ The custom script has the following properties:
 | key_store_password | keystore file secret password |
 | providers_json_file | provider json file which you are also using for jans-passport config. |
 
+## Generate keystore
+
+jans-passport sends private key sign user data jwt to jans server, for that we need to generate keystore. keystore is safe and passport protected private key container. Use below commands:
+
+```
+# generate keystore with keystore
+
+keytool -genkey -keyalg RSA -keysize 2048 -v -keystore <keystore-file-name>.jks -alias <kid-unique-string>
+
+Example:
+keytool -genkey -keyalg RSA -keysize 2048 -v -keystore keystore.jks -alias kid-2s3d5-f5-6f5-f4dd4
+```
+
+This command will prompt to enter password. Whichever password you have entered, this same password you need to configure `key_store_password` at jans custom script configuration.
+
+`<kid-unique-string>` is your kid which you need it for jans-passport  `keyId` config. `keystore.jks` need it to configure `key_store_file` property at jans custom script configuration.
+
+```
+# JKS to PKCS#12
+
+keytool -importkeystore -srckeystore keystore.jks \
+   -destkeystore keystore.p12 \
+   -srcstoretype jks \
+   -deststoretype pkcs12
+```
+
+```
+# PKCS#12 to PEM
+
+openssl pkcs12 -nodes -in keystore.p12 -out keystore.pem
+```
+
+You can see many things in `keystore.pem`. but we need only private key part so make a new file and add private key part there like in below example:
+
+```
+// private.pem
+
+-----BEGIN PRIVATE KEY-----
+MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCSETIkMkVKOwwO
+XkYVPaBdz+lhsXpMjMJR4dTdFzn01hvcEDUf57wLmgvBXnfWDXEyEFrsvQGePZw7
+foYAdnCtSqZW+dLsh6SUxL5iK0uakiY4SBX401fpbhdCeSC1pK8K+qE3jgc/o60d
+oRAHLz/RCwaa8BszTwyxlLMh7xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxPQEK0b5mPeV84fZJlfbRv01PIrwGRZJtcWC9Ke5
+xSBoh0uvpZ37z2CJC7HZSz+bYz0ZhYiX372gl7BUxbLYdCz2Z9l0DDhwCO68wCzC
+nualRv0U2Y5EYkekj180KnAR
+-----END PRIVATE KEY-----
+```
+
+we need this file for jans-passport `keyPath` config.
