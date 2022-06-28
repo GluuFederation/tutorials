@@ -176,7 +176,9 @@ The custom script has the following properties:
 Given is the example of jans-cli to add script:
 ![jans-cli-script-add](https://user-images.githubusercontent.com/39133739/176181846-d7c6dbd3-fc3b-4942-9595-66ef56672f11.png)
 
-After adding and enabling successful, you can check your Janssen's Auth Server OpenID Connect configuration by navigating to the following URL: https://your-jans-server.com/.well-known/openid-configuration. Find "acr_values_supported": and you should see `passport-social`. Once you intiate auth request from your RP Application make sure to add `acr_values=passport-social` in request.
+> Note: After adding and enabling successful, you can check your Janssen's Auth Server OpenID Connect configuration by navigating to the following URL: https://your-jans-server.com/.well-known/openid-configuration. Find `"acr_values_supported"` and you should see `passport-social`. 
+
+> Note: Once you intiate auth request from your RP Application make sure to add `acr_values=passport-social` in request. acr_values is your script name.
 
 ## Generate Keystore
 
