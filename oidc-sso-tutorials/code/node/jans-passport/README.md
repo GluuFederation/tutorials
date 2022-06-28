@@ -32,7 +32,9 @@ You can add social login options, authentication, and add users to your Janssen 
 
 This project generates auth request for your external social providers, get the user information, and send it to the Janssen server.
 
-Take [Jans Passport JS Project from here](https://github.com/GluuFederation/tutorials/tree/master/oidc-sso-tutorials/code/node/jans-passport). Use Node >= 16 to install dependencies and run the project.
+Take [Jans Passport JS Project from here](https://github.com/GluuFederation/tutorials/tree/master/oidc-sso-tutorials/code/node/jans-passport). Use `Node >= 16` to install dependencies and run the project.
+
+**Deploy it on same server where you have your janssen server.** we combine it with jans using apache proxy pass setting [here](#apache-proxy-setup).
 
 ```sh
 # install deps
@@ -171,6 +173,11 @@ The custom script has the following properties:
 | key_store_password | Keystore file secret password |
 | providers_json_file | Provider JSON file which you are also using for jans-passport config. |
 
+Given is the example of jans-cli to add script:
+![jans-cli-script-add](https://user-images.githubusercontent.com/39133739/176181846-d7c6dbd3-fc3b-4942-9595-66ef56672f11.png)
+
+After adding and enabling successful, you can check your Janssen's Auth Server OpenID Connect configuration by navigating to the following URL: https://your-jans-server.com/.well-known/openid-configuration. Find "acr_values_supported": and you should see `passport-social`. Once you intiate auth request from your RP Application make sure to add `acr_values=passport-social` in request.
+
 ## Generate Keystore
 
 jans-passport sends private key sign user data jwt to jans server, for that we need to generate keystore. keystore is a safe and passport-protected private key container. Use the below commands:
@@ -221,3 +228,4 @@ nualRv0U2Y5EYkekj180KnAR
 ```
 
 we need this file for jans-passport `keyPath` config.
+
