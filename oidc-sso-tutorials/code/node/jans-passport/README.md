@@ -10,6 +10,8 @@ You can add social login options, authentication, and add users to your Janssen 
 
 ![inbound-identity-simple-flow](https://user-images.githubusercontent.com/39133739/175252987-a4aef5f0-960f-4cdc-a9c2-ea8e12de1bef.png)
 
+[Balsamiq Mockup file is here]()
+
 # Prerequisites
 
 - A Jans-auth Server (installation instructions [here](https://github.com/JanssenProject/jans/tree/main/jans-linux-setup#readme))
@@ -21,6 +23,8 @@ You can add social login options, authentication, and add users to your Janssen 
 ## Sample Authentication Flow diagram
 
 ![inbound-identity-app-flow](https://user-images.githubusercontent.com/39133739/175962105-724ef375-aa5b-4a2b-8fce-79a9351d0a8b.png)
+
+[sequencediagram.org file is here]()
 
 # Setup
 
@@ -94,4 +98,3 @@ It is array of json object. Each object will be your provider. We are using [Pas
 | passportStrategyId | this is exactly your passport strategy name. List is [here]() |
 | enabled | If true, show provider otherwise not on auth login page |
 | callbackUrl | `https://<your_jans_server_fqdn>/passport/auth/<your_provider_id>/callback` replace with your id and jans-fqdn. Same URL you need to configure on your external provider side in client |
-| requestForEmail | If false, 

@@ -1,0 +1,24 @@
+title Inbount Identity Flow
+
+fontawesome f268 "++**User's Browser**++" as browser #blue
+fontawesome5solid f2d0 "++**RP**++" as rp #purple
+fontawesome5solid f233 "++**Jans Authz Server**++" as jans #green
+fontawesome5solid f5fd "++**External Provider**++" as eidp #orange
+fontawesome5solid f013 "++**Jans Passport**++" as passport #green
+
+browser->rp: request page
+rp->browser: redirect
+browser->jans: process authorization request
+jans->browser: provide provider selection page e.g. google, facebook, twitter
+browser->eidp: redirect
+eidp->browser: show login page
+browser->eidp: present login credentials
+eidp->eidp: Authenticate user
+eidp->passport: redirect to callback url with success response
+passport->passport: map remote atribute to ldap local attribute
+passport->jans: send encoded user profile
+jans->jans: add/update user in ldap
+jans->jans: Authenticate user
+jans->browser: redirect
+browser->rp: final redirect
+rp->browser: application is accessed
