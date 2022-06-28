@@ -10,7 +10,7 @@ You can add social login options, authentication, and add users to your Janssen 
 
 ![inbound-identity-simple-flow](https://user-images.githubusercontent.com/39133739/175252987-a4aef5f0-960f-4cdc-a9c2-ea8e12de1bef.png)
 
-[Balsamiq Mockup file is here]()
+[Balsamiq Mockup file is here](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/code/node/jans-passport/files/jans.bmpr)
 
 # Prerequisites
 
@@ -24,7 +24,7 @@ You can add social login options, authentication, and add users to your Janssen 
 
 ![inbound-identity-app-flow](https://user-images.githubusercontent.com/39133739/175962105-724ef375-aa5b-4a2b-8fce-79a9351d0a8b.png)
 
-[sequencediagram.org file is here]()
+[sequencediagram.org file is here](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/code/node/jans-passport/files/inbound-identity-sequence.txt)
 
 # Setup
 
