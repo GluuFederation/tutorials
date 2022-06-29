@@ -26,6 +26,14 @@ You can add social login options, authentication, and add users to your Janssen 
 
 [sequencediagram.org file is here](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/code/node/jans-passport/files/inbound-identity-sequence.txt)
 
+## Data communication/pass between jans-passport and jans-server
+
+In below flow diagram you can see how jans-passport ecrypt and sign the user data and pass it to janssen server.
+
+At janssen server side the verification of jwt, decryption of data, add/update user into ldap, and authenticate user, all this things happens in [Passport Social authentication script](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/code/node/jans-passport/passport-social-jans-script.py). You can check logic and flow script.
+
+![jans-passport-data](https://user-images.githubusercontent.com/39133739/176386449-e7acbb17-5440-4a01-84f2-f8fde4546d1e.png)
+
 # Setup
 
 ## Setup Jans Passport JS Project
@@ -231,6 +239,6 @@ nualRv0U2Y5EYkekj180KnAR
 
 we need this file for jans-passport `keyPath` config.
 
-## RP application notes
+## Testing at RP application
 
 RP(Relying party) is application which will be used by your users where you want to add authentication and protect resources. Once you intiate auth request from your RP Application make sure to add `acr_values=passport-social` in request. acr_values is your script name as configured above.
