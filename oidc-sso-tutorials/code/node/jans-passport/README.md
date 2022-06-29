@@ -85,7 +85,7 @@ check [config/production.js](https://github.com/GluuFederation/tutorials/blob/ma
 
 ### External Social Provider configurations
 
-It is an array of JSON objects. Each object will be your provider. We are using [PassportJS](https://www.passportjs.org/). Below is the sample for google and facebook as an external social providers.
+It is an array of JSON objects. Each object will be your provider. We are using [PassportJS](https://www.passportjs.org/). Below is the sample for google, apple, and facebook as an external social providers.
 
 ```js
 // passport.json
@@ -120,7 +120,25 @@ It is an array of JSON objects. Each object will be your provider. We are using 
       "clientID": "xxxxxxxxxxxxxxxxxxxxxxxx",
       "clientSecret": "xxxxxxxxxxxxxxxx"
     }
-  }
+  },
+  {
+  "id" : "apple",
+  "displayName" : "apple",
+  "type" : "oauth",
+  "mapping" : "apple",
+  "passportStrategyId" : "@nicokaiser/passport-apple",
+  "enabled" : true,
+  "callbackUrl" : "https://your.jans.server.com/passport/auth/apple/callback",
+  "requestForEmail" : false,
+  "emailLinkingSafe" : false,
+  "options" : {
+      "clientID" : "xxxxxxxx",
+      "scope" : "[\"name\", \"email\"]",
+      "teamID" : "xxxxxxxx",
+      "keyID" : "xxxxxxxxxx",
+      "key" : "/etc/passport/xxxxxxxxxxxx.p8"
+    }
+  } 
 ]
 ```
 
@@ -135,7 +153,7 @@ It is an array of JSON objects. Each object will be your provider. We are using 
 | callbackUrl | `https://<your_jans_server_fqdn>/passport/auth/<your_provider_id>/callback` replace with your id and jans-fqdn. Same URL you need to configure on your external provider side in client. |
 | requestForEmail | It is not required to be `true`. If you set to true then it will prompt a user to enter an email. |
 | emailLinkingSafe | It is not required to be `true`. If you want to link to existing users then set it to true |
-| options | For social provider you just need to set two-property inside `options` i.e. `clientID` and `clientSecret` |
+| options | For social provider you just need to set two-property inside `options` i.e. `clientID` and `clientSecret`. In `apple` case few more properties. you can check [strategies documents](https://www.passportjs.org/packages/) for extra options. |
 
 ### Strategies and configurations
 
