@@ -6,7 +6,7 @@ The [Janssen](https://github.com/JanssenProject/jans) platform provides the faci
 
 ## What is Inbound identity?
 
-You can add any external social login options, and authentications, and add authenticated users to your Janssen server. So without writing any code you can get the benefits of external social authentication by integrating it with the Janssen server.
+You can add any external social login options, and authentications, and add authenticated users to your Janssen server.
 
 ![inbound-identity-simple-flow](https://user-images.githubusercontent.com/39133739/175252987-a4aef5f0-960f-4cdc-a9c2-ea8e12de1bef.png)
 
