@@ -79,7 +79,7 @@ Use [config/production.js](https://github.com/GluuFederation/tutorials/blob/mast
 | keyAlg | RSA algorithm which is used to generate/sign JWT. Recommended to use `RS512`. |
 | saltFile | Just a text file with random text. After janssen server installation you will get the salt file at `/etc/jans/conf/salt`. Use this same file, during verification Janssen, uses the same salt file. It is used to encrypt user data that is inside jwt. Check [server/routes.js:L175](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/code/node/jans-passport/server/routes.js#L175) for details and implementation. |
 | postProfileEndpoint | `Format: https://<your.jans.server.com>/jans-auth/postlogin.htm`, After getting user info jans-passport sends user jwt to this endpoint for further auth flow. |
-| failureRedirectUrl | `Format: https://<your.jans.server.com>/jans-auth/auth/passport/passportlogin.htm` just in case anything fails at the jans-passport side then redirect to failureRedirectUrl with an error message. Keep it the same as postProfileEndpoint. |
+| failureRedirectUrl | `Format: https://<your.jans.server.com>/jans-auth/auth/passport/passportlogin.htm`, Once anything fails at the jans-passport side then it will redirect to failureRedirectUrl with an error message. |
 
 check [config/production.js](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/code/node/jans-passport/config/production.js) for other application configurations.
 
