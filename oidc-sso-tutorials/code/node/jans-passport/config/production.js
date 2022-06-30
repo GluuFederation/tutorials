@@ -18,7 +18,7 @@ module.exports = {
 
   // janssen server post login full url
   postProfileEndpoint: 'https://your.jans.server.com/jans-auth/postlogin.htm',
-  failureRedirectUrl: 'https://your.jans.server.com/jans-auth/postlogin.htm',
+  failureRedirectUrl: 'https://your.jans.server.com/jans-auth/auth/passport/passportlogin.htm',
   
   // other configs
   port: 8090,
