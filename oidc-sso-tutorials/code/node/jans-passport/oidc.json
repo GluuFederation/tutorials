@@ -1,0 +1,10 @@
+{
+  "op_server": "https://your.op.server.com",
+  "client_id": "xxxxxxxx",
+  "client_secret": "xxxxxxxxxxxxx",
+  "authorization_uri": "https://your.op.server.com/authorize",
+  "token_uri": "https://your.op.server.com/oauth/token",
+  "userinfo_uri": "https://your.op.server.com/userinfo",
+  "redirect_uri": "https://jans-server.com/jans-auth/postlogin.htm",
+  "scope": "openid profile email"
+}
