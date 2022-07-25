@@ -16,6 +16,8 @@ from io.jans.as.common.service.common import UserService, EncryptionService
 from io.jans.as.server.service.net import HttpService
 from io.jans.as.server.security import Identity
 from io.jans.as.server.util import ServerUtil
+from io.jans.orm import PersistenceEntryManager
+from io.jans.as.persistence.model.configuration import GluuConfiguration
 from io.jans.model.custom.script.type.auth import PersonAuthenticationType
 from io.jans.service.cdi.util import CdiUtil
 from io.jans.util import StringHelper
@@ -28,6 +30,7 @@ from java.util import ArrayList, Arrays, Collections, UUID
 import json
 import sys
 import datetime
+import urllib
 
 class PersonAuthentication(PersonAuthenticationType):
     def __init__(self, currentTimeMillis):
@@ -81,10 +84,99 @@ class PersonAuthentication(PersonAuthenticationType):
         print "OIDC: authenticate called for step %s" % str(step)
         identity = CdiUtil.bean(Identity)
         if step == 1:
-            print identity.getWorkingParameter("state")
-            print identity.getWorkingParameter("nonce")
+            externalOIDCState = ServerUtil.getFirstValue(requestParameters, "state")
+            currentSessionOIDCState = identity.getWorkingParameter("state")
 
-        return True
+            print "OIDC: state verification"
+            print "OIDC: current OIDC state: %s, state return by external OP: %s" % (currentSessionOIDCState, externalOIDCState)
+            if currentSessionOIDCState != externalOIDCState:
+                print "OIDC: authentication failed, Failed to match state"
+                return False
+            
+            print "OIDC: Get Access Token"
+            oidcCode = ServerUtil.getFirstValue(requestParameters, "code")
+            httpService = CdiUtil.bean(HttpService)
+            httpclient = httpService.getHttpsClient()
+            tokenRequestData = urllib.urlencode({ 
+                "code" : oidcCode, 
+                "grant_type" : "authorization_code", 
+                "redirect_uri": self.redirect_uri, 
+                "client_id": self.client_id, 
+                "client_secret": self.client_secret 
+                })
+                
+            tokenRequestHeaders = { "Content-type" : "application/x-www-form-urlencoded", "Accept" : "application/json" }
+
+            resultResponse = httpService.executePost(httpclient, self.token_uri, None, tokenRequestHeaders, tokenRequestData)
+            httpResponse = resultResponse.getHttpResponse()
+            print "OIDC: token response status code: %s" % httpResponse.getStatusLine().getStatusCode()
+
+            responseBytes = httpService.getResponseContent(httpResponse)
+            responseString = httpService.convertEntityToString(responseBytes)
+            tokenResponse = json.loads(responseString)
+
+            print "OIDC: perform id token check"
+            idToken = tokenResponse["id_token"]
+            jwtIdToken = Jwt.parse(idToken)
+
+            print "OIDC: Check id token nonce"
+            idTokenNonce = jwtIdToken.getClaims().getClaimAsString("nonce")
+            currentSessionOIDCNonce = identity.getWorkingParameter("nonce")
+            if idTokenNonce != currentSessionOIDCNonce:
+                print "OIDC: Failed to match id token nonce"
+                return False
+                
+            print "OIDC: Check id token aud"
+            idTokenAud = jwtIdToken.getClaims().getClaimAsString("aud")
+            if idTokenAud != self.client_id:
+                print "OIDC: Failed to match id token aud"
+                return False
+            
+            print "OIDC: Check id token expiration"
+            idTokenExp = float(jwtIdToken.getClaims().getClaimAsString("exp"))
+            expDate = datetime.datetime.fromtimestamp(idTokenExp)
+            hasExpired = expDate < datetime.datetime.now()
+            if hasExpired:
+                print "OIDC: Expired ID token"
+                return False
+
+            print "OIDC: Add user"
+            userId = jwtIdToken.getClaims().getClaimAsString("sub")
+            userService = CdiUtil.bean(UserService)
+            foundUser = userService.getUserByAttribute("jansExtUid", "oidc:"+userId)
+
+            print foundUser
+            if foundUser is None:
+                foundUser = User()
+                foundUser.setAttribute("jansExtUid", "oidc:"+userId)
+                foundUser.setAttribute("jansEmail", jwtIdToken.getClaims().getClaimAsString("email"))
+                foundUser.setAttribute(self.getLocalPrimaryKey(), userId)
+                userService = CdiUtil.bean(UserService)
+                userService.addUser(foundUser, True)
+                foundUser = self.findUserByUserId(userId)
+                print foundUser
+
+            print "OIDC: Successfully authenticated"
+
+        authenticationService = CdiUtil.bean(AuthenticationService)
+        loggedIn = authenticationService.authenticate(userId)
+        print loggedIn
+        return loggedIn
+
+    def findUserByUserId(self, userId):
+        userService = CdiUtil.bean(UserService)
+        return userService.getUserByAttribute("jansExtUid", "oidc:"+userId)
+
+    def getLocalPrimaryKey(self):
+        entryManager = CdiUtil.bean(PersistenceEntryManager)
+        config = GluuConfiguration()
+        config = entryManager.find(config.getClass(), "ou=configuration,o=jans")
+        # Pick (one) attribute where user id is stored (e.g. uid/mail)
+        # primaryKey is the primary key on the backend AD / LDAP Server
+        # localPrimaryKey is the primary key on Janssen. This attr value has been mapped with the primary key attr of the backend AD / LDAP when configuring cache refresh
+        uid_attr = config.getIdpAuthn().get(0).getConfig().findValue("localPrimaryKey").asText()
+        print "OIDC: init. uid attribute is '%s'" % uid_attr
+        return
 
     def prepareForStep(self, configurationAttributes, requestParameters, step):
         print "OIDC: prepareForStep called for step %s"  % str(step)
@@ -106,8 +198,6 @@ class PersonAuthentication(PersonAuthenticationType):
             identity.setWorkingParameter("state", state)
             identity.setWorkingParameter("nonce", nonce)
 
-            print identity.getWorkingParameter("state")
-
             facesService = CdiUtil.bean(FacesService)
             facesService.redirectToExternalURL(redirect_url)
 
@@ -115,7 +205,7 @@ class PersonAuthentication(PersonAuthenticationType):
 
     def getExtraParametersForStep(self, configurationAttributes, step):
         print "OIDC: getExtraParametersForStep called for step %s" % str(step)
-        return Arrays.asList("redirect", "auth")
+        return Arrays.asList("state", "nonce")
 
     def getCountAuthenticationSteps(self, configurationAttributes):
         print "OIDC: getCountAuthenticationSteps called"
