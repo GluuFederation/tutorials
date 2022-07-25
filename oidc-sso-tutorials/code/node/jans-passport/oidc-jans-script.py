@@ -85,7 +85,7 @@ class PersonAuthentication(PersonAuthenticationType):
         identity = CdiUtil.bean(Identity)
         if step == 1:
             externalOIDCState = ServerUtil.getFirstValue(requestParameters, "state")
-            currentSessionOIDCState = identity.getWorkingParameter("state")
+            currentSessionOIDCState = identity.getWorkingParameter("s_state")
 
             print "OIDC: state verification"
             print "OIDC: current OIDC state: %s, state return by external OP: %s" % (currentSessionOIDCState, externalOIDCState)
@@ -121,7 +121,7 @@ class PersonAuthentication(PersonAuthenticationType):
 
             print "OIDC: Check id token nonce"
             idTokenNonce = jwtIdToken.getClaims().getClaimAsString("nonce")
-            currentSessionOIDCNonce = identity.getWorkingParameter("nonce")
+            currentSessionOIDCNonce = identity.getWorkingParameter("s_nonce")
             if idTokenNonce != currentSessionOIDCNonce:
                 print "OIDC: Failed to match id token nonce"
                 return False
@@ -147,19 +147,19 @@ class PersonAuthentication(PersonAuthenticationType):
 
             print foundUser
             if foundUser is None:
+                print "OIDC: User not found, adding new"
                 foundUser = User()
                 foundUser.setAttribute("jansExtUid", "oidc:"+userId)
                 foundUser.setAttribute("jansEmail", jwtIdToken.getClaims().getClaimAsString("email"))
+                foundUser.setAttribute("mail", jwtIdToken.getClaims().getClaimAsString("email"))
                 foundUser.setAttribute(self.getLocalPrimaryKey(), userId)
                 userService = CdiUtil.bean(UserService)
-                userService.addUser(foundUser, True)
-                foundUser = self.findUserByUserId(userId)
-                print foundUser
+                foundUser = userService.addUser(foundUser, True)
 
             print "OIDC: Successfully authenticated"
 
         authenticationService = CdiUtil.bean(AuthenticationService)
-        loggedIn = authenticationService.authenticate(userId)
+        loggedIn = authenticationService.authenticate(foundUser.getUserId())
         print loggedIn
         return loggedIn
 
@@ -176,7 +176,7 @@ class PersonAuthentication(PersonAuthenticationType):
         # localPrimaryKey is the primary key on Janssen. This attr value has been mapped with the primary key attr of the backend AD / LDAP when configuring cache refresh
         uid_attr = config.getIdpAuthn().get(0).getConfig().findValue("localPrimaryKey").asText()
         print "OIDC: init. uid attribute is '%s'" % uid_attr
-        return
+        return uid_attr
 
     def prepareForStep(self, configurationAttributes, requestParameters, step):
         print "OIDC: prepareForStep called for step %s"  % str(step)
@@ -195,8 +195,8 @@ class PersonAuthentication(PersonAuthenticationType):
             redirect_url = "".join(redirect_url_elements)
             
             identity = CdiUtil.bean(Identity)
-            identity.setWorkingParameter("state", state)
-            identity.setWorkingParameter("nonce", nonce)
+            identity.setWorkingParameter("s_state", state)
+            identity.setWorkingParameter("s_nonce", nonce)
 
             facesService = CdiUtil.bean(FacesService)
             facesService.redirectToExternalURL(redirect_url)
@@ -205,7 +205,7 @@ class PersonAuthentication(PersonAuthenticationType):
 
     def getExtraParametersForStep(self, configurationAttributes, step):
         print "OIDC: getExtraParametersForStep called for step %s" % str(step)
-        return Arrays.asList("state", "nonce")
+        return Arrays.asList("s_state", "s_nonce")
 
     def getCountAuthenticationSteps(self, configurationAttributes):
         print "OIDC: getCountAuthenticationSteps called"
@@ -216,7 +216,7 @@ class PersonAuthentication(PersonAuthenticationType):
 
     def getNextStep(self, configurationAttributes, requestParameters, step):
         print "OIDC: getNextStep called for step %s" % str(step)
-        return step
+        return -1
 
     def getLogoutExternalUrl(self, configurationAttributes, requestParameters):
         print "OIDC: Get external logout URL call"
