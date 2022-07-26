@@ -59,7 +59,9 @@ class PersonAuthentication(PersonAuthenticationType):
         self.token_uri = str(creds["token_uri"])
         self.userinfo_uri = str(creds["userinfo_uri"])
         self.redirect_uri = str(creds["redirect_uri"])
-        self.scope = str(creds["scope"]) 
+        self.scope = str(creds["scope"])
+        self.title = str(creds["title"])
+        self.auth_redirect = creds["auth_redirect"]
 
         print "OIDC: Initialized successfully"
         return True
@@ -83,9 +85,24 @@ class PersonAuthentication(PersonAuthenticationType):
     def authenticate(self, configurationAttributes, requestParameters, step):
         print "OIDC: authenticate called for step %s" % str(step)
         identity = CdiUtil.bean(Identity)
+        authenticationService = CdiUtil.bean(AuthenticationService)
+
         if step == 1:
             externalOIDCState = ServerUtil.getFirstValue(requestParameters, "state")
-            currentSessionOIDCState = identity.getWorkingParameter("s_state")
+
+            if externalOIDCState is None:
+                print "OIDC: general login"
+                credentials = identity.getCredentials()
+                user_name = credentials.getUsername()
+                user_password = credentials.getPassword()
+
+                logged_in = False
+                if (StringHelper.isNotEmptyString(user_name) and StringHelper.isNotEmptyString(user_password)):
+                    logged_in = authenticationService.authenticate(user_name, user_password)
+
+                return logged_in
+
+            currentSessionOIDCState = identity.getWorkingParameter("oidc_state")
 
             print "OIDC: state verification"
             print "OIDC: current OIDC state: %s, state return by external OP: %s" % (currentSessionOIDCState, externalOIDCState)
@@ -121,7 +138,7 @@ class PersonAuthentication(PersonAuthenticationType):
 
             print "OIDC: Check id token nonce"
             idTokenNonce = jwtIdToken.getClaims().getClaimAsString("nonce")
-            currentSessionOIDCNonce = identity.getWorkingParameter("s_nonce")
+            currentSessionOIDCNonce = identity.getWorkingParameter("oidc_nonce")
             if idTokenNonce != currentSessionOIDCNonce:
                 print "OIDC: Failed to match id token nonce"
                 return False
@@ -158,7 +175,6 @@ class PersonAuthentication(PersonAuthenticationType):
 
             print "OIDC: Successfully authenticated"
 
-        authenticationService = CdiUtil.bean(AuthenticationService)
         loggedIn = authenticationService.authenticate(foundUser.getUserId())
         print loggedIn
         return loggedIn
@@ -195,17 +211,21 @@ class PersonAuthentication(PersonAuthenticationType):
             redirect_url = "".join(redirect_url_elements)
             
             identity = CdiUtil.bean(Identity)
-            identity.setWorkingParameter("s_state", state)
-            identity.setWorkingParameter("s_nonce", nonce)
+            identity.setWorkingParameter("oidc_state", state)
+            identity.setWorkingParameter("oidc_nonce", nonce)
 
-            facesService = CdiUtil.bean(FacesService)
-            facesService.redirectToExternalURL(redirect_url)
+            if self.auth_redirect:
+                facesService = CdiUtil.bean(FacesService)
+                facesService.redirectToExternalURL(redirect_url)
+            else:
+                identity.setWorkingParameter("oidc_redirect_uri", redirect_url)
+                identity.setWorkingParameter("oidc_title", self.title)
 
         return True
 
     def getExtraParametersForStep(self, configurationAttributes, step):
         print "OIDC: getExtraParametersForStep called for step %s" % str(step)
-        return Arrays.asList("s_state", "s_nonce")
+        return Arrays.asList("oidc_state", "oidc_nonce")
 
     def getCountAuthenticationSteps(self, configurationAttributes):
         print "OIDC: getCountAuthenticationSteps called"
@@ -213,6 +233,9 @@ class PersonAuthentication(PersonAuthenticationType):
 
     def getPageForStep(self, configurationAttributes, step):
         print "OIDC: getPageForStep called for step %s" % str(step)
+        if(step == 1):
+            return "/auth/oidc/oidc.xhtml"
+        return ""
 
     def getNextStep(self, configurationAttributes, requestParameters, step):
         print "OIDC: getNextStep called for step %s" % str(step)
