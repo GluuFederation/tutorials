@@ -1,7 +1,7 @@
 # Janssen Project software is available under the Apache 2.0 License (2004). See http://www.apache.org/licenses/ for full text.
 # Copyright (c) 2020, Janssen Project
 #
-# Inbound OAuth and OpenID Connect authentication Passport Script for Janssen
+# Inbound OpenID Connect authentication Script for Janssen
 #
 # Author: Kiran Mali
 # 
@@ -110,10 +110,15 @@ class PersonAuthentication(PersonAuthenticationType):
             if jwtIdToken is None:
                 return False
 
+            # if no email in id token then request for userinfo
+            email = jwtIdToken.getClaims().getClaimAsString("email")
+            if email is None:
+                email = self.getUserInfo(tokenResponse["access_token"])
+
             # adding user
             user = {
                 "sub": jwtIdToken.getClaims().getClaimAsString("sub"),
-                "email": jwtIdToken.getClaims().getClaimAsString("email")
+                "email": email
             }
             foundUser = self.addUser(user)
             if foundUser is None:
@@ -294,3 +299,26 @@ class PersonAuthentication(PersonAuthenticationType):
             print e
             print "OIDC: Add user Exception: ", sys.exc_info()[1]
             return None
+
+    def getUserInfo(self, accessToken):
+        print "OIDC: Get Userinfo"
+        httpService = CdiUtil.bean(HttpService)
+        httpclient = httpService.getHttpsClient()
+        tokenRequestHeaders = { "Authorization" : "Bearer %s" % accessToken, "Accept" : "application/json" }
+
+        resultResponse = httpService.executeGet(httpclient, self.userinfo_uri, tokenRequestHeaders)
+        httpResponse = resultResponse.getHttpResponse()
+        httpResponseStatusCode = httpResponse.getStatusLine().getStatusCode()
+        print "OIDC: userinfo response status code: %s" % httpResponseStatusCode
+        if str(httpResponseStatusCode) != "200":
+            print "OIDC: Failed to get userinfo, status code %s" % httpResponseStatusCode
+            return None
+
+        responseBytes = httpService.getResponseContent(httpResponse)
+        responseString = httpService.convertEntityToString(responseBytes)
+        userinfoResponse = json.loads(responseString)
+
+        print userinfoResponse
+
+        return userinfoResponse["email"]
+        
