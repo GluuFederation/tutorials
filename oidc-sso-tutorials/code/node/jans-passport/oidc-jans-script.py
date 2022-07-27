@@ -90,109 +90,40 @@ class PersonAuthentication(PersonAuthenticationType):
         if step == 1:
             externalOIDCState = ServerUtil.getFirstValue(requestParameters, "state")
 
+            # If no state, proceed for general username&password login 
             if externalOIDCState is None:
-                print "OIDC: general login"
-                credentials = identity.getCredentials()
-                user_name = credentials.getUsername()
-                user_password = credentials.getPassword()
+                return self.generalLogin(identity, authenticationService)
 
-                logged_in = False
-                if (StringHelper.isNotEmptyString(user_name) and StringHelper.isNotEmptyString(user_password)):
-                    logged_in = authenticationService.authenticate(user_name, user_password)
-
-                return logged_in
-
+            # state verification
             currentSessionOIDCState = identity.getWorkingParameter("oidc_state")
-
-            print "OIDC: state verification"
-            print "OIDC: current OIDC state: %s, state return by external OP: %s" % (currentSessionOIDCState, externalOIDCState)
-            if currentSessionOIDCState != externalOIDCState:
-                print "OIDC: authentication failed, Failed to match state"
+            if self.stateVerification(currentSessionOIDCState, externalOIDCState) == False:
                 return False
-            
-            print "OIDC: Get Access Token"
-            oidcCode = ServerUtil.getFirstValue(requestParameters, "code")
-            httpService = CdiUtil.bean(HttpService)
-            httpclient = httpService.getHttpsClient()
-            tokenRequestData = urllib.urlencode({ 
-                "code" : oidcCode, 
-                "grant_type" : "authorization_code", 
-                "redirect_uri": self.redirect_uri, 
-                "client_id": self.client_id, 
-                "client_secret": self.client_secret 
-                })
-                
-            tokenRequestHeaders = { "Content-type" : "application/x-www-form-urlencoded", "Accept" : "application/json" }
 
-            resultResponse = httpService.executePost(httpclient, self.token_uri, None, tokenRequestHeaders, tokenRequestData)
-            httpResponse = resultResponse.getHttpResponse()
-            print "OIDC: token response status code: %s" % httpResponse.getStatusLine().getStatusCode()
+            # Get Access Token
+            tokenResponse = self.getToken(requestParameters)
+            if tokenResponse is None:
+                return False
 
-            responseBytes = httpService.getResponseContent(httpResponse)
-            responseString = httpService.convertEntityToString(responseBytes)
-            tokenResponse = json.loads(responseString)
-
-            print "OIDC: perform id token check"
+            # perform id token check
             idToken = tokenResponse["id_token"]
-            jwtIdToken = Jwt.parse(idToken)
-
-            print "OIDC: Check id token nonce"
-            idTokenNonce = jwtIdToken.getClaims().getClaimAsString("nonce")
-            currentSessionOIDCNonce = identity.getWorkingParameter("oidc_nonce")
-            if idTokenNonce != currentSessionOIDCNonce:
-                print "OIDC: Failed to match id token nonce"
-                return False
-                
-            print "OIDC: Check id token aud"
-            idTokenAud = jwtIdToken.getClaims().getClaimAsString("aud")
-            if idTokenAud != self.client_id:
-                print "OIDC: Failed to match id token aud"
-                return False
-            
-            print "OIDC: Check id token expiration"
-            idTokenExp = float(jwtIdToken.getClaims().getClaimAsString("exp"))
-            expDate = datetime.datetime.fromtimestamp(idTokenExp)
-            hasExpired = expDate < datetime.datetime.now()
-            if hasExpired:
-                print "OIDC: Expired ID token"
+            jwtIdToken = self.verifyIDToken(identity, idToken) 
+            if jwtIdToken is None:
                 return False
 
-            print "OIDC: Add user"
-            userId = jwtIdToken.getClaims().getClaimAsString("sub")
-            userService = CdiUtil.bean(UserService)
-            foundUser = userService.getUserByAttribute("jansExtUid", "oidc:"+userId)
-
-            print foundUser
+            # adding user
+            user = {
+                "sub": jwtIdToken.getClaims().getClaimAsString("sub"),
+                "email": jwtIdToken.getClaims().getClaimAsString("email")
+            }
+            foundUser = self.addUser(user)
             if foundUser is None:
-                print "OIDC: User not found, adding new"
-                foundUser = User()
-                foundUser.setAttribute("jansExtUid", "oidc:"+userId)
-                foundUser.setAttribute("jansEmail", jwtIdToken.getClaims().getClaimAsString("email"))
-                foundUser.setAttribute("mail", jwtIdToken.getClaims().getClaimAsString("email"))
-                foundUser.setAttribute(self.getLocalPrimaryKey(), userId)
-                userService = CdiUtil.bean(UserService)
-                foundUser = userService.addUser(foundUser, True)
+                return False
 
             print "OIDC: Successfully authenticated"
 
         loggedIn = authenticationService.authenticate(foundUser.getUserId())
-        print loggedIn
+        print "OIDC: Authentication: %s" % str(loggedIn)
         return loggedIn
-
-    def findUserByUserId(self, userId):
-        userService = CdiUtil.bean(UserService)
-        return userService.getUserByAttribute("jansExtUid", "oidc:"+userId)
-
-    def getLocalPrimaryKey(self):
-        entryManager = CdiUtil.bean(PersistenceEntryManager)
-        config = GluuConfiguration()
-        config = entryManager.find(config.getClass(), "ou=configuration,o=jans")
-        # Pick (one) attribute where user id is stored (e.g. uid/mail)
-        # primaryKey is the primary key on the backend AD / LDAP Server
-        # localPrimaryKey is the primary key on Janssen. This attr value has been mapped with the primary key attr of the backend AD / LDAP when configuring cache refresh
-        uid_attr = config.getIdpAuthn().get(0).getConfig().findValue("localPrimaryKey").asText()
-        print "OIDC: init. uid attribute is '%s'" % uid_attr
-        return uid_attr
 
     def prepareForStep(self, configurationAttributes, requestParameters, step):
         print "OIDC: prepareForStep called for step %s"  % str(step)
@@ -247,3 +178,119 @@ class PersonAuthentication(PersonAuthenticationType):
 
     def logout(self, configurationAttributes, requestParameters):
         return True
+
+    def generalLogin(self, identity, authenticationService):
+        print "OIDC: general login"
+        credentials = identity.getCredentials()
+        user_name = credentials.getUsername()
+        user_password = credentials.getPassword()
+
+        logged_in = False
+        if (StringHelper.isNotEmptyString(user_name) and StringHelper.isNotEmptyString(user_password)):
+            logged_in = authenticationService.authenticate(user_name, user_password)
+
+        return logged_in
+    
+    def stateVerification(self, currentSessionOIDCState, externalOIDCState):
+        print "OIDC: state verification"
+        print "OIDC: current OIDC state: %s, state return by external OP: %s" % (currentSessionOIDCState, externalOIDCState)
+        if currentSessionOIDCState != externalOIDCState:
+            print "OIDC: authentication failed, Failed to match state"
+            return False
+        
+        print "OIDC: state verification successful"
+        return True
+
+    def findUserByUserId(self, userId):
+        userService = CdiUtil.bean(UserService)
+        return userService.getUserByAttribute("jansExtUid", "oidc:"+userId)
+
+    def getLocalPrimaryKey(self):
+        entryManager = CdiUtil.bean(PersistenceEntryManager)
+        config = GluuConfiguration()
+        config = entryManager.find(config.getClass(), "ou=configuration,o=jans")
+        # Pick (one) attribute where user id is stored (e.g. uid/mail)
+        # primaryKey is the primary key on the backend AD / LDAP Server
+        # localPrimaryKey is the primary key on Janssen. This attr value has been mapped with the primary key attr of the backend AD / LDAP when configuring cache refresh
+        uid_attr = config.getIdpAuthn().get(0).getConfig().findValue("localPrimaryKey").asText()
+        print "OIDC: init. uid attribute is '%s'" % uid_attr
+        return uid_attr
+    
+    def getToken(self, requestParameters):
+        print "OIDC: Get Access Token"
+        oidcCode = ServerUtil.getFirstValue(requestParameters, "code")
+        httpService = CdiUtil.bean(HttpService)
+        httpclient = httpService.getHttpsClient()
+        tokenRequestData = urllib.urlencode({ 
+            "code" : oidcCode, 
+            "grant_type" : "authorization_code", 
+            "redirect_uri": self.redirect_uri, 
+            "client_id": self.client_id, 
+            "client_secret": self.client_secret 
+            })
+                
+        tokenRequestHeaders = { "Content-type" : "application/x-www-form-urlencoded", "Accept" : "application/json" }
+
+        resultResponse = httpService.executePost(httpclient, self.token_uri, None, tokenRequestHeaders, tokenRequestData)
+        httpResponse = resultResponse.getHttpResponse()
+        httpResponseStatusCode = httpResponse.getStatusLine().getStatusCode()
+        print "OIDC: token response status code: %s" % httpResponseStatusCode
+        if str(httpResponseStatusCode) != "200":
+            print "OIDC: Failed to get token, status code %s" % httpResponseStatusCode
+            return None
+
+        responseBytes = httpService.getResponseContent(httpResponse)
+        responseString = httpService.convertEntityToString(responseBytes)
+        tokenResponse = json.loads(responseString)
+
+        return tokenResponse
+    
+    def verifyIDToken(self, identity, idToken):
+        print "OIDC: perform id token check"
+        jwtIdToken = Jwt.parse(idToken)
+
+        print "OIDC: Check id token nonce"
+        idTokenNonce = jwtIdToken.getClaims().getClaimAsString("nonce")
+        currentSessionOIDCNonce = identity.getWorkingParameter("oidc_nonce")
+        if idTokenNonce != currentSessionOIDCNonce:
+            print "OIDC: Failed to match id token nonce"
+            return None
+                
+        print "OIDC: Check id token aud"
+        idTokenAud = jwtIdToken.getClaims().getClaimAsString("aud")
+        if idTokenAud != self.client_id:
+            print "OIDC: Failed to match id token aud"
+            return None
+            
+        print "OIDC: Check id token expiration"
+        idTokenExp = float(jwtIdToken.getClaims().getClaimAsString("exp"))
+        expDate = datetime.datetime.fromtimestamp(idTokenExp)
+        hasExpired = expDate < datetime.datetime.now()
+        if hasExpired:
+            print "OIDC: Expired ID token"
+            return None
+        
+        print "OIDC: ID Token verification successful"
+        return jwtIdToken
+
+    def addUser(self, user):
+        try:
+            print "OIDC: Adding user"
+            userId = user["sub"]
+            userService = CdiUtil.bean(UserService)
+            foundUser = userService.getUserByAttribute("jansExtUid", "oidc:"+userId)
+
+            if foundUser is None:
+                print "OIDC: User not found, adding new"
+                foundUser = User()
+                foundUser.setAttribute("jansExtUid", "oidc:"+userId)
+                foundUser.setAttribute("jansEmail", user["email"])
+                foundUser.setAttribute("mail", user["email"])
+                foundUser.setAttribute(self.getLocalPrimaryKey(), userId)
+                foundUser = userService.addUser(foundUser, True)
+
+            return foundUser
+        except Exception as e:
+            print e
+            print "OIDC: Add user Exception: ", sys.exc_info()[1]
+            return None
