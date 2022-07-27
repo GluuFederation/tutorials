@@ -1,24 +1,22 @@
-# Janssen Project software is available under the Apache 2.0 License (2004). See http://www.apache.org/licenses/ for full text.
-# Copyright (c) 2020, Janssen Project
+# oxAuth is available under the MIT License (2008). See http://opensource.org/licenses/MIT for full text.
+# Copyright (c) 2019, Gluu
 #
-# Inbound OpenID Connect authentication Script for Janssen
+# Inbound OpenID Connect authentication Script for Gluu
 #
 # Author: Kiran Mali
-# 
-from io.jans.as.common.model.common import User
-from io.jans.as.model.jwt import Jwt
-from io.jans.as.server.service import AuthenticationService
-from io.jans.as.common.service.common import UserService
-from io.jans.as.server.service.net import HttpService
-from io.jans.as.server.security import Identity
-from io.jans.as.server.util import ServerUtil
-from io.jans.orm import PersistenceEntryManager
-from io.jans.as.persistence.model.configuration import GluuConfiguration
-from io.jans.model.custom.script.type.auth import PersonAuthenticationType
-from io.jans.service.cdi.util import CdiUtil
-from io.jans.util import StringHelper
+#
+from org.gluu.oxauth.model.common import User
+from org.gluu.oxauth.model.jwt import Jwt
+from org.gluu.oxauth.service import AuthenticationService
+from org.gluu.oxauth.service.common import UserService
+from org.gluu.oxauth.service.net import HttpService
+from org.gluu.oxauth.security import Identity
+from org.gluu.oxauth.util import ServerUtil
+from org.gluu.model.custom.script.type.auth import PersonAuthenticationType
+from org.gluu.service.cdi.util import CdiUtil
+from org.gluu.util import StringHelper
 
-from io.jans.jsf2.service import FacesService
+from org.gluu.jsf2.service import FacesService
 from java.util import Arrays, UUID
 
 import json
@@ -204,19 +202,8 @@ class PersonAuthentication(PersonAuthenticationType):
 
     def findUserByUserId(self, userId):
         userService = CdiUtil.bean(UserService)
-        return userService.getUserByAttribute("jansExtUid", "oidc:"+userId)
+        return userService.getUserByAttribute("oxExternalUid", "oidc:"+userId)
 
-    def getLocalPrimaryKey(self):
-        entryManager = CdiUtil.bean(PersistenceEntryManager)
-        config = GluuConfiguration()
-        config = entryManager.find(config.getClass(), "ou=configuration,o=jans")
-        # Pick (one) attribute where user id is stored (e.g. uid/mail)
-        # primaryKey is the primary key on the backend AD / LDAP Server
-        # localPrimaryKey is the primary key on Janssen. This attr value has been mapped with the primary key attr of the backend AD / LDAP when configuring cache refresh
-        uid_attr = config.getIdpAuthn().get(0).getConfig().findValue("localPrimaryKey").asText()
-        print "OIDC: init. uid attribute is '%s'" % uid_attr
-        return uid_attr
-    
     def getToken(self, requestParameters):
         print "OIDC: Get Access Token"
         oidcCode = ServerUtil.getFirstValue(requestParameters, "code")
@@ -279,15 +266,15 @@ class PersonAuthentication(PersonAuthenticationType):
             print "OIDC: Adding user"
             userId = user["sub"]
             userService = CdiUtil.bean(UserService)
-            foundUser = userService.getUserByAttribute("jansExtUid", "oidc:"+userId)
+            foundUser = userService.getUserByAttribute("oxExternalUid", "oidc:"+userId)
 
             if foundUser is None:
                 print "OIDC: User not found, adding new"
                 foundUser = User()
-                foundUser.setAttribute("jansExtUid", "oidc:"+userId)
-                foundUser.setAttribute("jansEmail", user["email"])
+                foundUser.setAttribute("oxExternalUid", "oidc:"+userId)
+                foundUser.setAttribute("oxTrustEmail", user["email"])
                 foundUser.setAttribute("mail", user["email"])
-                foundUser.setAttribute(self.getLocalPrimaryKey(), userId)
+                foundUser.setAttribute("uid", userId)
                 foundUser = userService.addUser(foundUser, True)
 
             return foundUser
