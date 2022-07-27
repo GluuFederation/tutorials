@@ -5,6 +5,7 @@
 #
 # Author: Kiran Mali
 # 
+from tkinter import E
 from io.jans.as.common.model.common import User
 from io.jans.as.model.common import WebKeyStorage
 from io.jans.as.model.configuration import AppConfiguration
@@ -114,6 +115,8 @@ class PersonAuthentication(PersonAuthenticationType):
             email = jwtIdToken.getClaims().getClaimAsString("email")
             if email is None:
                 email = self.getUserInfo(tokenResponse["access_token"])
+                if email is None:
+                    return False
 
             # adding user
             user = {
@@ -301,24 +304,27 @@ class PersonAuthentication(PersonAuthenticationType):
             return None
 
     def getUserInfo(self, accessToken):
-        print "OIDC: Get Userinfo"
-        httpService = CdiUtil.bean(HttpService)
-        httpclient = httpService.getHttpsClient()
-        tokenRequestHeaders = { "Authorization" : "Bearer %s" % accessToken, "Accept" : "application/json" }
+        try:
+            print "OIDC: Get Userinfo"
+            httpService = CdiUtil.bean(HttpService)
+            httpclient = httpService.getHttpsClient()
+            tokenRequestHeaders = { "Authorization" : "Bearer %s" % accessToken, "Accept" : "application/json" }
 
-        resultResponse = httpService.executeGet(httpclient, self.userinfo_uri, tokenRequestHeaders)
-        httpResponse = resultResponse.getHttpResponse()
-        httpResponseStatusCode = httpResponse.getStatusLine().getStatusCode()
-        print "OIDC: userinfo response status code: %s" % httpResponseStatusCode
-        if str(httpResponseStatusCode) != "200":
-            print "OIDC: Failed to get userinfo, status code %s" % httpResponseStatusCode
+            resultResponse = httpService.executeGet(httpclient, self.userinfo_uri, tokenRequestHeaders)
+            httpResponse = resultResponse.getHttpResponse()
+            httpResponseStatusCode = httpResponse.getStatusLine().getStatusCode()
+            print "OIDC: userinfo response status code: %s" % httpResponseStatusCode
+            if str(httpResponseStatusCode) != "200":
+                print "OIDC: Failed to get userinfo, status code %s" % httpResponseStatusCode
+                return None
+
+            responseBytes = httpService.getResponseContent(httpResponse)
+            responseString = httpService.convertEntityToString(responseBytes)
+            userinfoResponse = json.loads(responseString)
+
+            print userinfoResponse
+
+            return userinfoResponse["email"]
+        except Exception as e:
+            print e
             return None
-
-        responseBytes = httpService.getResponseContent(httpResponse)
-        responseString = httpService.convertEntityToString(responseBytes)
-        userinfoResponse = json.loads(responseString)
-
-        print userinfoResponse
-
-        return userinfoResponse["email"]
-        
