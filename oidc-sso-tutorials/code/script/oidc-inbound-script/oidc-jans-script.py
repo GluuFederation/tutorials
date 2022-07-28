@@ -55,7 +55,7 @@ class PersonAuthentication(PersonAuthenticationType):
         self.redirect_uri = str(creds["redirect_uri"])
         self.scope = str(creds["scope"])
         self.title = str(creds["title"])
-        self.auth_redirect = creds["auth_redirect"]
+        self.auto_redirect = creds["auto_redirect"]
 
         print "OIDC: Initialized successfully"
         return True
@@ -146,7 +146,7 @@ class PersonAuthentication(PersonAuthenticationType):
             identity.setWorkingParameter("oidc_state", state)
             identity.setWorkingParameter("oidc_nonce", nonce)
 
-            if self.auth_redirect:
+            if self.auto_redirect:
                 facesService = CdiUtil.bean(FacesService)
                 facesService.redirectToExternalURL(redirect_url)
             else:
