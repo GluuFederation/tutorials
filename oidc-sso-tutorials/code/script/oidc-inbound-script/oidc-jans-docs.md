@@ -1,4 +1,4 @@
-# Inbound external oauth2 server authentication
+# Inbound external oauth2 server authentication for Jans server
 
 In this tutorials, we will see how you can integrate inbound external oauth2 server authentication in jans server. If you are looking for social login support then checkout [passport](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/code/node/jans-passport/README.md) module for that.
 
