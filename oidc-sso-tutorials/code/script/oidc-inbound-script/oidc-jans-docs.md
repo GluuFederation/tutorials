@@ -21,6 +21,8 @@ You can add any external OAuth2 server login and authenticated users to your Jan
 
 ![inbound-identity-app-flow](files/jans-sequence-flow.png)
 
+[sequencediagram.org source file is here](files/jans-sequence-flow.txt)
+
 # Configure jans server
 
 1. [Download script from here.](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/code/script/oidc-inbound-script/oidc-jans-script.py)
