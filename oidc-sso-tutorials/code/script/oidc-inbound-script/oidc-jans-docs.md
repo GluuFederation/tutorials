@@ -4,12 +4,22 @@ In this tutorials, we will see how you can integrate inbound external oauth2 ser
 
 We will use [interception authentication script](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/code/script/oidc-inbound-script/oidc-jans-script.py) for whole flow. Currently It supports `Authorization Code Flow` and `client_secret_post` token endpoint auth method.  
 
+## What is Inbound identity?
+
+You can add any external OAuth2 server login and authenticated users to your Janssen server.
+
+![inbound-identity-simple-flow](files/jans-oidc-flow-balsamiq.png)
+
 # Prerequisites
 
 - A Jans-auth Server (installation instructions [here](https://github.com/JanssenProject/jans/tree/main/jans-linux-setup#readme))
 - The [external oauth2 server authentication script](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/code/script/oidc-inbound-script/oidc-jans-script.py)
 - External OAuth2 Provider credentials: you can choose any external OP server who follows OAuth2 standards and authentication features.  
 - RP application: This is your application that will be used by your users and where you want to add this auth feature.
+
+## Sample Authentication Flow diagram
+
+![inbound-identity-app-flow](files/jans-sequence-flow.png)
 
 # Configure jans server
 
