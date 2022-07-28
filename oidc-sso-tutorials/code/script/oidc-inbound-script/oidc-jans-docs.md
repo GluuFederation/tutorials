@@ -10,6 +10,8 @@ You can add any external OAuth2 server login and authenticated users to your Jan
 
 ![inbound-identity-simple-flow](files/jans-oidc-flow-balsamiq.png)
 
+[Balsamiq Mockup source file is here](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/code/node/jans-passport/files/jans.bmpr)
+
 # Prerequisites
 
 - A Jans-auth Server (installation instructions [here](https://github.com/JanssenProject/jans/tree/main/jans-linux-setup#readme))
