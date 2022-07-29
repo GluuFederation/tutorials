@@ -6,11 +6,11 @@ We will use [interception authentication script](https://github.com/GluuFederati
 
 ## What is Inbound identity?
 
-You can add any external OAuth2 server login and authenticated users to your Janssen server.
+You can add any external OAuth2 server login option, authentication, and add authenticated users to your Janssen server.
 
-![inbound-identity-simple-flow](files/jans-oidc-flow-balsamiq.png)
+![inbound-identity-app-flow](files/jans-sequence-flow.png)
 
-[Balsamiq Mockup source file is here](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/code/node/jans-passport/files/jans.bmpr)
+[sequencediagram.org source file is here](files/jans-sequence-flow.txt)
 
 # Prerequisites
 
@@ -18,12 +18,6 @@ You can add any external OAuth2 server login and authenticated users to your Jan
 - The [external oauth2 server authentication script](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/code/script/oidc-inbound-script/oidc-jans-script.py)
 - External OAuth2 Provider credentials: you can choose any external OP server who follows OAuth2 standards and authentication features.  
 - RP application: This is your application that will be used by your users and where you want to add this auth feature.
-
-## Sample Authentication Flow diagram
-
-![inbound-identity-app-flow](files/jans-sequence-flow.png)
-
-[sequencediagram.org source file is here](files/jans-sequence-flow.txt)
 
 # Configure jans server
 

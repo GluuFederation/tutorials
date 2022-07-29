@@ -4,6 +4,14 @@ In this tutorials, we will see how you can integrate inbound external oauth2 ser
 
 We will use [interception authentication script](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/code/script/oidc-inbound-script/oidc-gluu-script.py) for whole flow. Currently It supports `Authorization Code Flow` and `client_secret_post` token endpoint auth method.  
 
+## What is Inbound identity?
+
+You can add any external OAuth2 server login option, authentication, and add authenticated users to your Gluu server.
+
+![inbound-identity-app-flow](files/jans-sequence-flow.png)
+
+[sequencediagram.org source file is here](files/jans-sequence-flow.txt)
+
 # Prerequisites
 
 - A Gluu Server (installation instructions [here](https://gluu.org/docs/gluu-server/4.4/installation-guide/install-ubuntu/))
