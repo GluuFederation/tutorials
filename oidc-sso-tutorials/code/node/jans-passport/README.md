@@ -1,5 +1,3 @@
-Note: This is just rough work not ready for production.
-
 # Overview
 
 The [Janssen](https://github.com/JanssenProject/jans) platform provides the facility to make a fully customizable authentication flow. In these docs, We will guide you on how to add Inbound identity support in Janssen.
@@ -8,31 +6,27 @@ The [Janssen](https://github.com/JanssenProject/jans) platform provides the faci
 
 You can add any external social login options(e.g. google, fb), authentications, and add authenticated users to your Janssen server.
 
-![inbound-identity-simple-flow](https://user-images.githubusercontent.com/39133739/175252987-a4aef5f0-960f-4cdc-a9c2-ea8e12de1bef.png)
+![inbound-identity-app-flow](files/jans-passport-inbound-identity.png)
 
-[Balsamiq Mockup source file is here](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/code/node/jans-passport/files/jans.bmpr)
+[sequencediagram.org source file is here](files/inbound-identity-sequence.txt)
 
 # Prerequisites
 
 - A Jans-auth Server (installation instructions [here](https://github.com/JanssenProject/jans/tree/main/jans-linux-setup#readme))
 - The [Passport Social authentication script](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/code/node/jans-passport/passport-social-jans-script.py)
-- The [Jans Passport JS Project](https://github.com/GluuFederation/tutorials/tree/master/oidc-sso-tutorials/code/node/jans-passport)
+- The [Passport JS Project](https://github.com/GluuFederation/tutorials/tree/master/oidc-sso-tutorials/code/node/jans-passport)
 - External Social Provider credentials: we are going to integrate google as an external provider so create credentials from [google developer portal](https://console.developers.google.com/apis/credentials)
 - RP application: This is your application that will be used by your users and where you want to add this auth feature. 
 
-## Sample Authentication Flow diagram
+## Data communication/pass between passport and jans-server
 
-![inbound-identity-app-flow](https://user-images.githubusercontent.com/39133739/175962105-724ef375-aa5b-4a2b-8fce-79a9351d0a8b.png)
-
-[sequencediagram.org source file is here](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/code/node/jans-passport/files/inbound-identity-sequence.txt)
-
-## Data communication/pass between jans-passport and jans-server
-
-In below flow diagram you can see how jans-passport ecrypt and sign the user data and pass it to janssen server.
+In below flow diagram you can see how passport ecrypt and sign the user data and pass it to janssen server.
 
 At janssen server side the verification of jwt, decryption of data, add/update user into ldap, and authenticate user, all this things happens in [Passport Social authentication script](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/code/node/jans-passport/passport-social-jans-script.py). You can check logic and flow in [the script](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/code/node/jans-passport/passport-social-jans-script.py).
 
-![jans-passport-data](https://user-images.githubusercontent.com/39133739/176386449-e7acbb17-5440-4a01-84f2-f8fde4546d1e.png)
+![jans-passport-data](files/jans-passport-data-to-jans.png)
+
+[sequencediagram.org source file is here](files/passport-data-sequence.txt)
 
 # Setup and configurations
 
@@ -40,7 +34,7 @@ At janssen server side the verification of jwt, decryption of data, add/update u
 
 This project generates auth request for your external social providers, get the user information, and send it to the Janssen server.
 
-Take [Jans Passport JS Project from here](https://github.com/GluuFederation/tutorials/tree/master/oidc-sso-tutorials/code/node/jans-passport). Use `Node >= 16` to install dependencies and run the project.
+Take [Passport JS Project from here](https://github.com/GluuFederation/tutorials/tree/master/oidc-sso-tutorials/code/node/jans-passport). Use `Node >= 16` to install dependencies and run the project.
 
 **Deploy it on same server where you have your janssen server.** we combine it with jans using apache proxy pass setting [here](#apache-proxy-setup).
 
@@ -72,20 +66,20 @@ Use [config/production.js](https://github.com/GluuFederation/tutorials/blob/mast
 
 | Property | Details |
 |-----|---------|
-| providersFile | JSON File path which contains all external social provider data. which will be used by jans-passport and jans-script. [Check below section](#external-social-provider-configurations) what exactly you need to add in this JSON file. |
+| providersFile | JSON File path which contains all external social provider data. which will be used by passport and jans-script. [Check below section](#external-social-provider-configurations) what exactly you need to add in this JSON file. |
 | opServerURI | Your janssen server FQDN |
-| keyPath | RSA Private key file path. Check [instructions here](#generate-keystore) to create JKS Keystore. It is used to generate/sign jwt which has authenticated user data. jans-passport sends this JWT to jans-server on `/postlogin.html` endpoint after successful user auth. |
+| keyPath | RSA Private key file path. Check [instructions here](#generate-keystore) to create JKS Keystore. It is used to generate/sign jwt which has authenticated user data. passport sends this JWT to jans-server on `/postlogin.html` endpoint after successful user auth. |
 | keyId | RSA Private key's keyId(KID). |
 | keyAlg | RSA algorithm which is used to generate/sign JWT. Recommended to use `RS512`. |
 | saltFile | Just a text file with random text. After janssen server installation you will get the salt file at `/etc/jans/conf/salt`. Use this same file, during verification Janssen, uses the same salt file. It is used to encrypt user data that is inside jwt. Check [server/routes.js:L175](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/code/node/jans-passport/server/routes.js#L175) for details and implementation. |
-| postProfileEndpoint | `Format: https://<your.jans.server.com>/jans-auth/postlogin.htm`, After getting user info jans-passport sends user jwt to this endpoint for further auth flow. |
-| failureRedirectUrl | `Format: https://<your.jans.server.com>/jans-auth/auth/passport/passportlogin.htm`, Once anything fails at the jans-passport side then it will redirect to failureRedirectUrl with an error message. |
+| postProfileEndpoint | `Format: https://<your.jans.server.com>/jans-auth/postlogin.htm`, After getting user info passport sends user jwt to this endpoint for further auth flow. |
+| failureRedirectUrl | `Format: https://<your.jans.server.com>/jans-auth/auth/passport/passportlogin.htm`, Once anything fails at the passport side then it will redirect to failureRedirectUrl with an error message. |
 
 check [config/production.js](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/code/node/jans-passport/config/production.js) for other application configurations.
 
 ### External Social Provider configurations
 
-It is an array of JSON objects. Each object will be your provider. We are using [PassportJS](https://www.passportjs.org/). Below is the sample for google, apple, and facebook as an external social providers.
+It is an array of JSON objects. Each object will be your provider. We are using [Passport-JS](https://www.passportjs.org/). Below is the sample for google, apple, and facebook as an external social providers.
 
 ```js
 // passport.json
@@ -157,7 +151,7 @@ It is an array of JSON objects. Each object will be your provider. We are using 
 
 ### Strategies and configurations
 
-Below strategies are already available in jans-passport.
+Below strategies are already available in passport.
 
 | Provider | Strategy Id | Mapping |
 |----------|-------------|---------|
@@ -173,7 +167,7 @@ Below strategies are already available in jans-passport.
 
 ## Apache proxy setup
 
-For seamless flow, we used an apache proxy pass to configure jans-passport with jans-server. Add the below configuration to the Janssen apache server and restart apache server.
+For seamless flow, we used an apache proxy pass to configure passport with jans-server. Add the below configuration to the Janssen apache server and restart apache server.
 
 ```
 <Location /passport>
@@ -197,7 +191,7 @@ The custom script has the following properties:
 |----------|-------------|
 | key_store_file | Keystore file path. Use [these instructions](#generate-keystore) to create a keystore. |
 | key_store_password | Keystore file secret password |
-| providers_json_file | Provider JSON file which you are also using for jans-passport config. |
+| providers_json_file | Provider JSON file which you are also using for passport config. |
 
 Given is the example of jans-cli to add script:
 ![jans-cli-script-add](https://user-images.githubusercontent.com/39133739/176181846-d7c6dbd3-fc3b-4942-9595-66ef56672f11.png)
@@ -208,7 +202,7 @@ Given is the example of jans-cli to add script:
 
 ## Generate Keystore
 
-jans-passport sends private key sign user data jwt to jans server, for that we need to generate keystore. keystore is a safe and passport-protected private key container. Use the below commands:
+passport sends private key sign user data jwt to jans server, for that we need to generate keystore. keystore is a safe and passport-protected private key container. Use the below commands:
 
 ```
 # generate Keystore
@@ -221,7 +215,7 @@ keytool -genkey -keyalg RSA -keysize 2048 -v -keystore keystore.jks -alias kid-2
 
 This command will prompt you to enter a password. Whichever password you have entered, this same password you need to configure `key_store_password` at janssen custom script configuration.
 
-`<kid-unique-string>` is your kid which you need it for jans-passport  `keyId` config. `keystore.jks` need it to configure `key_store_file` property at janssen custom script configuration.
+`<kid-unique-string>` is your kid which you need it for passport  `keyId` config. `keystore.jks` need it to configure `key_store_file` property at janssen custom script configuration.
 
 ```
 # JKS to PKCS#12
@@ -255,7 +249,7 @@ nualRv0U2Y5EYkekj180KnAR
 -----END PRIVATE KEY-----
 ```
 
-we need this file for jans-passport `keyPath` config.
+we need this file for passport `keyPath` config.
 
 ## Testing at RP application
 

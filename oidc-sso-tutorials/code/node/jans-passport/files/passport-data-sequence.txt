@@ -1,6 +1,6 @@
-title How jans-passport pass data to jans-server?
+title How Passport pass data to jans-server?
 
-fontawesome5solid f013 "++**Jans Passport**++" as passport #green
+fontawesome5solid f1e6 "++**Passport**++" as passport #green
 fontawesome5solid f233 "++**Jans Authz Server**++" as jans #green
 
 note over passport: after getting success response and \n userinfo from external social provider,

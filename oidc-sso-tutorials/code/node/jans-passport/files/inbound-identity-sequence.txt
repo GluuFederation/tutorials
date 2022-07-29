@@ -4,7 +4,7 @@ fontawesome f268 "++**User's Browser**++" as browser #blue
 fontawesome5solid f2d0 "++**RP**++" as rp #purple
 fontawesome5solid f233 "++**Jans Authz Server**++" as jans #green
 fontawesome5solid f5fd "++**External Provider**++" as eidp #orange
-fontawesome5solid f013 "++**Jans Passport**++" as passport #green
+fontawesome5solid f1e6 "++**Passport**++" as passport #green
 
 browser->rp: request page
 rp->browser: redirect
