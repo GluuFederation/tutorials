@@ -2,7 +2,19 @@
 
 The [Janssen](https://github.com/JanssenProject/jans) platform provides the facility to make a fully customizable authentication flow. In these docs, We will guide you on how to add Inbound identity support in Janssen.
 
-## What is Inbound identity?
+# Table of contents
+
+- [What is Inbound identity?](#what-is-inbound-identity)
+- [Prerequisites](#prerequisites)
+  - [Data communication/pass between passport and jans-server](#data-communicationpass-between-passport-and-jans-server)
+- [Setup and configurations](#setup-and-configurations)
+  - [Setup Passport JS Project](#setup-passport-js-project)
+  - [Apache proxy setup](#apache-proxy-setup)
+  - [Add passport-social script](#add-passport-social-script)
+  - [Generate Keystore](#generate-keystore)
+- [Testing at RP application](#testing-at-rp-application)
+
+# What is Inbound identity?
 
 You can add any external social login options(e.g. google, fb), authentications, and add authenticated users to your Janssen server.
 
@@ -30,7 +42,7 @@ At janssen server side the verification of jwt, decryption of data, add/update u
 
 # Setup and configurations
 
-## Setup Jans Passport JS Project
+## Setup Passport JS Project
 
 This project generates auth request for your external social providers, get the user information, and send it to the Janssen server.
 
@@ -60,7 +72,7 @@ pm2 stop <id>
 pm2 restart <id>
 ```
 
-### Jans passport configurations
+### passport configurations
 
 Use [config/production.js](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/code/node/jans-passport/config/production.js) for configurations.
 
@@ -251,7 +263,7 @@ nualRv0U2Y5EYkekj180KnAR
 
 we need this file for passport `keyPath` config.
 
-## Testing at RP application
+# Testing at RP application
 
 RP(Relying party) is application which will be used by your users where you want to add authentication and protect resources. Once you intiate auth request from your RP Application make sure to add `acr_values=passport-social` in request. acr_values is your script name as configured above.
 
