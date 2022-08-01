@@ -16,10 +16,6 @@
 
 1. [SAML SSO with Gluu Shibboleth: **IDP Initiated Flow**](https://github.com/GluuFederation/tutorials/blob/master/oidc-sso-tutorials/tutorials/SAML-SSO-with-Gluu-Shibboleth-IDP-Initiated-Flow.md) - Implement and integrate SAML SSO into your NodeJS application with Gluu Server
 
-### Gluu Gateway Security
+1. [Janssen Social Providers Login using Passport JS](https://github.com/GluuFederation/tutorials/wiki/Janssen-Social-Providers-Login-using-Passport-JS)
 
-1. [Secure API(backend) application using **Gluu Gateway** and **OAuth plugins**](https://github.com/GluuFederation/tutorials/blob/master/gluu-gateway-tutorials/tutorials/Secure-API-backend-application-using-Gluu-Gateway-and-OAuth-plugins.md)
-
-2. [User authorization and Secure API using GG OAuth PEP plugin**](https://github.com/GluuFederation/tutorials/blob/master/gluu-gateway-tutorials/tutorials/add-user-authorization-secure-api-gg-oauth-pep-plugin.md)
-
-3. [Secure your Web Application using Gluu Gateway **Multistep OpenID Connect OAuth** security](https://github.com/GluuFederation/tutorials/blob/master/gluu-gateway-tutorials/tutorials/multistep-oidc-authentication.md)
+1. [External oauth2 provider login auth integration with Jans server](https://github.com/GluuFederation/tutorials/wiki/External-oauth2-provider-login-auth-integration-with-Jans-server)

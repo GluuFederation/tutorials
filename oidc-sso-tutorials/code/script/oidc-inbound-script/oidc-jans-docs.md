@@ -1,1 +1,1 @@
-## [Moved Docs to wiki here](https://github.com/GluuFederation/tutorials/wiki/Inbound-identity-external-oauth2-provider-authentication-integration-with-Jans-server)
+## [Moved Docs to wiki here](https://github.com/GluuFederation/tutorials/wiki/External-oauth2-provider-login-auth-integration-with-Jans-server)

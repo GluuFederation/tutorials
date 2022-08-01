@@ -1,1 +1,1 @@
-[Moved Docs to wiki here](https://github.com/GluuFederation/tutorials/wiki/Janssen-Inbound-Identity-Tutorial)
+[Moved Docs to wiki here](https://github.com/GluuFederation/tutorials/wiki/Janssen-Social-Providers-Login-using-Passport-JS)
