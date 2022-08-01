@@ -33,6 +33,7 @@ module.exports = {
       port: 0
     }
   },
+  loggingDirPath: './logs/', // make sure this directory is exists and has enough permission to create log file in it.
   rateLimitWindowMs: 24 * 60 * 60 * 1000, // 24 hrs in milliseconds
   rateLimitMaxRequestAllow: 1000,
   cookieSameSite: 'none',

@@ -7,8 +7,9 @@ const R = require('ramda')
 const misc = require('./misc')
 const format = winston.format
 const path = require('path')
+const config = require('config')
 
-const dir = process.env.NODE_LOGGING_DIR || path.join(__dirname, 'logs')
+const dir = config.get("loggingDirPath") || path.join(__dirname, 'logs')
 
 const defaultLogOptions = {
   filename: dir + '/passport-%DATE%.log',
