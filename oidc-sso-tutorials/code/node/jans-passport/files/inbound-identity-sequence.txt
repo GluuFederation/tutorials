@@ -1,9 +1,9 @@
-title Inbount Identity Flow
+title User authentication at social provider Flow (Inbound Identity)
 
 fontawesome f268 "++**User's Browser**++" as browser #blue
 fontawesome5solid f2d0 "++**RP**++" as rp #purple
 fontawesome5solid f233 "++**Jans Authz Server**++" as jans #green
-fontawesome5solid f5fd "++**External Provider**++" as eidp #orange
+fontawesome5solid f5fd "++**           External Social Provider**++" as eidp #orange
 fontawesome5solid f1e6 "++**Passport**++" as passport #green
 
 browser->rp: request page
@@ -13,12 +13,14 @@ jans->browser: provide provider selection page e.g. google, facebook, twitter
 browser->eidp: redirect
 eidp->browser: show login page
 browser->eidp: present login credentials
-eidp->eidp: Authenticate user
+note over eidp: Authenticate user
 eidp->passport: redirect to callback url with success response
-passport->passport: map remote atribute to ldap local attribute
+note over passport: verify response and user
+note over passport: get userinfo
+note over passport: map userinfo remote attribute to ldap local attribute
 passport->jans: send encoded user profile
-jans->jans: add/update user in ldap
-jans->jans: Authenticate user
+note over jans: add/update user in ldap
+note over jans: Authenticate user \nand create user session
 jans->browser: redirect
 browser->rp: final redirect
 rp->browser: application is accessed
