@@ -6,6 +6,7 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const { v4: uuidv4 } = require('uuid')
 const jwt = require('jsonwebtoken')
 const fs = require('fs')
+const crypto = require('crypto')
 
 const port = process.env.PORT
 const jansPostUrl = process.env.JANS_POST_URL
@@ -19,7 +20,7 @@ passport.use(new GoogleStrategy({
   callbackURL: `${process.env.JANS_SERVER_URL}/passport/auth/google/callback`
 },
 function(accessToken, refreshToken, profile, cb) {
-  return cb(err, profile);
+  return cb(null, profile);
 }
 ));
 
@@ -51,20 +52,22 @@ app.get('/passport/auth/google/callback',
       cn: user.displayName,
       displayName: user.displayName,
       givenName: user.name.givenName,
-      sn: user.name.familyName
+      sn: user.name.familyName,
+      provider: "google"
     }
     console.log('ldap Mapped User: ', ldapMappedUser)
     const sub = ldapMappedUser.uid
 
+    const now = new Date().getTime()
     const userJWT = jwt.sign({
       iss: jansPostUrl,
-      sub: user.uid,
+      sub: sub,
       aud: process.env.JANS_SERVER_URL,
       jti: uuidv4(),
       exp: now / 1000 + 30,
       iat: now,
       data: encrypt(ldapMappedUser)
-    }, privateKey(), defaultRpOptions)
+    }, privateKey(), defaultRpOptions())
 
     console.log('User JWT: ', userJWT)
     return redirectAndPostUserToJans(res, userJWT)
