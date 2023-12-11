@@ -106,52 +106,50 @@ Navigate to the Project Tree File view to make Agama Flows and `.gama` files.
 
 ### 12.
 
-![Projects - View 2023-04-13 15-32-14](https://user-images.githubusercontent.com/39133739/231777118-2aa4b735-1865-48fd-9704-3a68c3e72354.png)
+![add-call-auth-method-details](./assets/add-call-auth-method-details.png)
 
 ### 13.
 
-![Projects - View 2023-04-13 15-34-16](https://user-images.githubusercontent.com/39133739/231777140-c4a3b074-89a2-4af3-91fa-2b567838e6c1.png)
+![add-assign-authresult-uid](./assets/add-assign-authresult-uid.png)
 
 ### 14.
 
-![Projects - View 2023-04-13 15-37-22](https://user-images.githubusercontent.com/39133739/231777184-ee0beeb6-140e-4521-9723-5a5406df557a.png)
+![add-assign-authresult-uid-details](./assets/add-assign-authresult-uid-details.png)
 
 ### 15.
 
-![Projects - View 2023-04-13 15-41-20](https://user-images.githubusercontent.com/39133739/231777229-62986283-48cb-4e72-84c4-c3027871ce70.png)
+![add-when](./assets/add-when.png)
 
 ### 16.
 
-![Projects - View 2023-04-13 15-43-05](https://user-images.githubusercontent.com/39133739/231778501-f228e6b0-d495-4ac8-aabe-b7ecf5cd8a2e.png)
+![add-when-details](./assets/add-when-details.png)
 
 ### 17.
 
-![Projects - View 2023-04-13 15-44-11](https://user-images.githubusercontent.com/39133739/231778539-26d12cab-9431-45dc-b9d8-d94198661688.png)
+![add-success-finish](./assets/add-success-finish.png)
 
 ### 18.
 
-![Projects - View 2023-04-13 15-48-10](https://user-images.githubusercontent.com/39133739/231778563-b1466906-6942-42b3-b82e-420db6aca358.png)
+![add-success-finish-details](./assets/add-success-finish-details.png)
 
 ### 19.
 
-![Projects - View 2023-04-13 15-51-53](https://user-images.githubusercontent.com/39133739/231778630-33bc38e4-42bc-4c0b-913c-0d8759570b85.png)
+![add-failed-finish](./assets/add-failed-finish.png)
 
 ### 20.
 
-![Projects - View 2023-04-13 15-53-44](https://user-images.githubusercontent.com/39133739/231778649-4a2e8b08-1362-4dd8-8a82-dc5539c5d0aa.png)
-
-- Final look at the Flow diagram
-  ![Projects - View 2023-04-13 15-54-42](https://user-images.githubusercontent.com/39133739/231778684-fd62eb93-b8a8-465e-a560-9a4b8dfae820.png)
+![add-failed-finish-details](./assets/add-failed-finish-details.png)
 
 - Save it and you can click on the `Code` button to see the actual flow
 
-![Projects - View 2023-04-13 15-55-57](https://user-images.githubusercontent.com/39133739/231779202-165ddb01-62df-4771-ac3a-f80c76ffa5ce.png)
+![save-flow](./assets/save-flow.png)
 
 - It will look like
-  ![Projects - View 2023-04-13 15-55-02](https://user-images.githubusercontent.com/39133739/231779407-63ead5cf-a6a0-46b1-8852-a4bff12346ee.png)
+
+![generated-code](./assets/generated-code.png)
 
 ```
-Flow co.basic
+Flow agama.pw
      Basepath ""
 authService = Call io.jans.as.server.service.AuthenticationService#class
 cdiUtil = Call io.jans.service.cdi.util.CdiUtil#bean authService
@@ -160,20 +158,23 @@ Repeat 3 times max
      creds = RRF "login.ftlh" authResult
      authResult.success = Call cdiUtil authenticate creds.username creds.password
      authResult.uid = creds.username
+     // check auth response
      When authResult.success is true
-          Finish authResult.uid
-Finish false
+          it_lfnnw = { success: true, data: { userId: authResult.uid } }
+          Finish it_lfnnw
+it_dnyli = { success: false, error: "auth failed" }
+Finish it_dnyli
 ```
 
 ## Download Basic Flow
 
 If you created the above flow successfully then skip this part. There is an import facility. If you have any existing flow's JSON file then you can directly import and make a flow quickly.
 
-[co.basic.zip](https://github.com/GluuFederation/private/files/11490053/co.basic.1.zip)
+[co.basic.zip](./assets/agama.pw.zip)
 
 Download the above zip, extract it, and import the JSON file:
 
-![image](https://user-images.githubusercontent.com/39133739/231780883-701a7c89-9396-4173-9463-955cdca0e0d8.png)
+![import-flow](./assets/import-flow.png)
 
 ## Make a template file
 
