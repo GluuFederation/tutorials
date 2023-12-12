@@ -22,21 +22,21 @@ Agama Docs : https://docs.jans.io/head/agama/introduction
 
 Use https://cloud.gluu.org/agama-lab online tool to make an agama flow.
 
-Hit the above URL and you will see a page with `Sign in with GitHub` button. Click on it and give access to agama-lab.
+Hit the above URL and you will see a page with the `Sign in with GitHub` button. Click on it and give access to agama-lab.
 
 ![login-page](./assets/login-page.png)
 
 ## Install GitHub-App and select Repository
 
-In the next step, You need to install a GitHub App which will allow Agama-Lab to commit and push changes to your repository. Agama-Lab uses your repository to store whole project's data and flow files.
+In the next step, You need to install a GitHub App which will allow Agama-Lab to commit and push changes to your repository. Agama-Lab uses your repository to store the whole project's data and flow files.
 
 ![install-app-select-repo](./assets/install-app-select-repo.png)
 
-While GitHub-App installation it will ask you to choose repository. IF you missed, add repository using GitHub settings `GitHub Settings > Integrations > Applications > agama-lab > Repository Access`.
+While GitHub-App installation it will ask you to choose a repository. If you missed it, add a repository using GitHub settings `GitHub Settings > Integrations > Applications > agama-lab > Repository Access`.
 
 ![select-repo](./assets/select-repo.png)
 
-Use `Select Repository` button to choose repository. Your repository must have at least one Git Commit to proceed. Just making a fresh new repo with README.md will be good. Click on `Create Project` button to proceed next.
+Use the `Select Repository` button to choose a repository. Your repository must have at least one Git Commit to proceed. Just making a fresh new repo with README.md will be good. Click on the `Create Project` button to proceed next.
 
 ![select-repo-button](./assets/select-repo-button.png)
 
@@ -52,10 +52,10 @@ Navigate to the Project Tree File view to make Agama Flows and `.gama` files.
 
 ## Make a Flow File
 
-- Right Click on the `Code` folder and select New Flow file. You can double click on files to open it.
+- Right-click on the `Code` folder and select New Flow file. You can double-click on files to open it.
   ![new-flow](./assets/new-flow.png)
 
-- Enter Details in Form and click on `Create` button.
+- Enter Details in Form and click on the `Create` button.
   ![flow-details](./assets/flow-details.png)
 
 ## Make a Simple Basic Auth Flow
@@ -94,6 +94,7 @@ Navigate to the Project Tree File view to make Agama Flows and `.gama` files.
 
 ### 9.
 
+Make sure to check `In Repeat Block` checkbox.
 ![add-rrf](./assets/add-rrf.png)
 
 ### 10.
@@ -178,7 +179,7 @@ Download the above zip, extract it, and import the JSON file:
 
 ## Make a template file
 
-The above flow is using `login.ftlh` template file. Let's create it.
+The above flow uses using `login.ftlh` template file. Let's create it.
 
 - Right-click on the `web` folder and select the new free maker template
   ![select-new-template](./assets/select-new-template.png)
@@ -276,7 +277,7 @@ _Once you save the file. It will add `[#ftl output_format="HTML"]` which is need
 - Select a file and upload
   ![upload-file](./assets/upload-file.png)
 
-- You should see now uploaded project in the list
+- You should see now uploaded project in the list. Check it after some minute or press `d` to check details.
   ![uploaded-project](./assets/uploaded-project.png)
 
 _Check your Jans logs for Any Errors_
@@ -289,16 +290,16 @@ _Check your Jans logs for Any Errors_
 
 - Configuration to run Agama flow
 
-```
-ACR_VALUES = "agama"
-ADDITIONAL_PARAMS = {
-    'agama_flow': 'co.basic'
-}
-```
+  ```
+  ACR_VALUES = "agama"
+  ADDITIONAL_PARAMS = {
+      'agama_flow': 'agama.pw'
+  }
+  ```
 
 - Run Tent
   ![test-1](./assets/test1.png)
-  ![test-2](./assets/tesst2.png)
+  ![test-2](./assets/test2.png)
 
 - Successfully login
   ![test-3](./assets/test3.png)
