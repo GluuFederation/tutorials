@@ -52,7 +52,7 @@ Navigate to the Project Tree File view to make Agama Flows and `.gama` files.
 
 ## Make a Flow File
 
-- Right Click on the `Code` folder and select New Flow file
+- Right Click on the `Code` folder and select New Flow file. You can double click on files to open it.
   ![new-flow](./assets/new-flow.png)
 
 - Enter Details in Form and click on `Create` button.
@@ -181,13 +181,13 @@ Download the above zip, extract it, and import the JSON file:
 The above flow is using `login.ftlh` template file. Let's create it.
 
 - Right-click on the `web` folder and select the new free maker template
-  ![Screenshot from 2023-04-13 15-58-41](https://user-images.githubusercontent.com/39133739/231783211-d8917062-5a7c-42de-b34c-020ff6e60f2a.png)
+  ![select-new-template](./assets/select-new-template.png)
 
 - Select Template and add details. It is up to you to make a beautiful design using UI-Editor.
-  ![Projects - View 2023-04-13 16-05-42](https://user-images.githubusercontent.com/39133739/231783067-6abc4b74-cb3d-4558-981a-37346838e14c.png)
+  ![add-template-details](./assets/add-template-details.png)
 
 - Edit HTML to add existing code. You can make your own.
-  ![Projects - View 2023-04-13 16-08-04](https://user-images.githubusercontent.com/39133739/231784108-41cd76ae-c320-4294-b369-ffa36522a4f9.png)
+  ![html-code-past](./assets/html-code-past.png)
 
 ```html
 <!DOCTYPE html>
@@ -240,28 +240,20 @@ The above flow is using `login.ftlh` template file. Let's create it.
 </html>
 ```
 
-![Projects - View 2023-04-13 16-19-04](https://user-images.githubusercontent.com/39133739/231784303-7cf5c940-ae3a-472b-9a5d-28bdddb858c9.png)
-![Projects - View 2023-04-13 16-19-49](https://user-images.githubusercontent.com/39133739/231784788-c701e067-b1ed-4f47-95c1-8807ef6dccdf.png)
-
 _Once you save the file. It will add `[#ftl output_format="HTML"]` which is needed because we are using `[#if...` instead of `<#if...`._
 
 > Notice
 > If you want to add code like `<input type="submit" class="btn btn-success px-4" value="${msgs["login.login"]}">` then it will not work instead of add `<input type="submit" class="btn btn-success px-4" value="${msgs['login.login']}"/>`.You need to use a single quote inside a double quote.
 
-![Projects - View 2023-04-13 16-20-47](https://user-images.githubusercontent.com/39133739/231784845-12748cd4-077f-4178-816f-76cc6d6dbb72.png)
+## Download a gama file
 
-## Make a gama file / Release Project
+- Right-click on anything in File Tree and select `Download .gama`
 
-- Right-click on anything in File Tree and select `Release Project`
-
-![Screenshot from 2023-04-13 16-54-02](https://user-images.githubusercontent.com/39133739/231786884-fa9eb129-36b8-4233-bdd4-93e4526a3d30.png)
-![Projects - View 2023-04-13 16-54-53](https://user-images.githubusercontent.com/39133739/231787092-f003780a-ade2-45a2-82a0-f479185057d4.png)
-![Releases - ADS 2023-04-13 16-55-56](https://user-images.githubusercontent.com/39133739/231787167-8dd6a7d0-e84e-498c-813c-e51ef468c69e.png)
-![Release kiran_first 1 0 4 · kdhttps-agama-projects 2023-04-13 16-57-49](https://user-images.githubusercontent.com/39133739/231787228-76c6004e-de4c-40ae-87e3-6762863764d8.png)
+![download-gama-option](./assets/download-gama-option.png)
 
 ## Deploy a gama file on Jans
 
-- Make sure you have enabled Agama and Agama Script on your Jans server. [Check Agama Docs for Details](https://docs.jans.io/head/admin/developer/agama/engine-config/#engine-availability)
+- Make sure you have enabled Agama and Agama Script on your Jans server. [Check Agama Docs for Details](https://docs.jans.io/head/agama/introduction/)
 
 - Let's enable it using TUI, Open TUI in your Jans Server
 
@@ -271,21 +263,21 @@ _Once you save the file. It will add `[#ftl output_format="HTML"]` which is need
 ```
 
 - Enable Agama Configuration, In TUI, navigate to `AuthServer > Properties > agamaConfiguration > Enabled [*] > Save`
-  ![image](https://user-images.githubusercontent.com/39133739/232745292-ba0d86a6-bf02-4012-98a7-cd3ebba4cbb3.png)
+  ![agama-config](./assets/agama-config.png)
 
 - Enable Agama Script, In TUI, navigate to `Scripts > Search 'agama' > Select script Enabled [*] > Save`
-  ![image](https://user-images.githubusercontent.com/39133739/232746143-23f9d95e-a81d-4d63-9cd4-8bdd46840252.png)
+  ![enable-agama-script](./assets/enable-agama-script.png)
 
 - Move your `.gama` file to your Jans server
 
 - Navigate to `Auth Server > Agama > Upload Project`
-  ![image](https://user-images.githubusercontent.com/39133739/231790968-3d824690-dd74-4208-bc94-caf5f1d7b667.png)
+  ![upload-project-button](./assets/upload-project-button.png)
 
 - Select a file and upload
-  ![image](https://user-images.githubusercontent.com/39133739/231791150-2fe3adcb-cfe9-47a8-a2da-621d8a603cd3.png)
+  ![upload-file](./assets/upload-file.png)
 
 - You should see now uploaded project in the list
-  ![image](https://user-images.githubusercontent.com/39133739/231791444-78914cfd-d506-4333-afc6-218ce40909e2.png)
+  ![uploaded-project](./assets/uploaded-project.png)
 
 _Check your Jans logs for Any Errors_
 
@@ -305,8 +297,8 @@ ADDITIONAL_PARAMS = {
 ```
 
 - Run Tent
-  ![image](https://user-images.githubusercontent.com/39133739/231793396-3b23bef9-2c1a-45f4-abed-15a2ed9a4e98.png)
-  ![image](https://user-images.githubusercontent.com/39133739/231793520-a17a0a68-f9ce-4094-aaaf-d9783e514113.png)
+  ![test-1](./assets/test1.png)
+  ![test-2](./assets/tesst2.png)
 
 - Successfully login
-  ![image](https://user-images.githubusercontent.com/39133739/231793764-7a895efb-3bdb-4d0d-9f82-6c7ec25870d6.png)
+  ![test-3](./assets/test3.png)
