@@ -280,26 +280,22 @@ _Once you save the file. It will add `[#ftl output_format="HTML"]` which is need
 - You should see now uploaded project in the list. Check it after some minute or press `d` to check details.
   ![uploaded-project](./assets/uploaded-project.png)
 
-_Check your Jans logs for Any Errors_
+_Check your Jans logs for Any Errors. Log file path is `/opt/jans/jetty/jans-auth/logs/jans-auth.log`_
 
-## Testing using Jans Tent
+## Testing using Jans Tarp
 
-- Setup Jans-Tent. [Instructions](https://github.com/JanssenProject/jans/tree/main/demos/jans-tent)
-
-- Setup `config.py` as per your need.
+- Setup Jans-Tarp. [Instructions](https://github.com/JanssenProject/jans/tree/main/demos/jans-tarp)
 
 - Configuration to run Agama flow
 
-  ```
-  ACR_VALUES = "agama"
-  ADDITIONAL_PARAMS = {
-      'agama_flow': 'agama.pw'
-  }
-  ```
+- Add Your Jans Auth server host and click on `Register` client. It will register new OP Client on your Auth server.
+  ![setup-op](./assets/setup-op.png)
 
-- Run Tent
-  ![test-1](./assets/test1.png)
-  ![test-2](./assets/test2.png)
+- Add additional params `{ "agama_flow": "agama.pw" }` and select acr value `agama` and click on `Trigger Auth Code flow`
+  ![op-client-config](./assets/op-client-config.png)
 
-- Successfully login
-  ![test-3](./assets/test3.png)
+- It will trigger agama flow and show login screen to you. You can use TUI to add testing user.
+  ![jans-login-page](./assets/jans-login-page.png)
+
+- After successful auth, it will show you below screen
+  ![successful-tarp-auth-screen](./assets/successful-tarp-auth-screen.png)
