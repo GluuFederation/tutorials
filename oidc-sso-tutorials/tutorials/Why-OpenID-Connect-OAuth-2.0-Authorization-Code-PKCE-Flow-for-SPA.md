@@ -73,7 +73,7 @@ In this case, the **/token** endpoint is not protected by [**Token Endpoint auth
 
 3. OP Server authenticates the user and redirects back to `https://client.com/callback` with code in URL. You can check the above flow diagram.
 
-4. Now request to **https://your_op_server.com/token** with **code** and **code_challenge**.
+4. Now request to **https://your_op_server.com/token** with **code** and **code_verifier**.
 
     ```sh
     HTTP POST https://your_op_server.com/token
