@@ -1,6 +1,6 @@
 ## Publish Agama Project and register to the explore catalog
 
-You need only when you are planning to add your project to explore catalog so that community can use your agama flow and add your security rules easily.
+You need it only when you are planning to add your project to explore catalog so that community can use your agama flow and add your security rules easily.
 
 Your agama flow code always be in public repository. As per all usecases of repositories there are 3 repository category which you will have during publish project process.
 
@@ -69,7 +69,7 @@ Access the `Explore` page by clicking on the Explore menu in the sidebar.
 
 Subsequently, click on the `Add Project` button. This action will prompt the display of the wizard form registration dialog.
 
-![agama-explore-menu.png](./assets/blog-3-agama-explore-menu.png)
+![agama-explore-menu](./assets/blog-3-agama-explore-menu.png)
 
 #### Step-2
 
