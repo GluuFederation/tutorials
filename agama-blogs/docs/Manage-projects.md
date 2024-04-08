@@ -1,8 +1,10 @@
 # Manage Projects
 
-You can add multiple projects in one Repository.
+This section provides you a set of tools to create and manage agama projects. You can add one or multiple projects in one Reposotory.
 
 ![agama-project](./assets/agama-8.png)
+
+> Note: In above screenshot, it is published repository. You cannot add multiple projects in published repository but it help you to add your project to Agama-Explore. You need it only when you want to add project in Agama-Explore. Check [here]() for details.
 
 ## Tools
 
