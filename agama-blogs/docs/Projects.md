@@ -1,4 +1,4 @@
-# Manage Projects
+# Projects
 
 This section provides you a set of tools to create and manage agama projects. You can add one or multiple projects in one Reposotory.
 
@@ -23,7 +23,7 @@ This section provides you a set of tools to create and manage agama projects. Yo
 
    ![agama-9](./assets/agama-10.png)
 
-   1. Use Navigate button to open project manage page where you can manage flow files, java code files, and web template pages.
+   1. Use Navigate button to open project orchestration page where you can manage flow files, java code files, and web template pages.
    2. Use Edit button to edit project description
    3. Use Delete button to delete project
 
