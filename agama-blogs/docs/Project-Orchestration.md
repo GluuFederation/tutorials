@@ -18,10 +18,13 @@ Below are some tools and tips to use project orchetration:
 - `lib` folder is for java and groovy libraries. You can add `.jar`, `.java`, and `.groovy` file in lib folder and use in flow.
   ![agama-15](./assets/agama-15.png)
 
-- `web` folder is for web pages and templates. You can add images, templated pages(.ftlh), js, and css files.
+- `web` folder is for web pages and templates. You can add images, templated pages `.ftlh`, `.js`, and `.css` files.
   ![agama-16](./assets/agama-16.png)
 
 - `logo.png`: you can add `logo.png` file to your repository root. If your project is in explore section then agama-lab will automatically fetches this logo.png and show it in projects grid.
 
 - Deploy and testing flow
-  On the top, beside breadcrumbs there is test icon. You can deploy your project on our testing server and quickly test and find bugs problems. Check [here]() for details.
+
+  ![agama-17](./assets/agama-17.png)
+
+  Beside breadcrumbs, there is test icon button. You can deploy your project on our testing server and quickly test and find bugs problems. Check [here]() for details.
