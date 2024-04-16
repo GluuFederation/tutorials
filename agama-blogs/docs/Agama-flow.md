@@ -25,7 +25,7 @@ Check [here](https://docs.jans.io/head/agama/language-reference/#flow-structure)
 
 The flow is begin from `Start` node. It contains several information about flow.
 
-![alt text](image.png)
+![agama-21](./assets/agama-21.png)
 
 - `Qualified Name`: It is same name which you added during flow file creation. Curretly there is no feature to rename flow. You need to delete and create new one with new name. [More details](https://docs.jans.io/head/agama/language-reference/#header-basics)
 
@@ -35,6 +35,28 @@ The flow is begin from `Start` node. It contains several information about flow.
 
 - `Inputs`: Flows may receive inputs from their callers. [More Details](https://docs.jans.io/head/agama/language-reference/#inputs)
 
-- `Configuration variable name`: It used to define config variable name. The `Configs` keyword may be used to designate a variable so the flow's properties can be accessed in the code. These properties are usually provided when the flow is created - normally through an administrative tool. This process varies from engine to engine. [More Details](https://docs.jans.io/head/agama/language-reference/#header-basics)
+- `Configuration variable name`: It used to define config variable name. The `Configs` keyword may be used to designate a variable so the flow's properties can be accessed in the code. You can use below `Configuration values` to add properties and values for flow. [More Details](https://docs.jans.io/head/agama/language-reference/#header-basics)
 
-- `Configuration values`
+- `Configuration values`: Add properties and its value for flow. Which you can use in flow. Like `client id`, `client secret`, etc.
+
+- There are some common tools which you can find in every widget. `Title`, `Description`, `Enable code commenting`, `Change node icon`, and `Change node color` these tools are useful for widget design.
+
+## Log Widget
+
+Flows can issue small messages (normally used as a form of troubleshooting) that will be appended to a log `jans-auth.log`. On Jans server you can find log file at `/opt/jans/jetty/jans-auth/logs/jans-auth.log` location.
+
+![agama-19](./assets/agama-19.png)
+
+- `Log level`: Every message can be associated a severity level. Choose it as per your need.
+
+- `Log statment`: Your log message. You can add variable also check [here](https://docs.jans.io/head/agama/language-reference/#logging) for more details.
+
+## Assignment Widget
+
+Used to declare and intialize variable. Click on `+ Add More Variables` to add variable. Check `String Type?` if value is string. You can add multiple variable.
+
+![agama-20](./assets/agama-20.png)
+
+## Call Widget
+
+![agama-22](./assets/agama-22.png)
