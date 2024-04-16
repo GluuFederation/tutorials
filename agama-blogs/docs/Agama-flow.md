@@ -59,4 +59,10 @@ Used to declare and intialize variable. Click on `+ Add More Variables` to add v
 
 ## Call Widget
 
+Call widget helps to build `Call` instruction in flow code. Business logic implemented in languages other than Agama can be re-used by means of the `Call` instruction. `Call` plays a key role because Agama code serves fundamentally as a depiction of a flow hiding most of the internal details and low-level computations which are in turn delegated to foreign routines. [More Details](https://docs.jans.io/head/agama/language-reference/#foreign-routines).
+
 ![agama-22](./assets/agama-22.png)
+
+There are 4 options to build a `Call` instruction.
+
+### Call static method
