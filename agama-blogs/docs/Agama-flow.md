@@ -66,3 +66,51 @@ Call widget helps to build `Call` instruction in flow code. Business logic imple
 There are 4 options to build a `Call` instruction.
 
 ### Call static method
+
+If you want to call a static method of class then you can use this option.
+
+![agama-23](./assets/agama-23.png)
+
+This will generate the flow code like:
+
+```
+OTPServiceObj | E = Call org.gluu.agama.totp.TOTPService#getInstance
+```
+
+`E` store the exception. You can log it to find errors in your code.
+
+### Call method on instance
+
+If you want to call a method of instance or object thne use this option.
+
+![agama-24](./assets/agama-24.png)
+
+This will generate the flow code like:
+
+```
+userTOTPSecretKey | E = Call OTPServiceObj getUserTOTPSecretKey userId
+```
+
+### Create a instance
+
+If you want to create a instance of a class then use this option.
+
+![agama-25](./assets/agama-25.png)
+
+This will generate the flow code like:
+
+```
+OTPServiceObj | E = Call org.gluu.agama.totp.TOTPService#new userId
+```
+
+### Get class object
+
+If you want to get a class object thne use this option.
+
+![agama-26](./assets/agama-26.png)
+
+This will generate the flow code like:
+
+```
+OTPServiceObj | E = Call org.gluu.agama.totp.TOTPService#class
+```
