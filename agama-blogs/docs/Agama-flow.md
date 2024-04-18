@@ -159,6 +159,28 @@ Trigger Widget help to add `Trigger` instruction in flow. A flow can trigger ano
 
 - `Assign Result to`: Store subflow response in variable.
 
-## Repeat
+## Repeat Widget
+
+Repeat was designed with the concept of attempts/retries in mind: a set of statements are executed, a condition can optionally be supplied in order to abort the loop early, and (optionally too) a block of statements can be executed before the next iteration is started if the condition evaluated to false. A loop is given a maximum number of iterations. [More Details](https://docs.jans.io/head/agama/language-reference/#looping).
 
 ![agama-30](./assets/agama-30.png)
+
+Use `In Repeat Block` to add instructions inside Repeat Block otherwise it will add instructions out side of repeat block.
+
+![agama-31](./assets/agama-31.png)
+
+## When Widget
+
+It helps to add condition in flow. Use `+ Rule` button to add condition and `Combinator` to add conditional operator in multiple condition case.
+
+![agama-32](./assets/agama-32.png)
+
+Click on `When` widget, Click on `+` icon and you will get 3 options.
+
+![agama-33](./assets/agama-33.png)
+
+- `Condition met`: Instructions in this block will execute when your condition will be true.
+
+- `Otherwise`: Instructions in this block will execute when your condition will be false.
+
+- `Next block`: Use this option to add instructions outside of `When` block.
