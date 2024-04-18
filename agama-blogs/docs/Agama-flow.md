@@ -114,3 +114,14 @@ This will generate the flow code like:
 ```
 OTPServiceObj | E = Call org.gluu.agama.totp.TOTPService#class
 ```
+
+## RRF Widget
+
+RRF (stands for Render-Reply-Fetch) abstracts the process of rendering a UI template, send the produced markup to the browser and grab user-provided data back at the server side. RRF widget help to add RRF instruction in flow code. [More details](https://docs.jans.io/head/agama/execution-rules/)
+
+![agama-27.png](./assets/agama-27.png)
+
+- `Template path`: Used to specify the your web template file path.
+  Examples:
+  - If your file is in `web/login.ftlh` then its value should be `login.ftlh`
+  - If your file is in `web/first/login.ftlh` thne its value should be `first/login.ftlh`
