@@ -117,11 +117,48 @@ OTPServiceObj | E = Call org.gluu.agama.totp.TOTPService#class
 
 ## RRF Widget
 
-RRF (stands for Render-Reply-Fetch) abstracts the process of rendering a UI template, send the produced markup to the browser and grab user-provided data back at the server side. RRF widget help to add RRF instruction in flow code. [More details](https://docs.jans.io/head/agama/execution-rules/)
+RRF (stands for Render-Reply-Fetch) abstracts the process of rendering a UI template, send the produced markup to the browser and grab user-provided data back at the server side. RRF widget help to add RRF instruction in flow code. [More details](https://docs.jans.io/head/agama/language-reference/#rrf)
 
-![agama-27.png](./assets/agama-27.png)
+![agama-27](./assets/agama-27.png)
+
+As per above example, It will generate flow code like:
+
+```
+scanCode = RRF "enroll.ftlh" obj
+```
 
 - `Template path`: Used to specify the your web template file path.
   Examples:
+
   - If your file is in `web/login.ftlh` then its value should be `login.ftlh`
   - If your file is in `web/first/login.ftlh` thne its value should be `first/login.ftlh`
+
+- `Data variable to inject`: It used to define the variable which used to pass data to template.
+
+- `Assign result to`: It used to define variable which used to stored data send by user - a map whose keys are named according to the form fields present in `.ftlh` page.
+
+## RFAC Widget
+
+RFAC widget help to add RFAC instruction in flow. RFAC (stands for Redirect and Fetch at callback) abstracts the process of redirecting the user's browser to an external site and then collect the data presented later at a designated callback URL. This feature is particularly useful in inbound identity scenarios (e.g. to support social login).
+
+![agama-28](./assets/agama-28.png)
+
+- `IDP Auth Endpoint`: Its your IDP endpoint where you want to redirect user.
+
+- `Assign callback result to`: Once the user browser is taken to the callback URL by the external site, the data included in the query string or payload is stored in result (a map) for further processing.
+
+## Trigger Widget
+
+Trigger Widget help to add `Trigger` instruction in flow. A flow can trigger another flow (a.k.a `subflow`) and grab its response when Finished. This feature materializes flow composition and re-use in Agama. [More details](https://docs.jans.io/head/agama/language-reference/#subflows).
+
+![agama-29](./assets/agama-29.png)
+
+- `Flow name`: Used to define which subflow you want to trigger.
+
+- `Arguments`: Used to pass values to subflow. Which you can later used in subflow by using `Inputs` by defining in header.
+
+- `Assign Result to`: Store subflow response in variable.
+
+## Repeat
+
+![agama-30](./assets/agama-30.png)
