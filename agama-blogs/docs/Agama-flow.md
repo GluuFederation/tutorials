@@ -184,3 +184,35 @@ Click on `When` widget, Click on `+` icon and you will get 3 options.
 - `Otherwise`: Instructions in this block will execute when your condition will be false.
 
 - `Next block`: Use this option to add instructions outside of `When` block.
+
+## Iterate Widget
+
+`Iterate` over is used to traverse the items of a string, list, or the keys of a map. At every iteration, a variable is set with the current item or key name. [More details](https://docs.jans.io/head/agama/language-reference/#iterate-over).
+
+![agama-34](./assets/agama-34.png)
+
+## Finish
+
+Finish is used to terminate a flow's execution. A flow can finish successfully or failed.
+
+### Success Finish
+
+You can choose first option `Flow finished successfully` in flow success case.
+
+![agama-36](./assets/agama-36.png)
+
+In `Start` widget if you have set flow as a top level then you need to pass `userId` in finish widget in success case. Like in below example:
+
+![agama-35](./assets/agama-35.png)
+
+### Fail Finish
+
+Second option `Flow finished with error` is for failed case. You can pass variable or value or string in response.
+
+![agama-37](./assets/agama-37.png)
+
+### Flow finished with a variable
+
+This is third option. You can used it in both success and fail case. You just need to pass your variable name.
+
+![agama-38](./assets/agama-38.png)
