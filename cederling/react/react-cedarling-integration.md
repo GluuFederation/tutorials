@@ -20,7 +20,7 @@ optimizeDeps: {
 
 We need a policy store (eg. `AgamaLabStore`) to store the policies. Below a simple policy for the use case. It is simple because the idea is just to handle UI Elements visibility depending on the authenticated user.
 
-- Use [Agama Lab UI Tool](https://cloud.gluu.org/agama-lab) to create policy store.
+- Use [Agama Lab UI Tool](https://cloud.gluu.org/agama-lab) to create policy store. For more details check [Agama Lab Documents here.](https://gluu.org/agama/authorization-policy-designer/)
 - Create policy store `AgamaLabStore`.
 - Go to `Policies > Add Policy > Text Editor`. Copy below policy and add in text editor.
 - Click on `Save` to add policy.
