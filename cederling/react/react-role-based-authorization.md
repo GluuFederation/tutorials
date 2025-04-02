@@ -58,6 +58,7 @@ We have a awesome UI Policy Designer Tool to create policy store and policies. I
 
 - Use [Agama Lab UI Tool](https://cloud.gluu.org/agama-lab) to create policy store.
 - Create policy store `JansReactCedarlingRBAC`.
+- Add `Task` in Entity Type.
 - Go to `Policies > Add Policy > Text Editor`.
 - Copy policy one by one and add in text editor.
 - Click on `Save` to add policy.
