@@ -39,7 +39,7 @@ permit(
 
 ```js
 {
-  "accessTokens": {
+  "access_token": {
     "trusted": true,
     "entity_type_name": "Jans::Access_token",
     "user_id": "sub",
@@ -52,7 +52,7 @@ permit(
       "Jans::Workload"
     ]
   },
-  "idTokens": {
+  "id_token": {
     "trusted": true,
     "entity_type_name": "Jans::id_token",
     "user_id": "sub",
@@ -154,34 +154,37 @@ useEffect(() => {
 This Reack hook provides authorization functionality using the Cedarling client, with the ability to enforce authorization checks when enabled through environment variables. The hook manages loading and error states while processing authorization requests, and returns a boolean or AuthorizeResult indicating whether the authorization was successful.
 
 ```js
-import { useState, useCallback } from 'react'
-import { cedarlingClient, decodeJWT } from '../CedarlingClient'
-import type { AuthorizeResult } from '@janssenproject/cedarling_wasm'
+import { useCallback, useState } from "react";
+import { cedarlingClient } from "./cedarlingUtils";
+import { parseJwt } from "./parseJWT";
+import { AuthorizeResult } from "@janssenproject/cedarling_wasm";
 
 export function useCedarling() {
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<Error | null>(null)
-  const authorize = useCallback(async (request: any): Promise<AuthorizeResult> => {
-    setIsLoading(true)
-    setError(null)
-    try {
-        console.log('Enforcing Cedarling authorization')
-        console.log('Request: ', request)
-        console.log('Decoded accessToken: ', decodeJWT(request.tokens.access_token as string))
-        console.log('Decoded idToken: ', decodeJWT(request.tokens.id_token as string))
-
-        // In case, you are using userinfo token
-        // console.log('Decoded userInfo: ', decodeJWT(request.tokens.userinfo_token as string))
-        return await cedarlingClient.authorize(request)
-    } catch (err) {
-      const error = err instanceof Error ? err : new Error('Authorization failed')
-      setError(error)
-      throw error
-    } finally {
-      setIsLoading(false)
-    }
-  }, [])
-  return { authorize, isLoading, error }
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+  const authorize = useCallback(
+    async (request: any): Promise<AuthorizeResult> => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        console.log("Enforcing Cedarling authorization");
+        console.log("Request: ", request);
+        console.log("Decoded idToken: ", parseJwt(request.tokens.id_token as string));
+        console.log("Decoded accessToken: ",parseJwt(request.tokens.access_token as string));
+        // userinfo token case
+        // console.log('Decoded userInfo: ', parseJwt(request.tokens.userinfo_token as string))
+        return await cedarlingClient.authorize(request);
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error("Authorization failed");
+        setError(error);
+        throw error;
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    []
+  );
+  return { authorize, isLoading, error };
 }
 ```
 
@@ -192,68 +195,65 @@ export function useCedarling() {
 This `ProtectedSection` component is a React wrapper that controls access to UI components based on user authorization. It takes a resource ID and optional action ID, checks if the user has permission to access that resource using Cedar authorization, and either displays the protected content (children) if authorized or shows a fallback component (typically an error message) if access is denied.
 
 ```js
-import React from 'react'
-import { useCedarling } from './hooks/useCedarling'
-import { Alert, AlertTitle } from '@mui/material'
-
-interface ProtectedSectionProps {
- accessToken: any
- idToken: any
- actionId?: string
- resourceId: string
- children: React.ReactNode
- fallback?: React.ReactNode
- loadingFallback?: React.ReactNode
-}
+import { useCedarling } from "@/factories/useCedarling";
+import React from "react";
 
 export function ProtectedSection({
- accessToken,
- idToken,
- actionId,
- resourceId,
- children,
- fallback = (
-   <Alert severity='error'>
-     <AlertTitle>Access Denied</AlertTitle>
-     {`Please contact your administrator.`}
-   </Alert>
- ),
- loadingFallback = <div>Loading...</div>,
+  accessToken,
+  idToken,
+  actionId,
+  resourceId,
+  children,
+  fallback = (
+    <div>
+      <div>Access Denied</div>
+      {`Please contact your administrator.`}
+    </div>
+  ),
+  loadingFallback = <div>Loading...</div>,
 }: ProtectedSectionProps) {
- const { authorize, isLoading, error } = useCedarling()
- const [isAuthorized, setIsAuthorized] = React.useState(false)
+  const { authorize, isLoading, error } = useCedarling();
+  const [isAuthorized, setIsAuthorized] = React.useState(false);
 
- React.useEffect(() => {
-   const checkAuthorization = async () => {
-     const request = {
-       tokens: {
-         access_token: accessToken,
-         id_token: idToken,
-       },
-       action: actionId ? `Jans::Action::"${actionId}"`,
-       resource: { type: 'Application', id: resourceId, name: resourceId },
-       context: {},
-     }
-     try {
-       const result = await authorize(request)
-       setIsAuthorized(result.decision)
-     } catch (err) {
-       setIsAuthorized(false)
-     }
-   }
-   checkAuthorization()
- }, [authorize, actionId, resourceId])
- if (isLoading) return <>{loadingFallback}</>
- if (error) return <div>Error: {error?.message}</div>
- if (!isAuthorized) return <>{fallback}</>
- return <>{children}</>
+  React.useEffect(() => {
+    const checkAuthorization = async () => {
+      const request = {
+        tokens: {
+          access_token: accessToken,
+          id_token: idToken,
+        },
+        action: `Jans::Action::"${actionId}"`,
+        resource: { type: "Jans::Application", id: resourceId, name: resourceId },
+        context: {},
+      };
+      try {
+        const result = await authorize(request);
+        setIsAuthorized(result.decision);
+      } catch (err: any) {
+        setIsAuthorized(false);
+      }
+    };
+    checkAuthorization();
+  }, [accessToken, idToken, authorize, actionId, resourceId]);
+
+  if (isLoading) return <>{loadingFallback}</>;
+  if (error) return <div>Error: {error?.message}</div>;
+  if (!isAuthorized) return <>{fallback}</>;
+  return <>{children}</>;
 }
 ```
 
-Use `ProtectedSection` to protect any elements
+Use `ProtectedSection` to protect any elements. Your ID Token should have `role` claim. it can be one value like `role: admin` or array like `role: ["admin", "manager"]`, both are valid.
 
 ```js
-
+<ProtectedSection
+  accessToken={accessToken}
+  idToken={idToken}
+  resourceId="App"
+  actionId="Read"
+>
+  <h1>Welcome, permission granted!</h1>
+</ProtectedSection>
 ```
 
 ## Protected Button
@@ -261,8 +261,8 @@ Use `ProtectedSection` to protect any elements
 This `ProtectedButton` component is a React wrapper that controls the visibility of its child elements based on user authorization permissions. It checks if the user has the required permissions for a specific action and resource using Cedar authorization, only rendering its children if the user is authorized, otherwise showing nothing or a loading state.
 
 ```js
+import { useCedarling } from "@/factories/useCedarling";
 import React from "react";
-import { useCedarling } from "./hooks/useCedarling";
 
 function ProtectedButton({
   accessToken,
@@ -285,8 +285,12 @@ function ProtectedButton({
           access_token: accessToken,
           id_token: idToken,
         },
-        action: actionId ? `Jans::Action::"${actionId}"`,
-        resource: { type: "Application", id: resourceId, name: resourceId },
+        action: `Jans::Action::"${actionId}"`,
+        resource: {
+          type: "Jans::Application",
+          id: resourceId,
+          name: resourceId,
+        },
         context: {},
       };
       try {
@@ -305,4 +309,19 @@ function ProtectedButton({
 }
 
 export default ProtectedButton;
+```
+
+Use `ProtectedButton` to protect any elements. Your ID Token should have `role` claim. it can be one value like `role: admin` or array like `role: ["admin", "manager"]`, both are valid.
+
+```js
+<ProtectedButton
+  accessToken={accessToken}
+  idToken={idToken}
+  resourceId="App"
+  actionId="Read"
+>
+  <Button type='submit' title='Save code'>
+   Save
+  </Button>
+</ProtectedSection>
 ```
