@@ -1,6 +1,6 @@
 # React Cedarling Role Based Authorization
 
-This article will guide you to integrate RBAC policy base authorizarion using [Jans Cedarling](https://github.com/JanssenProject/jans/blob/main/docs/cedarling/cedarling-overview.md) in your react applications.
+This article will guide you to integrate **RBAC** policy base authorizarion using [Jans Cedarling](https://github.com/JanssenProject/jans/blob/main/docs/cedarling/cedarling-overview.md) in your react applications.
 
 Let's start implementing it. In example we will involve multiple roles and conditional policies. We'll define the schema, policies, and evaluate several requests to see how Cedarling makes authorization easy in React with low code.
 

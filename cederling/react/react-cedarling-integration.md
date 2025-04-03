@@ -1,6 +1,17 @@
 # React JS Cedarling integration
 
-This guide documents the implementation of UI element access protection in **React JS** Application using [Jans Cedarling WASM](https://github.com/JanssenProject/jans/blob/main/docs/cedarling/cedarling-overview.md). The integration provides granular control over UI component visibility based on user authorization policies.
+This guide documents the implementation of UI element access protection in **React JS** Application using [Jans Cedarling WASM](https://github.com/JanssenProject/jans/blob/main/docs/cedarling/cedarling-overview.md). The integration provides granular **RBAC(Role Based Access Control)** control over UI component visibility based on user authorization policies.
+
+```js
+@id("AdminPerformAnyOperationOnResource")
+permit(
+  principal in Jans::Role::"admin",
+  action,
+  resource
+);
+```
+
+We will see in next sections how to add policy and implement it in React.
 
 ## Install dependency
 
@@ -325,3 +336,5 @@ Use `ProtectedButton` to protect any elements. Your ID Token should have `role` 
   </Button>
 </ProtectedSection>
 ```
+
+Here is [React Next JS Demo project](https://github.com/kdhttps/next-js-cedarling) and policy store is [here](https://github.com/kdhttps/pd-first/blob/agama-lab-policy-designer/48525ee5f367b0517a819645847184d3b356d7977052.json).
