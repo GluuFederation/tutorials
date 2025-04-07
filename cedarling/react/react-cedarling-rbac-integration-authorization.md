@@ -2,7 +2,7 @@
 
 ![react-cedadrling](https://github.com/user-attachments/assets/5874f252-adec-4df9-9e47-6295faf52c64)
 
-This guide demonstrates how to implement **Role-Based Access Control (RBAC)** policy-based authorization in React applications using [Jans Cedarling](https://github.com/JanssenProject/jans/blob/main/docs/cedarling/cedarling-overview.md).
+This guide demonstrates how to implement **Role-Based Access Control (RBAC)** policy-based authorization in React applications using [Jans Cedarling](https://docs.jans.io/v1.5.0/cedarling/cedarling-overview/).
 
 We'll walk through setting up the integration with a practical example involving multiple roles and conditional policies. You'll learn how to:
 
@@ -270,7 +270,7 @@ export function useCedarling() {
 
 ## Step 6: Protect Actions and Components
 
-Use React Hook to protect actions and components. Your ID Token should have `role` claim. it can be one value like `role: admin` or array like `role: ["admin", "manager"]`, both are valid. Check [Cedarling entities document](https://github.com/JanssenProject/jans/blob/main/docs/cedarling/cedarling-entities.md#role-entity) for more details about role entity creation and usage.
+Use React Hook to protect actions and components. Your ID Token should have `role` claim. it can be one value like `role: admin` or array like `role: ["admin", "manager"]`, both are valid. Check [Cedarling entities document](https://docs.jans.io/v1.5.0/cedarling/cedarling-entities/) for more details about role entity creation and usage.
 
 Below is example of Task React Page:
 
@@ -423,7 +423,7 @@ export function ProtectedSection({
 }
 ```
 
-Use `ProtectedSection` to protect any elements. Your ID Token should have `role` claim. it can be one value like `role: admin` or array like `role: ["admin", "manager", "member"]`, both are valid. Check [Cedarling entities document](https://github.com/JanssenProject/jans/blob/main/docs/cedarling/cedarling-entities.md#role-entity) for more details about role entity creation and usage.
+Use `ProtectedSection` to protect any elements. Your ID Token should have `role` claim. it can be one value like `role: admin` or array like `role: ["admin", "manager", "member"]`, both are valid. Check [Cedarling entities document](https://docs.jans.io/v1.5.0/cedarling/cedarling-entities/) for more details about role entity creation and usage.
 
 ```js
 <ProtectedSection
