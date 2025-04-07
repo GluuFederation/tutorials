@@ -1,12 +1,15 @@
 # React RBAC authorization with Cedarling integration
 
-This article will guide you through implementing **RBAC (Role-Based Access Control)** policy-based authorization in your React applications using [Jans Cedarling](https://github.com/JanssenProject/jans/blob/main/docs/cedarling/cedarling-overview.md).
+This guide demonstrates how to implement **Role-Based Access Control (RBAC)** policy-based authorization in React applications using [Jans Cedarling](https://github.com/JanssenProject/jans/blob/main/docs/cedarling/cedarling-overview.md).
 
-We’ll start by setting up the integration with a practical example involving multiple roles and conditional policies. You’ll learn how to define the schema, configure policies, and evaluate authorization requests—demonstrating how Cedarling simplifies authorization in React with minimal code.
+We'll walk through setting up the integration with a practical example involving multiple roles and conditional policies. You'll learn how to:
 
-# Use Case
+- Define the authorization schema
+- Configure access policies
+- Evaluate authorization requests
+- Implement Cedarling's streamlined authorization in React with minimal code
 
-Multi Role Access control in a Project Task Management System
+# Use Case: Multi Role Access control in a Project Task Management System
 
 - Principals: Users with roles like `Admin`, `Manager` and `Member`.
 - Actions: `Add`, `Update`, `Delete`, and `View`
@@ -29,13 +32,13 @@ Roles and Permissions:
 
 # Prerequisite
 
-1. **Issuer**: You can use any OpenID Connect Server e.g. [Jans](https://docs.jans.io), Google, Okta.
+1. **OpenID Connect Server**: Use any compliant provider like [Jans](https://docs.jans.io), Google, Okta.
 
 1. **React Application**: Use any framework like `Next.js` or `Vite.js` to create a Fresh React App.
 
 # Authorization Flow
 
-Let's check the sequence diagram to better understand the Cedarling. `Jans-Cedarling` is library which we will use for policy authorization. which is part of your JS App.
+The sequence diagram below illustrates Cedarling's authorization process. The `Jans-Cedarling` library handles policy evaluation within your JavaScript React application.
 
 ```mermaid
 sequenceDiagram
@@ -58,24 +61,30 @@ cedarling->>jsapp: Permit or Deny
 
 # Setting Up Policies
 
-In this section, we will use a UI Policy Designer Tool [Agama-Lab](https://cloud.gluu.org/agama-lab) to create policy store and policies. [More Details](https://gluu.org/agama/authorization-policy-designer/).
+We'll use the [Agama-Lab](https://cloud.gluu.org/agama-lab) Policy Designer to create and manage our authorization policies. [More Details](https://gluu.org/agama/authorization-policy-designer/).
 
-## Step 1: Create a Policy Store
+## Step 1: Create Policy Store
 
-1. Signup and login into [Agama Lab UI Tool](https://cloud.gluu.org/agama-lab) using GitHub.
+1. Signin into [Agama Lab UI Tool](https://cloud.gluu.org/agama-lab) using GitHub.
+
+1. Open `Policy Designer` section.
 
 1. Select repository where you want to save your policies. [More Details](https://gluu.org/agama/authorization-policy-designer/)
 
-1. Open `Policy Designer` section and Create policy store `JansReactCedarlingRBAC`.
+1. Create a new policy store named `JansReactCedarlingRBAC`.
 
-## Step 2: Update Schema
+## Step 2: Define Schema
 
 1. Open `Manage Policy Store` section by clicking arrow link button on store list.
 
 1. Add `Task` in Entity Type.
    ![image](https://github.com/user-attachments/assets/f2401a63-b965-4134-af2d-7c79d83b4a39)
 
-1. Add `Add` Action, set `Principal: User` and `Resources: Task`. Like wise add other actions `Update`, `Delete`, `View`.
+1. Configure actions (`Add`, `Update`, `Delete`, `View`):
+
+   - Set `Principal: User`
+   - Set `Resources: Task`.
+
    ![image](https://github.com/user-attachments/assets/847a9de3-0bba-4823-9da2-d30559a4acbe)
 
 ## Step 3: Create Policies
@@ -84,44 +93,44 @@ In this section, we will use a UI Policy Designer Tool [Agama-Lab](https://cloud
 
 1. Copy policies one by one, add in text editor, and save.
 
-   1. Admin can perform any action
+   1. **Admin Policy** (full access):
 
-   ```js
-   @id("AdminPerformAnyOperationOnResource")
-   permit(
-     principal in Jans::Role::"admin",
-     action,
-     resource
-   );
-   ```
+      ```js
+      @id("AdminPerformAnyOperationOnResource")
+      permit(
+        principal in Jans::Role::"admin",
+        action,
+        resource
+      );
+      ```
 
-   2. Manager can add, update, and view Task.
+   2. **Manager Policy** (restricted access):
 
-   ```js
-   @id("ManagerCanAddUpdateViewTask")
-   permit (
-     principal in Jans::Role::"manager",
-     action in [Jans::Action::"Add",
-     Jans::Action::"Update",
-     Jans::Action::"View"],
-     resource is Jans::Task
-   );
-   ```
+      ```js
+      @id("ManagerCanAddUpdateViewTask")
+      permit (
+        principal in Jans::Role::"manager",
+        action in [Jans::Action::"Add",
+        Jans::Action::"Update",
+        Jans::Action::"View"],
+        resource is Jans::Task
+      );
+      ```
 
-   3. Member can only view task.
+   3. **Member Policy** (view only):
 
-   ```js
-   @id("MemberCanOnlyViewTask")
-   permit (
-     principal in Jans::Role::"member",
-     action in [Jans::Action::"View"],
-     resource is Jans::Task
-   );
-   ```
+      ```js
+      @id("MemberCanOnlyViewTask")
+      permit (
+        principal in Jans::Role::"member",
+        action in [Jans::Action::"View"],
+        resource is Jans::Task
+      );
+      ```
 
 # Setting up React Application
 
-## Step 1: Install Jans Cedarling WASM NPM Package
+## Step 1: Install Cedarling WASM
 
 ```sh
 npm install @janssenproject/cedarling_wasm
@@ -139,9 +148,9 @@ export default defineConfig({
 });
 ```
 
-## Step 2: Configure Cedarling Bootstrap properties
+## Step 2: Configure Cedarling
 
-You need to first initialize Cedarling WASM object. For that Cedarling WASM needs some properties. Configure it like below:
+Initialize with these properties:
 
 ```js
 export const cedarlingBootstrapProperties = {
@@ -161,7 +170,7 @@ export const cedarlingBootstrapProperties = {
 
 - `CEDARLING_POLICY_STORE_URI`: URL of your policy store (from Agama-Lab). In policy store list, use link button to copy policy store URI.
 
-## Step 3: Create a CedarlingClient Class
+## Step 3: Create Authorization Client
 
 This class implements a singleton pattern for managing Cedar authorization using WebAssembly (WASM), providing a centralized way to initialize the Cedar policy engine and perform authorization checks. It wraps the `@janssenproject/cedarling_wasm` module to handle policy evaluation through a single, reusable instance that can be accessed throughout the application.
 
@@ -217,7 +226,7 @@ useEffect(() => {
 }, []);
 ```
 
-## Step 5: Create a React hook
+## Step 5: React Hook for Authorization
 
 This Reack hook provides authorization functionality using the Cedarling client, with the ability to enforce authorization checks when enabled through environment variables. The hook manages loading and error states while processing authorization requests, and returns a boolean or AuthorizeResult indicating whether the authorization was successful.
 
@@ -258,7 +267,7 @@ export function useCedarling() {
 
 ## Step 6: Protect Actions and Components
 
-Let's use above tool to protect elements. Your ID Token should have `role` claim. it can be one value like `role: admin` or array like `role: ["admin", "manager"]`, both are valid. Check [Cedarling entities document](https://github.com/JanssenProject/jans/blob/main/docs/cedarling/cedarling-entities.md#role-entity) for more details about role entity creation and usage.
+Use React Hook to protect actions and components. Your ID Token should have `role` claim. it can be one value like `role: admin` or array like `role: ["admin", "manager"]`, both are valid. Check [Cedarling entities document](https://github.com/JanssenProject/jans/blob/main/docs/cedarling/cedarling-entities.md#role-entity) for more details about role entity creation and usage.
 
 Below is example of Task React Page:
 
@@ -361,6 +370,8 @@ In above example there are 2 things:
 }
 ```
 
+Like we handled `Add` action, you can handle other actions and show hide components.
+
 ## Step 7: Protecting UI Components
 
 This `ProtectedSection` component is a React wrapper that controls access to UI components based on user authorization. It takes a resource ID and optional action ID, checks if the user has permission to access that resource using Cedar authorization, and either displays the protected content (children) if authorized or shows a fallback component (typically an error message) if access is denied.
@@ -427,12 +438,15 @@ Use `ProtectedSection` to protect any elements. Your ID Token should have `role`
 </ProtectedSection>
 ```
 
-# Conclusion
+# Key Takeaways
 
 - **Cedarling WASM** provides **fine-grained RBAC** for React apps.
 
-- It easy to make Protected Components. Use **ProtectedSection** or **ProtectedButton** to restrict UI elements.
+- Easy to Protected Components and limit user access. Use **ProtectedSection** to restrict UI elements.
 
-- Policies are managed via **Agama Lab**.
+- Policy management is centralized via **Agama Lab**.
 
-For a full example, check the [Next JS Demo project](https://github.com/kdhttps/next-js-cedarling) and [Policy Store](https://github.com/kdhttps/pd-first/blob/agama-lab-policy-designer/48525ee5f367b0517a819645847184d3b356d7977052.json).
+For a complete implementation, reference the:
+
+- [Next JS Demo project](https://github.com/kdhttps/next-js-cedarling)
+- [Policy Store](https://github.com/kdhttps/pd-first/blob/agama-lab-policy-designer/48525ee5f367b0517a819645847184d3b356d7977052.json).
