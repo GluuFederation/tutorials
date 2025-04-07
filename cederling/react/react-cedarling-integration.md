@@ -1,25 +1,24 @@
 # React JS Cedarling integration
 
-This guide documents the implementation of UI element access protection in **React JS** Application using [Jans Cedarling WASM](https://github.com/JanssenProject/jans/blob/main/docs/cedarling/cedarling-overview.md). The integration provides granular **RBAC(Role Based Access Control)** control over UI component visibility based on user authorization policies.
+This guide explains how to implement **Role-Based Access Control (RBAC)** in a React application using [Jans Cedarling WASM](https://github.com/JanssenProject/jans/blob/main/docs/cedarling/cedarling-overview.md). This integration allows you to control UI element visibility based on user permissions.
 
-```js
-@id("AdminPerformAnyOperationOnResource")
-permit(
-  principal in Jans::Role::"admin",
-  action,
-  resource
-);
-```
+# Key Benefits
 
-We will see in next sections how to add policy and implement it in React.
+- **Granular Access Control**: Restrict UI components based on user roles.
 
-## Install dependency
+- **Easy Integration**: Simple React hooks and components for authorization checks.
+
+- **Policy-Based Rules**: Define access rules using [Cedar](https://www.cedarpolicy.com) policies.
+
+# Install dependency
+
+Install the Cedarling WASM package:
 
 ```sh
 $ npm install @janssenproject/cedarling_wasm
 ```
 
-For vitejs, you may need to configure your `vite.config.ts`:
+For **Vite.js**, update `vite.config.ts`:
 
 ```js
 optimizeDeps: {
@@ -27,26 +26,36 @@ optimizeDeps: {
 }
 ```
 
-## Setup Policy Store
+# Setting Up Policy and Store
+
+## Step 1: Create a Policy Store
 
 We need a policy store (eg. `AgamaLabStore`) to store the policies. Below a simple policy for the use case. It is simple because the idea is just to handle UI Elements visibility depending on the authenticated user.
 
-- Use [Agama Lab UI Tool](https://cloud.gluu.org/agama-lab) to create policy store. For more details check [Agama Lab Documents here.](https://gluu.org/agama/authorization-policy-designer/)
-- Create policy store `AgamaLabStore`.
-- Go to `Policies > Add Policy > Text Editor`. Copy below policy and add in text editor.
-- Click on `Save` to add policy.
+1. Use [Agama Lab UI Tool](https://cloud.gluu.org/agama-lab) to create and manage policies. For more details check [Agama Lab Documents here.](https://gluu.org/agama/authorization-policy-designer/)
 
-```js
-@id("AdminPerformAnyOperationOnResource")
-permit(
-  principal in Jans::Role::"admin",
-  action,
-  resource
-);
-```
+1. Create policy store `AgamaLabStore`.
 
-- Add Trusted Issuer
-- Copy and past below json into Token Metadata. Find properties details [here](https://github.com/JanssenProject/jans/blob/main/docs/cedarling/cedarling-properties.md).
+   ![store](https://github.com/user-attachments/assets/0971a52e-dfe2-4482-8a69-9646286e8b08)
+
+1. Go to `Manage Store > Policies > Add Policy > Text Editor`. Copy below policy and add in text editor.
+
+   ```js
+   @id("AdminPerformAnyOperationOnResource")
+   permit(
+     principal in Jans::Role::"admin",
+     action,
+     resource
+   );
+   ```
+
+   ![policy](https://github.com/user-attachments/assets/8e9ea12c-c2bc-467e-b6d0-96edf70deffc)
+
+1. Click on `Save` to add policy.
+
+## Step 2: Configure Trusted Issuer
+
+Add a trusted issuer with the following [token metadata](https://github.com/JanssenProject/jans/blob/main/docs/cedarling/cedarling-properties.md).
 
 ```js
 {
@@ -77,11 +86,11 @@ permit(
 }
 ```
 
-- Click on `Save` to save trusted issuer.
+![trusted_issuer](https://github.com/user-attachments/assets/08c06a84-c270-42d8-9d3d-0c5deffb5092)
 
-## Configure Cedarling Bootstrap
+# Cedarling Configuration
 
-Create React App. You can use any framework. Create a configuration object with the following parameters:
+At this stage, you need to configure Cedarling into your React Application. Use any framework to create React App. Create a configuration object with the following parameters:
 
 ```js
 const cedarlingBootstrapProperties = {
@@ -94,15 +103,12 @@ const cedarlingBootstrapProperties = {
   CEDARLING_LOG_LEVEL: "TRACE",
   CEDARLING_LOG_TTL: 120,
   CEDARLING_PRINCIPAL_BOOLEAN_OPERATION: {
-    or: [
-      { "===": [{ var: "Jans::Workload" }, "ALLOW"] },
-      { "===": [{ var: "Jans::User" }, "ALLOW"] },
-    ],
+    "===": [{ var: "Jans::User" }, "ALLOW"],
   },
 };
 ```
 
-`CEDARLING_POLICY_STORE_URI` is the URI of the store containing the policies. Copy it from Agama Lab.
+- `CEDARLING_POLICY_STORE_URI`: URL of your policy store (from Agama Lab).
 
 ## Create a CedarlingClient Class
 
@@ -199,7 +205,7 @@ export function useCedarling() {
 }
 ```
 
-## Designing high order component that will make protecting UI components easy
+# Protecting UI Components
 
 ## Protected Section
 
@@ -337,4 +343,12 @@ Use `ProtectedButton` to protect any elements. Your ID Token should have `role` 
 </ProtectedSection>
 ```
 
-Here is [React Next JS Demo project](https://github.com/kdhttps/next-js-cedarling) and policy store is [here](https://github.com/kdhttps/pd-first/blob/agama-lab-policy-designer/48525ee5f367b0517a819645847184d3b356d7977052.json).
+# Conclusion
+
+- **Cedarling WASM** provides **fine-grained RBAC** for React apps.
+
+- It easy to make Protected Components. Use **ProtectedSection** or **ProtectedButton** to restrict UI elements.
+
+- Policies are managed via **Agama Lab**.
+
+For a full example, check the [Next JS Demo project](https://github.com/kdhttps/next-js-cedarling) and [Policy Store](https://github.com/kdhttps/pd-first/blob/agama-lab-policy-designer/48525ee5f367b0517a819645847184d3b356d7977052.json).
