@@ -336,36 +336,31 @@ In above example there are 2 things:
 
 ```json
 {
-  "id": "0195d7d5-cde9-7777-86eb-98b5ed415ffc",
-  "request_id": "0195d7d5-cde6-730e-846e-0797827c03ba",
-  "timestamp": "2025-03-27T19:11:08.201Z",
+  "id": "0196117f-fd00-775f-86bd-a4294b1772c2",
+  "request_id": "0196117f-fcf2-7188-aacb-2ecc1ce66c39",
+  "timestamp": "2025-04-07T23:55:22.688Z",
   "log_kind": "Decision",
   "policystore_id": "87d2c8877a2455a16149c55d956565e1d18ac81ba10a",
   "policystore_version": "undefined",
   "principal": ["User"],
   "User": {},
   "diagnostics": {
-    "reason": [
-      {
-        "id": "6b51f8244fe1fc3b273733f9d93def7f07080367fbc1",
-        "description": "ManagerReadShareApp"
-      }
-    ],
+    "reason": [],
     "errors": []
   },
-  "action": "Jans::Action::\"Read\"",
-  "resource": "Jans::Application::\"App\"",
+  "action": "Jans::Action::\"Add\"",
+  "resource": "Jans::Task::\"App\"",
   "decision": "DENY",
   "tokens": {
-    "id_token": {
-      "jti": "IXV9GbiQTI6HD2atsQEkVQ"
-    },
     "access_token": {
-      "jti": "7PDlytNLSicUdrsn7v8dcA"
+      "jti": "hNhnQW18RA2AIOh5ihOfTQ"
+    },
+    "id_token": {
+      "jti": "J4TB2NsgTZOBtPTYTzHtmg"
     }
   },
-  "decision_time_micro_sec": 3000,
-  "pdp_id": "bbc580e1-04c0-495d-9d2a-d3f5e9411285",
+  "decision_time_micro_sec": 13000,
+  "pdp_id": "bbcf165b-1b7b-452a-af46-b9dbf3ae7cf0",
   "application_id": "AgamaLab"
 }
 ```
@@ -405,7 +400,7 @@ export function ProtectedSection({
           id_token: idToken,
         },
         action: `Jans::Action::"${actionId}"`,
-        resource: { type: "Jans::Application", id: resourceId, name: resourceId },
+        resource: { type: "Jans::Task", id: resourceId, name: resourceId },
         context: {},
       };
       try {
@@ -432,7 +427,7 @@ Use `ProtectedSection` to protect any elements. Your ID Token should have `role`
   accessToken={accessToken}
   idToken={idToken}
   resourceId="App"
-  actionId="Read"
+  actionId="Delete"
 >
   <h1>Welcome, permission granted!</h1>
 </ProtectedSection>
