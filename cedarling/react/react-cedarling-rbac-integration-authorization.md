@@ -448,5 +448,5 @@ Use `ProtectedSection` to protect any elements. Your ID Token should have `role`
 
 For a complete implementation, reference the:
 
-- [Next JS Demo project](https://github.com/GluuFederation/tutorials/cedarling/react/next-js-cedarling)
-- [Policy Store](https://github.com/GluuFederation/tutorials/cedarling/react/next-js-cedarling-policy-store/87d2c8877a2455a16149c55d956565e1d18ac81ba10a.json).
+- [Next JS Demo project](https://github.com/GluuFederation/tutorials/tree/master/cedarling/react/next-js-cedarling)
+- [Policy Store](https://github.com/GluuFederation/tutorials/blob/master/cedarling/react/next-js-cedarling-policy-store/87d2c8877a2455a16149c55d956565e1d18ac81ba10a.json).
