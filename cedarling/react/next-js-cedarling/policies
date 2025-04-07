@@ -1,0 +1,22 @@
+@id("AdminPerformAnyOperationOnResource")
+permit(
+  principal in Jans::Role::"admin",
+  action,
+  resource
+);
+
+@id("ManagerCanAddUpdateViewTask")
+permit (
+  principal in Jans::Role::"manager",
+  action in [Jans::Action::"Add",
+  Jans::Action::"Update",
+  Jans::Action::"View"],
+  resource is Jans::Task
+);
+
+@id("MemberCanOnlyViewTask")
+permit (
+  principal in Jans::Role::"member",
+  action in [Jans::Action::"View"],
+  resource is Jans::Task
+);

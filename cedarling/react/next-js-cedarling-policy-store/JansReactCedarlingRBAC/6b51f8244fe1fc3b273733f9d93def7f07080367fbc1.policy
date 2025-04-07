@@ -1,0 +1,7 @@
+@id("ManagerCanAddUpdateViewTask")
+permit (
+  principal in Jans::Role::"manager",
+  action in [Jans::Action::"Add",
+  Jans::Action::"Update", Jans::Action::"View"],
+  resource is Jans::Task
+);
