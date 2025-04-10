@@ -9,7 +9,7 @@ We'll walk through setting up the integration with a practical example involving
 - Define the authorization schema
 - Configure access policies
 - Evaluate authorization requests
-- Implement Cedarling's streamlined authorization in React with minimal code
+- Implement the Cedarling's streamlined authorization in React with minimal code
 
 # Use Case: Multi Role Access control in a Project Task Management System
 
@@ -40,7 +40,7 @@ Roles and Permissions:
 
 # Authorization Flow
 
-The sequence diagram below illustrates Cedarling's authorization process. The `Janssen Cedarling` library handles policy evaluation within your JavaScript React application.
+The sequence diagram below illustrates the Cedarling's authorization process. The `Janssen Cedarling` library handles policy evaluation within your JavaScript React application.
 
 ```mermaid
 sequenceDiagram
@@ -132,7 +132,7 @@ We'll use the [Agama-Lab](https://cloud.gluu.org/agama-lab) Policy Designer to c
 
 # Setting up React Application
 
-## Step 1: Install Cedarling WASM
+## Step 1: Install the Cedarling WASM
 
 ```sh
 npm install @janssenproject/cedarling_wasm
@@ -150,7 +150,7 @@ export default defineConfig({
 });
 ```
 
-## Step 2: Configure Cedarling
+## Step 2: Configure the Cedarling
 
 Initialize with these properties:
 
@@ -270,7 +270,7 @@ export function useCedarling() {
 
 ## Step 6: Protect Actions and Components
 
-Use React Hook to protect actions and components. Your ID Token should have `role` claim. it can be one value like `role: admin` or array like `role: ["admin", "manager"]`, both are valid. Check [Cedarling entities document](https://docs.jans.io/v1.5.0/cedarling/cedarling-entities/) for more details about role entity creation and usage.
+Use React Hook to protect actions and components. Your ID Token should have `role` claim. it can be one value like `role: admin` or array like `role: ["admin", "manager"]`, both are valid. Check the [Cedarling entities document](https://docs.jans.io/v1.5.0/cedarling/cedarling-entities/) for more details about role entity creation and usage.
 
 Below is example of Task React Page:
 
