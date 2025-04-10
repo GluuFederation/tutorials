@@ -1,6 +1,6 @@
 # React RBAC authorization with Cedarling integration
 
-![react-cedadrling](https://github.com/user-attachments/assets/5874f252-adec-4df9-9e47-6295faf52c64)
+![react-cedadrling-1](https://github.com/user-attachments/assets/dc17bb1e-0369-43e2-8e9e-e9f8724b4cd9)
 
 This guide demonstrates how to implement **Role-Based Access Control (RBAC)** policy-based authorization in React applications using [Jans Cedarling](https://docs.jans.io/v1.5.0/cedarling/cedarling-overview/).
 
