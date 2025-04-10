@@ -2,7 +2,7 @@
 
 ![react-cedadrling-1](https://github.com/user-attachments/assets/dc17bb1e-0369-43e2-8e9e-e9f8724b4cd9)
 
-This guide demonstrates how to implement **Role-Based Access Control (RBAC)** policy-based authorization in React applications using [Jans Cedarling](https://docs.jans.io/v1.5.0/cedarling/cedarling-overview/).
+This guide demonstrates how to implement **Role-Based Access Control (RBAC)** policy-based authorization in React applications using [the Janssen Project Cedarling](https://docs.jans.io/v1.5.0/cedarling/cedarling-overview/).
 
 We'll walk through setting up the integration with a practical example involving multiple roles and conditional policies. You'll learn how to:
 
@@ -34,21 +34,21 @@ Roles and Permissions:
 
 # Prerequisite
 
-1. **OpenID Connect Server**: Use any compliant provider like [Jans](https://docs.jans.io), Google, Okta.
+1. **OpenID Connect Server**: Use any compliant provider like [Janssen](https://docs.jans.io), Google, Okta.
 
 1. **React Application**: Use any framework like `Next.js` or `Vite.js` to create a Fresh React App.
 
 # Authorization Flow
 
-The sequence diagram below illustrates Cedarling's authorization process. The `Jans-Cedarling` library handles policy evaluation within your JavaScript React application.
+The sequence diagram below illustrates Cedarling's authorization process. The `Janssen Cedarling` library handles policy evaluation within your JavaScript React application.
 
 ```mermaid
 sequenceDiagram
 
-title Cedarling Authz Request Sequence Diagram
+title The Cedarling Authz Request Sequence Diagram
 
 participant jsapp as JS App
-participant cedarling as Jans-Cedarling
+participant cedarling as the Janssen Cedarling
 participant op as Issuer
 
 autonumber
@@ -73,7 +73,7 @@ We'll use the [Agama-Lab](https://cloud.gluu.org/agama-lab) Policy Designer to c
 
 1. Select repository where you want to save your policies. [More Details](https://gluu.org/agama/authorization-policy-designer/)
 
-1. Create a new policy store named `JansReactCedarlingRBAC`.
+1. Create a new policy store named `JanssenReactCedarlingRBAC`.
 
 ## Step 2: Define Schema
 
@@ -333,7 +333,7 @@ export default function TasksPage() {
 
 In above example there are 2 things:
 
-- First, we make a function `cedarlingRequest` which accept action and help us to make an authorization requrest to Cedarling WASM with Access Token and ID Token. Your ID Token should have Role claim and if you don't have role then you need to change policy which will be act like ABAC.
+- First, we make a function `cedarlingRequest` which accept action and help us to make an authorization requrest to the Cedarling WASM with Access Token and ID Token. Your ID Token should have Role claim and if you don't have role then you need to change policy which will be act like ABAC.
 
 - Second, we have `handleAdd` function where it help us to request and check auth for `Add` operation. In response, it return result where we get which policy is responsible for authorization, timestamp, and dicision. Below is the example of result. Use `result.decision` to authorize request and show/hide elements.
 
@@ -428,7 +428,7 @@ export function ProtectedSection({
 }
 ```
 
-Use `ProtectedSection` to protect any elements. Your ID Token should have `role` claim. it can be one value like `role: admin` or array like `role: ["admin", "manager", "member"]`, both are valid. Check [Cedarling entities document](https://docs.jans.io/v1.5.0/cedarling/cedarling-entities/) for more details about role entity creation and usage.
+Use `ProtectedSection` to protect any elements. Your ID Token should have `role` claim. it can be one value like `role: admin` or array like `role: ["admin", "manager", "member"]`, both are valid. Check the [Cedarling entities document](https://docs.jans.io/v1.5.0/cedarling/cedarling-entities/) for more details about role entity creation and usage.
 
 ```js
 <ProtectedSection
@@ -443,7 +443,7 @@ Use `ProtectedSection` to protect any elements. Your ID Token should have `role`
 
 # Key Takeaways
 
-- **Cedarling WASM** provides **fine-grained RBAC** for React apps.
+- The **Janssen Cedarling** provides **fine-grained RBAC** for React apps.
 
 - Easy to Protected Components and limit user access. Use **ProtectedSection** to restrict UI elements.
 
