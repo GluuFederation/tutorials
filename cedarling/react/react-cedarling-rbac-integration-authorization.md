@@ -1,4 +1,4 @@
-# React RBAC authorization with Cedarling integration
+# React RBAC authorization with the Cedarling integration
 
 ![react-cedadrling-1](https://github.com/user-attachments/assets/dc17bb1e-0369-43e2-8e9e-e9f8724b4cd9)
 
