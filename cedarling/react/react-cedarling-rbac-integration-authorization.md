@@ -1,8 +1,8 @@
-# React RBAC authorization with the Cedarling integration
+# From RBAC to TBAC: Modernizing Authz in React Browser Apps
 
 ![react-cedadrling-1](https://github.com/user-attachments/assets/dc17bb1e-0369-43e2-8e9e-e9f8724b4cd9)
 
-This guide demonstrates how to implement **Role-Based Access Control (RBAC)** policy-based authorization in React applications using [the Janssen Project Cedarling](https://docs.jans.io/v1.5.0/cedarling/cedarling-overview/).
+This guide demonstrates how to implement **Role-Based Access Control (RBAC)** policy-based authorization in React applications using [the Janssen Project Cedarling](https://docs.jans.io/head/cedarling/cedarling-overview/).
 
 We'll walk through setting up the integration with a practical example involving multiple roles and conditional policies. You'll learn how to:
 
@@ -11,7 +11,20 @@ We'll walk through setting up the integration with a practical example involving
 - Evaluate authorization requests
 - Implement the Cedarling's streamlined authorization in React with minimal code
 
-# Use Case: Multi Role Access control in a Project Task Management System
+# Sample Application: Task Management
+
+For demo, we're going to use role based access control (or "RBAC") to develop a sample application that performs Task Management. It's a very simple version of Trello! In example, we're also going to support federated authentication, via a standard OpenID Connect Provider. After authentication Cedarling plays role for authorization where it will take roles from ID Token to authorize user. Below are the roles which perform will try to perform following actions and access Task resources. If user has enough permission then allow action otherwise deny.
+
+For our demonstration, we'll implement Role-Based Access Control (RBAC) to build a sample Task Management application - essentially a simplified version of Trello. The application will feature:
+
+1. Federated Authentication: Users will authenticate through a standard OpenID Connect Provider
+
+2. Cedarling Authorization: After authentication, Cedarling will handle authorization by:
+   - Extracting user roles from the ID Token
+   - Evaluating permissions against Task resources
+   - Allowing or denying actions based on the user's role
+
+The system will enforce these access controls when users attempt to perform actions, only permitting operations when they have sufficient permissions.
 
 - Principals: Users with roles like `Admin`, `Manager` and `Member`.
 - Actions: `Add`, `Update`, `Delete`, and `View`
@@ -38,40 +51,17 @@ Roles and Permissions:
 
 1. **React Application**: Use any framework like `Next.js` or `Vite.js` to create a Fresh React App.
 
-# Authorization Flow
-
-The sequence diagram below illustrates the Cedarling's authorization process. The `Janssen Cedarling` library handles policy evaluation within your JavaScript React application.
-
-```mermaid
-sequenceDiagram
-
-title The Cedarling Authz Request Sequence Diagram
-
-participant jsapp as JS App
-participant cedarling as the Janssen Cedarling
-participant op as Issuer
-
-autonumber
-jsapp<<->>cedarling: On startup, Fetch policies, init cedar engine
-jsapp<<->>op: Auth happens
-op->>jsapp: Access Token, ID Token(Role)
-jsapp->>jsapp: Collect input: tokens, context, resource, action.
-jsapp->>cedarling: authz(input)
-cedarling->>cedarling: validate request with policies
-cedarling->>jsapp: Permit or Deny
-```
-
 # Setting Up Policies
 
-We'll use the [Agama-Lab](https://cloud.gluu.org/agama-lab) Policy Designer to create and manage our authorization policies. [More Details](https://gluu.org/agama/authorization-policy-designer/).
+We'll use the [Agama-Lab](https://cloud.gluu.org/agama-lab) Policy Designer to create and manage our authorization policies. [Check out the Agama Lab Documents for more information](https://gluu.org/agama/authorization-policy-designer/).
 
 ## Step 1: Create Policy Store
 
-1. Signin into [Agama Lab UI Tool](https://cloud.gluu.org/agama-lab) using GitHub.
+1. Sign-in to [Agama Lab](https://cloud.gluu.org/agama-lab) with your GitHub id.
 
-1. Open `Policy Designer` section.
+1. Open the `Policy Designer` section.
 
-1. Select repository where you want to save your policies. [More Details](https://gluu.org/agama/authorization-policy-designer/)
+1. Select the repository where you want to save your policies.
 
 1. Create a new policy store named `JanssenReactCedarlingRBAC`.
 
@@ -79,10 +69,10 @@ We'll use the [Agama-Lab](https://cloud.gluu.org/agama-lab) Policy Designer to c
 
 1. Open `Manage Policy Store` section by clicking arrow link button on store list.
 
-1. Add `Task` in Entity Type.
+1. Create an Entity called `Task`, which is our sample Resource.
    ![image](https://github.com/user-attachments/assets/f2401a63-b965-4134-af2d-7c79d83b4a39)
 
-1. Configure actions (`Add`, `Update`, `Delete`, `View`):
+1. Once you add the Resource, you need to associate an action with it. Configure actions (`Add`, `Update`, `Delete`, `View`):
 
    - Set `Principal: User`
    - Set `Resources: Task`.
@@ -156,13 +146,11 @@ Initialize with these properties:
 
 ```js
 export const cedarlingBootstrapProperties = {
-  CEDARLING_APPLICATION_NAME: "AgamaLab",
+  CEDARLING_APPLICATION_NAME: "TaskManager",
   CEDARLING_POLICY_STORE_URI: "<your_policy_store_URI>",
-  CEDARLING_POLICY_STORE_ID: "<your_policy_store_id>",
   CEDARLING_USER_AUTHZ: "enabled",
-  CEDARLING_WORKLOAD_AUTHZ: "disabled",
   CEDARLING_LOG_TYPE: "std_out",
-  CEDARLING_LOG_LEVEL: "TRACE",
+  CEDARLING_LOG_LEVEL: "INFO",
   CEDARLING_LOG_TTL: 120,
   CEDARLING_PRINCIPAL_BOOLEAN_OPERATION: {
     "===": [{ var: "Jans::User" }, "ALLOW"],
@@ -270,7 +258,7 @@ export function useCedarling() {
 
 ## Step 6: Protect Actions and Components
 
-Use React Hook to protect actions and components. Your ID Token should have `role` claim. it can be one value like `role: admin` or array like `role: ["admin", "manager"]`, both are valid. Check the [Cedarling entities document](https://docs.jans.io/v1.5.0/cedarling/cedarling-entities/) for more details about role entity creation and usage.
+Use React Hook to protect actions and components. Your ID Token should have `role` claim. it can be one value like `role: admin` or array like `role: ["admin", "manager"]`, both are valid. Check the [Cedarling entities document](https://docs.jans.io/head/cedarling/cedarling-entities/) for more details about role entity creation and usage.
 
 Below is example of Task React Page:
 
@@ -428,7 +416,7 @@ export function ProtectedSection({
 }
 ```
 
-Use `ProtectedSection` to protect any elements. Your ID Token should have `role` claim. it can be one value like `role: admin` or array like `role: ["admin", "manager", "member"]`, both are valid. Check the [Cedarling entities document](https://docs.jans.io/v1.5.0/cedarling/cedarling-entities/) for more details about role entity creation and usage.
+Use `ProtectedSection` to protect any elements. Your ID Token should have `role` claim. it can be one value like `role: admin` or array like `role: ["admin", "manager", "member"]`, both are valid. Check the [Cedarling entities document](https://docs.jans.io/head/cedarling/cedarling-entities/) for more details about role entity creation and usage.
 
 ```js
 <ProtectedSection
