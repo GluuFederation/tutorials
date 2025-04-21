@@ -429,6 +429,44 @@ Use `ProtectedSection` to protect any elements. Your ID Token should have `role`
 </ProtectedSection>
 ```
 
+# Test Cases
+
+## Admin Authorization
+
+Let's login with `admin` role user and check the authorization. As per above authorization policies, admin can access any resource. You can see in below video `Sachin` is an admin user and he has `admin` role in ID Token.
+
+🟢 Admin can `Add` task
+
+🟢 Admin can `Update` task
+
+🟢 Admin can `Delete` task
+
+🟢 Admin can `view` task
+
+## Manager Authorization
+
+Let's login with `manager` role user and check the authorization. As per above authorization policies, manager cannot perform `Delete` action.
+
+🟢 Manager can `Add` task
+
+🟢 Manager can `Update` task
+
+🟢 Manager can `view` task
+
+🔴 Manager cannot `Delete` task
+
+## Member Authorization
+
+Let's login with `member` role user and check the authorization. As per above authorization policies, member can only `view` tasks.
+
+🟢 Member can `view` task
+
+🔴 Member cannot `Add` task
+
+🔴 Member cannot `Update` task
+
+🔴 Member cannot `view` task
+
 # Key Takeaways
 
 - The **Janssen Cedarling** provides **fine-grained RBAC** for React apps.
