@@ -13,7 +13,7 @@ We'll walk through setting up the integration with a practical example involving
 
 # Sample Application: Task Management
 
-For demo, we're going to use role based access control (or "RBAC") to develop a sample application that performs Task Management. It's a very simple version of Trello! In example, we're also going to support federated authentication, via a standard OpenID Connect Provider. After authentication Cedarling plays role for authorization where it will take roles from ID Token to authorize user. Below are the roles which perform will try to perform following actions and access Task resources. If user has enough permission then allow action otherwise deny.
+For demo, we're going to use role-based access control (or "RBAC") to develop a sample application that performs Task Management. It's a very simple version of Trello! In example, we're also going to support federated authentication, via a standard OpenID Connect Provider. After authentication, Cedarling plays a role in authorization, where it will take roles from the ID Token to authorize a user. Below are the roles which perform will perform the following actions and access Task resources. If a user has enough permission, then allow the action; otherwise, deny.
 
 For our demonstration, we'll implement Role-Based Access Control (RBAC) to build a sample Task Management application - essentially a simplified version of Trello. The application will feature:
 
@@ -26,7 +26,7 @@ For our demonstration, we'll implement Role-Based Access Control (RBAC) to build
 
 The system will enforce these access controls when users attempt to perform actions, only permitting operations when they have sufficient permissions.
 
-- Principals: Users with roles like `Admin`, `Manager` and `Member`.
+- Principals: Users with roles like `Admin`, `Manager`, and `Member`.
 - Actions: `Add`, `Update`, `Delete`, and `View`
 - Resources: Task
 
@@ -67,7 +67,7 @@ We'll use the [Agama-Lab](https://cloud.gluu.org/agama-lab) Policy Designer to c
 
 ## Step 2: Define Schema
 
-1. Open `Manage Policy Store` section by clicking arrow link button on store list.
+1. Open the `Manage Policy Store` section by clicking the arrow link button on the store list.
 
 1. Create an Entity called `Task`, which is our sample Resource.
    ![image](https://github.com/user-attachments/assets/f2401a63-b965-4134-af2d-7c79d83b4a39)
@@ -120,7 +120,7 @@ We'll use the [Agama-Lab](https://cloud.gluu.org/agama-lab) Policy Designer to c
       );
       ```
 
-# Setting up React Application
+# Setting up a React Application
 
 ## Step 1: Install the Cedarling WASM
 
@@ -158,7 +158,7 @@ export const cedarlingBootstrapProperties = {
 };
 ```
 
-- `CEDARLING_POLICY_STORE_URI`: URL of your policy store (from Agama-Lab). In policy store list, use link button to copy policy store URI.
+- `CEDARLING_POLICY_STORE_URI`: URL of your policy store (from Agama-Lab). In the policy store list, use the link button to copy the policy store URI.
 
 ## Step 3: Create Authorization Client
 
@@ -208,7 +208,7 @@ export const cedarlingClient = CedarlingClient.getInstance();
 
 ## Step 4: Initialize Cedarling
 
-We are globally initializing cedarling object. You can add it in your app started files. Like in ViteJS case, you can add it in `App.tsx` and In Next JS case, you can add it in `src/layout.tsx`.
+We are globally initializing the Cedarling object. You can add it to your app's startup files. Like in the ViteJS case, you can add it in `App.tsx`, and in the Next JS case, you can add it in `src/layout.tsx`.
 
 ```js
 useEffect(() => {
@@ -258,9 +258,9 @@ export function useCedarling() {
 
 ## Step 6: Protect Actions and Components
 
-Use React Hook to protect actions and components. Your ID Token should have `role` claim. it can be one value like `role: admin` or array like `role: ["admin", "manager"]`, both are valid. Check the [Cedarling entities document](https://docs.jans.io/head/cedarling/cedarling-entities/) for more details about role entity creation and usage.
+Use React Hooks to protect actions and components. Your ID Token should have a `role` claim. It can be one value like `role: admin` or an array like `role: ["admin", "manager"]`, both are valid. Check the [Cedarling entities document](https://docs.jans.io/head/cedarling/cedarling-entities/) for more details about role entity creation and usage.
 
-Below is example of Task React Page:
+Below is an example of Task React Page:
 
 ```js
 import { useCedarling } from "@/factories/useCedarling";
@@ -319,11 +319,11 @@ export default function TasksPage() {
 </button>;
 ```
 
-In above example there are 2 things:
+In the above example, there are 2 things:
 
-- First, we make a function `cedarlingRequest` which accept action and help us to make an authorization requrest to the Cedarling WASM with Access Token and ID Token. Your ID Token should have Role claim and if you don't have role then you need to change policy which will be act like ABAC.
+- First, we make a function `cedarlingRequest` which accepts an action and helps us to make an authorization request to the Cedarling WASM with Access Token and ID Token. Your ID Token should have a Role claim, and if you don't have a role, then you need to change the  policy, which will act like ABAC.
 
-- Second, we have `handleAdd` function where it help us to request and check auth for `Add` operation. In response, it return result where we get which policy is responsible for authorization, timestamp, and dicision. Below is the example of result. Use `result.decision` to authorize request and show/hide elements.
+- Second, we have the `handleAdd` function, which helps us to request and check the authorization for the `Add` operation. In response, it returns a result where we get which policy is responsible for authorization, timestamp, and decision. Below is an example of the result. Use `result.decision` to authorize the request and show/hide elements.
 
 ```json
 {
@@ -361,7 +361,7 @@ In above example there are 2 things:
 }
 ```
 
-Like we handled `Add` action, you can handle other actions and show hide components.
+Like we handled the `Add` action, you can handle other actions and show hide components.
 
 ## Step 7: Protecting UI Components
 
@@ -416,7 +416,7 @@ export function ProtectedSection({
 }
 ```
 
-Use `ProtectedSection` to protect any elements. Your ID Token should have `role` claim. it can be one value like `role: admin` or array like `role: ["admin", "manager", "member"]`, both are valid. Check the [Cedarling entities document](https://docs.jans.io/head/cedarling/cedarling-entities/) for more details about role entity creation and usage.
+Use `ProtectedSection` to protect any elements. Your ID Token should have a `role` claim. It can be one value like `role: admin` or an array like `role: ["admin", "manager", "member"]`, both are valid. Check the [Cedarling entities document](https://docs.jans.io/head/cedarling/cedarling-entities/) for more details about role entity creation and usage.
 
 ```js
 <ProtectedSection
@@ -433,45 +433,51 @@ Use `ProtectedSection` to protect any elements. Your ID Token should have `role`
 
 ## Admin Authorization
 
-Let's login with `admin` role user and check the authorization. As per above authorization policies, admin can access any resource. You can see in below video `Sachin` is an admin user and he has `admin` role in ID Token.
+Let's log in as an admin user and check the authorization. As per the above authorization policies, admins can access any resource. As you can see in the video below, Sachin is an admin user, and he has the `admin` role in ID Token.
 
-🟢 Admin can `Add` task
+🟢 Admin can `Add` a task
 
-🟢 Admin can `Update` task
+🟢 Admin can `Update` a task
 
-🟢 Admin can `Delete` task
+🟢 Admin can `Delete` a task
 
-🟢 Admin can `view` task
+🟢 Admin can `view` a task
+
+[admin-access.webm](https://github.com/user-attachments/assets/b8ee141c-a195-404a-806c-412988649ad8)
 
 ## Manager Authorization
 
-Let's login with `manager` role user and check the authorization. As per above authorization policies, manager cannot perform `Delete` action.
+Log in with a `manager` role user and check the authorization. As per our authorization policies, a manager cannot perform the `Delete` action.
 
-🟢 Manager can `Add` task
+🟢 Manager can `Add` a task
 
-🟢 Manager can `Update` task
+🟢 Manager can `Update` a task
 
-🟢 Manager can `view` task
+🟢 Manager can `view` a task
 
-🔴 Manager cannot `Delete` task
+🔴 Manager cannot `Delete` a task
+
+[manager-access.webm](https://github.com/user-attachments/assets/5df3c209-980d-4ebd-910f-b24b8db29e55)
 
 ## Member Authorization
 
-Let's login with `member` role user and check the authorization. As per above authorization policies, member can only `view` tasks.
+Log in with a `member` role user and check the authorization. As per our authorization policies, members can only `view` tasks.
 
-🟢 Member can `view` task
+🟢 Member can `view` a task
 
-🔴 Member cannot `Add` task
+🔴 Member cannot `Add` a task
 
-🔴 Member cannot `Update` task
+🔴 Member cannot `Update` a task
 
-🔴 Member cannot `view` task
+🔴 Member cannot `view` a task
+
+[member-access.webm](https://github.com/user-attachments/assets/b305bb92-df36-4344-94ec-9a994fb226f5)
 
 # Key Takeaways
 
 - The **Janssen Cedarling** provides **fine-grained RBAC** for React apps.
 
-- Easy to Protected Components and limit user access. Use **ProtectedSection** to restrict UI elements.
+- Easy to protect components and limit user access. Use **ProtectedSection** to restrict UI elements.
 
 - Policy management is centralized via **Agama Lab**.
 
