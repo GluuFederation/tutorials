@@ -2,7 +2,7 @@
 
 ![react-cedadrling-1](https://github.com/user-attachments/assets/dc17bb1e-0369-43e2-8e9e-e9f8724b4cd9)
 
-This guide demonstrates how to implement **Role-Based Access Control (RBAC)** policy-based authorization in React applications using [the Janssen Project Cedarling](https://docs.jans.io/head/cedarling/cedarling-overview/).
+This guide demonstrates how to build a React application using a new approach to security: Token Based Access Control where developers authorize capabilities by presenting a bundle of JWT tokens to a policy engine, in this case the [the Janssen Project Cedarling](https://docs.jans.io/head/cedarling/cedarling-overview/). The Cedar policy syntax is very expressive. Developer can even express policies based on a person's role or group membership. And so that's just what we're going to do here... use TBAC to implement RBAC. That may sound confusing, but carry on further for more details on why this makes sense!
 
 We'll walk through setting up the integration with a practical example involving multiple roles and conditional policies. You'll learn how to:
 
@@ -13,7 +13,7 @@ We'll walk through setting up the integration with a practical example involving
 
 # Sample Application: Task Management
 
-For demo, we're going to use role-based access control (or "RBAC") to develop a sample application that performs Task Management. It's a very simple version of Trello! In example, we're also going to support federated authentication, via a standard OpenID Connect Provider. After authentication, Cedarling plays a role in authorization, where it will take roles from the ID Token to authorize a user. Below are the roles which perform will perform the following actions and access Task resources. If a user has enough permission, then allow the action; otherwise, deny.
+For demo, we're going to use role-based access control (or "RBAC") to develop a sample application that performs Task Management. It's a very simple version of Trello! For example, we will also support federated authentication via a standard OpenID Connect Provider. After authentication, Cedarling plays a role in authorization, which will take roles from the ID Token to authorize a user. Below are the roles which perform will perform the following actions and access Task resources. If a user has enough permission, then allow the action; otherwise, deny.
 
 For our demonstration, we'll implement Role-Based Access Control (RBAC) to build a sample Task Management application - essentially a simplified version of Trello. The application will feature:
 
@@ -321,7 +321,7 @@ export default function TasksPage() {
 
 In the above example, there are 2 things:
 
-- First, we make a function `cedarlingRequest` which accepts an action and helps us to make an authorization request to the Cedarling WASM with Access Token and ID Token. Your ID Token should have a Role claim, and if you don't have a role, then you need to change the  policy, which will act like ABAC.
+- First, we make a function `cedarlingRequest` which accepts an action and helps us to make an authorization request to the Cedarling WASM with Access Token and ID Token. Your ID Token should have a Role claim, and if you don't have a role, then you need to change the policy, which will act like ABAC.
 
 - Second, we have the `handleAdd` function, which helps us to request and check the authorization for the `Add` operation. In response, it returns a result where we get which policy is responsible for authorization, timestamp, and decision. Below is an example of the result. Use `result.decision` to authorize the request and show/hide elements.
 
