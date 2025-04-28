@@ -13,9 +13,7 @@ We'll walk through setting up the integration with a practical example involving
 
 # Sample Application: Task Management
 
-For demo, we're going to use role-based access control (or "RBAC") to develop a sample application that performs Task Management. It's a very simple version of Trello! For example, we will also support federated authentication via a standard OpenID Connect Provider. After authentication, Cedarling plays a role in authorization, which will take roles from the ID Token to authorize a user. Below are the roles which perform will perform the following actions and access Task resources. If a user has enough permission, then allow the action; otherwise, deny.
-
-For our demonstration, we'll implement Role-Based Access Control (RBAC) to build a sample Task Management application - essentially a simplified version of Trello. The application will feature:
+For demo, we're going to use role-based access control (or "RBAC") to develop a sample application that performs Task Management. It's a very simple version of Trello! For example, we will also support federated authentication via a standard OpenID Connect Provider. After authentication, Cedarling plays a role in authorization, which will take roles from the ID Token to authorize a user. Below are the roles which perform will perform the following actions and access Task resources. If a user has enough permission, then allow the action; otherwise, deny. The application will feature:
 
 1. Federated Authentication: Users will authenticate through a standard OpenID Connect Provider
 
