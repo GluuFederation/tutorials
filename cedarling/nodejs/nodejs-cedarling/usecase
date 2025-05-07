@@ -1,0 +1,61 @@
+Cloud Infrastructure (AWS/GCP/Azure)
+
+Admin (Full access)
+Developer (Deploy, read, but no deletion)
+Auditor (Read-only)
+
+// Admins can do anything
+permit (
+    principal in Role::"Admin",
+    action,
+    resource
+);
+
+// Developers can create/view VMs and buckets, but not delete
+permit (
+    principal in Role::"Developer",
+    action in [Action::"create", Action::"view", Action::"start_stop"],
+    resource in [VirtualMachine::"VM1", StorageBucket::"Bucket1"]
+);
+
+// Auditors can only view resources
+permit (
+    principal in Role::"Auditor",
+    action == Action::"view",
+    resource
+);
+
+// Billing users can only manage billing
+permit (
+    principal in Role::"Billing",
+    action == Action::"manage_billing",
+    resource == Project::"ProjectA"
+);
+
+// Explicitly deny deletion for non-Admins
+forbid (
+    principal,
+    action == Action::"delete",
+    resource
+) unless { principal in Role::"Admin" };
+
+4. Policy Evaluation Examples
+Request 1: Can Bob (Developer) start/stop VM1?
+Policy: permit (Developer, start_stop, VirtualMachine)
+
+Result: ALLOW
+
+Request 2: Can Charlie (Auditor) delete Bucket1?
+Policy: forbid (non-Admins, delete, *)
+
+Result: DENY
+
+Request 3: Can Dave (Billing) view VM1?
+Policy: No matching permit for Billing users.
+
+Result: DENY (implicit deny)
+
+Request 4: Can Alice (Admin) delete VM1?
+Policy: permit (Admin, *, *)
+
+Result: ALLOW
