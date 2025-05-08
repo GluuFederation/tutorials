@@ -1,61 +1,42 @@
-Cloud Infrastructure (AWS/GCP/Azure)
+Cloud Infrastructure
 
 Admin (Full access)
-Developer (Deploy, read, but no deletion)
-Auditor (Read-only)
+Developer (create, update, view, but no deletion)
+Auditor (only view)
 
 // Admins can do anything
+@id("AdminCanDoAnything")
 permit (
-    principal in Role::"Admin",
-    action,
-    resource
+  principal in Jans::Role::"admin",
+  action,
+  resource
 );
 
 // Developers can create/view VMs and buckets, but not delete
+@id("DeveloperCanCreateUpdateView")
 permit (
-    principal in Role::"Developer",
-    action in [Action::"create", Action::"view", Action::"start_stop"],
-    resource in [VirtualMachine::"VM1", StorageBucket::"Bucket1"]
+  principal in Jans::Role::"developer",
+  action in [Jans::Action::"Create",
+  Jans::Action::"Update",
+  Jans::Action::"View"],
+  resource is Jans::VirtualMachine
 );
 
 // Auditors can only view resources
+@id("AuditorCanViewOnly")
 permit (
-    principal in Role::"Auditor",
-    action == Action::"view",
-    resource
-);
-
-// Billing users can only manage billing
-permit (
-    principal in Role::"Billing",
-    action == Action::"manage_billing",
-    resource == Project::"ProjectA"
+  principal in Jans::Role::"Auditor",
+  action == Jans::Action::"View",
+  resource
 );
 
 // Explicitly deny deletion for non-Admins
+@id("OnlyAdminCanDelete")
 forbid (
     principal,
-    action == Action::"delete",
+    action == Jans::Action::"Delete",
     resource
-) unless { principal in Role::"Admin" };
-
-4. Policy Evaluation Examples
-Request 1: Can Bob (Developer) start/stop VM1?
-Policy: permit (Developer, start_stop, VirtualMachine)
-
-Result: ALLOW
-
-Request 2: Can Charlie (Auditor) delete Bucket1?
-Policy: forbid (non-Admins, delete, *)
-
-Result: DENY
-
-Request 3: Can Dave (Billing) view VM1?
-Policy: No matching permit for Billing users.
-
-Result: DENY (implicit deny)
-
-Request 4: Can Alice (Admin) delete VM1?
-Policy: permit (Admin, *, *)
-
-Result: ALLOW
+)
+unless {
+   principal in Jans::Role::"admin"
+};
