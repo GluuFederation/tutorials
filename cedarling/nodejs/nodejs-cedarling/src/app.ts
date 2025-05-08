@@ -4,6 +4,7 @@ import logger from './utils/logger';
 import vmRoutes from './routes/vm.routes';
 import authRoutes from './routes/auth.routes';
 import { errorHandler } from './middlewares/errorHandler';
+import swaggerDocs from './utils/swagger';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -25,4 +26,5 @@ app.use(errorHandler);
 
 app.listen(PORT, () => {
   logger.info(`Server running on http://localhost:${PORT}`);
+  swaggerDocs(app, Number(PORT));
 });
