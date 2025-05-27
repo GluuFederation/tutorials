@@ -4,7 +4,7 @@ import logger from '../utils/logger';
 import { findUserById } from '../models/user.model';
 import { HttpException } from './errorHandler';
 
-export const authenticate = async (req: Request, res: Response, next: NextFunction) => {
+export const authenticate = async (req: any, res: Response, next: NextFunction) => {
   try {
     const authHeader = req.headers.authorization;
 
