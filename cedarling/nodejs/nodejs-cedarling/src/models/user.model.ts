@@ -4,7 +4,7 @@ type User = {
   email: string;
   password: string;
   createdAt: Date;
-  role: string;
+  role: string[];
 };
 
 // In-memory "database" for demo purposes
@@ -16,7 +16,7 @@ const users: User[] = [
     email: 'sachin@gluu.org',
     password: 'sachin@123',
     createdAt: new Date(),
-    role: 'admin',
+    role: ['admin'],
   },
   {
     id: '2',
@@ -24,7 +24,7 @@ const users: User[] = [
     email: 'dhoni@gluu.org',
     password: 'dhoni@123',
     createdAt: new Date(),
-    role: 'developer',
+    role: ['developer'],
   },
   {
     id: '3',
@@ -32,7 +32,7 @@ const users: User[] = [
     email: 'rohit@gluu.org',
     password: 'rohit@123',
     createdAt: new Date(),
-    role: 'auditor',
+    role: ['auditor'],
   },
 ];
 

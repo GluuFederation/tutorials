@@ -5,6 +5,7 @@ import vmRoutes from './routes/vm.routes';
 import authRoutes from './routes/auth.routes';
 import { errorHandler } from './middlewares/errorHandler';
 import swaggerDocs from './utils/swagger';
+import { cedarlingBootstrapProperties, cedarlingClient } from './utils/cedarlingUtils';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -25,6 +26,9 @@ app.use('/api/vm', vmRoutes);
 app.use(errorHandler);
 
 app.listen(PORT, () => {
+  cedarlingClient
+      .initialize(cedarlingBootstrapProperties)
+      .catch(console.error);
   logger.info(`Server running on http://localhost:${PORT}`);
   swaggerDocs(app, Number(PORT));
 });

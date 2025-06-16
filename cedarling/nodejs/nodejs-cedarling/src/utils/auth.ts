@@ -4,11 +4,24 @@ import { HttpException } from '../middlewares/errorHandler';
 
 const SECRET_KEY = process.env.JWT_SECRET ?? 'your-very-secure-secret-key';
 
-export const generateToken = (user: { id: string; role: string }): string => {
-  return jwt.sign(user, SECRET_KEY, {
-    algorithm: 'HS256',
-    expiresIn: '1h',
-  });
+// Simulating OAuth token
+export const generateToken = (user: { id: string; role: string[] }): string => {
+  return jwt.sign(
+    {
+      ...user,
+      iss: 'https://jans-ui.jans.io',
+      token_type: 'Bearer',
+      client_id: '01b8d980-b43c-455a-b8a6-98ba351bfe2b',
+      aud: '01b8d980-b43c-455a-b8a6-98ba351bfe2b',
+      jti: '6dV4hO0kQ3OaPJerJHNwgg',
+      sub: '5a6130b1-2380-4a0f-94df-8af2214e395a',
+    },
+    SECRET_KEY,
+    {
+      algorithm: 'HS256',
+      expiresIn: '1h',
+    },
+  );
 };
 
 export const verifyToken = (token: string): { id: string } => {

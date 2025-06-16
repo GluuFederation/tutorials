@@ -36,8 +36,8 @@ const router = Router();
  *                 type: string
  *                 format: password
  *             example:
- *               email: john@example.com
- *               password: password123
+ *               email: dhoni@gluu.org
+ *               password: dhoni@123
  *     responses:
  *       200:
  *         description: Login successful
