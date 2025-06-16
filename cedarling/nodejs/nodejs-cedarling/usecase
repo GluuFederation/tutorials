@@ -25,7 +25,7 @@ permit (
 // Auditors can only view resources
 @id("AuditorCanViewOnly")
 permit (
-  principal in Jans::Role::"Auditor",
+  principal in Jans::Role::"auditor",
   action == Jans::Action::"View",
   resource
 );
