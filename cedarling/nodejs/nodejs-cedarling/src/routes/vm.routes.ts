@@ -31,6 +31,8 @@ router.use(authenticate);
  *                 $ref: '#/components/schemas/VirtualMachine'
  *       401:
  *         description: Unauthorized (invalid credentials)
+ *       403:
+ *         description: Forbidden (not enough permissions)
  *       500:
  *         description: Internal server error
  */
@@ -65,6 +67,8 @@ router.get('/', (req, res) => {
  *         description: Bad request (missing or invalid fields)
  *       401:
  *         description: Unauthorized (invalid credentials)
+ *       403:
+ *         description: Forbidden (not enough permissions)
  *       500:
  *         description: Internal server error
  */
@@ -94,11 +98,42 @@ router.post('/', (req, res) => {
  *         description: Bad request (missing or invalid fields)
  *       401:
  *         description: Unauthorized (invalid credentials)
+ *       403:
+ *         description: Forbidden (not enough permissions)
  *       500:
  *         description: Internal server error
  */
 router.put('/', (req, res) => {
   logger.info('Updating virtual machines');
+  res.status(204).json({});
+});
+
+/**
+ * @swagger
+ * /api/vm/{id}:
+ *   delete:
+ *     summary: Delete a virtual machine by ID
+ *     tags: [Virtual Machines]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: Numeric ID of the virtual machine to delete
+ *     responses:
+ *       204:
+ *         description: Virtual machine deleted successfully
+ *       401:
+ *         description: Unauthorized (invalid credentials)
+ *       403:
+ *         description: Forbidden (not enough permissions)
+ *       500:
+ *         description: Internal server error
+ */
+router.delete('/:id', (req, res) => {
+  const vmId = parseInt(req.params.id);
+  logger.info(`Deleting virtual machine with ID: ${vmId}`);
   res.status(204).json({});
 });
 
