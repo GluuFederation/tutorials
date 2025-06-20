@@ -17,7 +17,7 @@ const router = Router();
  * @swagger
  * /api/auth/login:
  *   post:
- *     summary: Login an existing user
+ *     summary: Login an existing user, simulating oAuth token
  *     tags: [Auth]
  *     requestBody:
  *       required: true
@@ -100,6 +100,7 @@ router.post('/login', async (req, res, next) => {
           username: user.username,
           email: user.email,
           role: user.role,
+          limit: user.limit ?? '10',
         },
         token,
       },
