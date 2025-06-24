@@ -2,11 +2,11 @@
 
 ![node-js-blog](https://github.com/user-attachments/assets/54f2309a-c08e-4a41-b995-c52e3f4581db)
 
-This guide demonstrates how to build a Node JS application using a new approach to security: Token Based Access Control where developers authorize capabilities by presenting a bundle of JWT tokens to a policy engine, in this case the [the Janssen Project Cedarling](https://docs.jans.io/head/cedarling/cedarling-overview/). The Cedar policy syntax is very expressive. Developer can even express policies based on a person's role or group membership. And so that's just what we're going to do here... use TBAC to implement RBAC and ABAC. That may sound confusing, but carry on further for more details on why this makes sense!
+This guide demonstrates how to build a Node.js application using a new approach to security: Token-Based Access Control, where developers authorize capabilities by presenting a bundle of JWT tokens to a policy engine, in this case, the [Janssen Project Cedarling](https://docs.jans.io/head/cedarling/cedarling-overview/). The Cedar policy syntax is very expressive. A developer can even express policies based on a person's role or group membership. And that's exactly what we're going to do here: use TBAC to implement RBAC and ABAC. That may not sound very clear, but carry on further for more details on why this makes sense!
 
-# Sample Application: Cloud Infrastrcutre
+# Sample Application: Cloud Infrastructure
 
-For demo, we're going to use role-based access control (or "RBAC") and attribute-based access control (or "ABAC") to develop a sample application that allows users to create, update, and delete virtual machine. It's a very simple version of Digital Ocean APIs! For example, There is simple username password login simulating OAuth tokens. In your real application, you can add federated authentication via a standard OpenID Connect Provider. After authentication, Cedarling plays a role in authorization, which will take roles from the ID Token to authorize a user. Below are the roles which perform will perform the following actions and access virtual machine resources. If a user has enough permission, then allow the action; otherwise, deny.
+For demo, we're going to use role-based access control (or "RBAC") and attribute-based access control (or "ABAC") to develop a sample application that allows users to create, update, and delete virtual machines. It's a very simple version of Digital Ocean APIs! For example, a simple username and password login is simulating OAuth tokens. In your real application, you can add federated authentication via a standard OpenID Connect Provider. After authentication, Cedarling plays a role in authorization, which will take roles from the ID Token to authorize a user. Below are the roles which perform will perform the following actions and access virtual machine resources. If a user has enough permission, then allow the action; otherwise, deny.
 
 - Principals: Users with roles like `admin`, `developer`, and `auditor`.
 - Actions: `Create`, `Update`, `Delete`, and `View` virtual machines
@@ -60,7 +60,7 @@ We'll use the [Agama-Lab](https://cloud.gluu.org/agama-lab) Policy Designer to c
 
 1. Go to `Manage Policy Store > Policies > Add Policy > Text Editor`.
 
-1. Copy policies one by one, add in text editor, and save.
+1. Copy policies one by one, add to the text editor, and save.
 
    1. **Admin Policies** (full access):
       Admin can perform any action
@@ -74,7 +74,7 @@ We'll use the [Agama-Lab](https://cloud.gluu.org/agama-lab) Policy Designer to c
       );
       ```
 
-      Only admin can delete resources.
+      Only the admin can delete resources.
 
       ```js
       @id("OnlyAdminCanDelete")
@@ -90,7 +90,7 @@ We'll use the [Agama-Lab](https://cloud.gluu.org/agama-lab) Policy Designer to c
 
    2. **Developer Policies**:
 
-      Developers can create Virtual Machines within limit. Below is the example of attribute-based access control(ABAC) where we are authorizing user access based on `id_token.limit`.
+      Developers can create Virtual Machines within limits. Below is an example of attribute-based access control(ABAC) where we are authorizing user access based on `id_token.limit`.
 
       ```js
       @id("LimitDeveloperCreateAccess")
@@ -130,11 +130,11 @@ We'll use the [Agama-Lab](https://cloud.gluu.org/agama-lab) Policy Designer to c
 
 ## Step 4: Setup Trusted Issuer
 
-A trusted issuer is required to configure the cedarling. Where we can configure which token is using for user and workload authentication. `access_token` is for workload and `id_token` is for user authentication. The cedarling also validate the access token and id token so we need add configure for both tokens in token metadata. [More details](https://docs.jans.io/v1.3.0/cedarling/cedarling-jwt/#summary-of-jwt-validation-mechanisms)
+A trusted issuer is required to configure the Cedarling. We can configure which token is used for user and workload authentication. `access_token` is for workload and `id_token` is for user authentication. The cedarling also validates the access token and ID token, so we need to add configuration for both tokens in the token metadata. [More details](https://docs.jans.io/v1.3.0/cedarling/cedarling-jwt/#summary-of-jwt-validation-mechanisms)
 
 - Go to `Manage Policy Store > Trusted Issuer > Add Issuer`.
 
-- Add name, description and OpenID Configuration endpoint
+- Add name, description, and OpenID Configuration endpoint
 
 - Add token metadata
 
@@ -174,7 +174,7 @@ A trusted issuer is required to configure the cedarling. Where we can configure 
   }
   ```
 
-# Setting up a Node JS Application
+# Setting up a Node.js Application
 
 ## Step 1: Install the Cedarling WASM
 
@@ -182,7 +182,7 @@ A trusted issuer is required to configure the cedarling. Where we can configure 
 npm install @janssenproject/cedarling_wasm@0.0.131-nodejs
 ```
 
-You just need to add suffix `-nodejs` in current version to install nodejs cedarling version. By default it install web cedarling version.
+You just need to add the suffix `-nodejs` in the current version to install Node.js Cedarling version. By default, it installs the web cedarling version.
 
 ## Step 2: Configure the Cedarling
 
@@ -268,7 +268,7 @@ app.listen(PORT, () => {
 
 ## Step 5: Middleware for Authorization
 
-This node js middleware provides authorization functionality using the Cedarling client, with the ability to enforce authorization checks. The middleware build the request for cedarling with actions, resources and tokens and checks the cedarling authz results. This is just an example to protect route. you can write your own logic to protect resources as per your requirments with the help of cedarling client.
+This Node.js middleware provides authorization functionality using the Cedarling client, with the ability to enforce authorization checks. The middleware builds the request for cedarling with actions, resources, and tokens, and checks the cedarling authz results. This is just an example to protect the route. You can write your logic to protect resources as per your requirements with the help of the Cedarling client.
 
 ```js
 export const authenticate = async (
@@ -341,7 +341,7 @@ In the above example, there are 2 things:
 
 - First, we make a middleware `authenticate` which helps us to make an authorization request to the Cedarling WASM with Access Token and ID Token. Your ID Token should have a Role claim, and if you don't have a role, then you need to change the policy, which will act like ABAC.
 
-- Second, the `getAction` function helps to get correct action. There is request object which check the authorization for the action. In response, it returns a result where we get which policy is responsible for authorization, timestamp, and decision. Below is an example of the Create(or POST http request) action result. Use `result.decision` to authorize the request and show/hide elements.
+- Second, the `getAction` function helps to get the correct action. There is a request object that checks the authorization for the action. In response, it returns a result where we get which policy is responsible for authorization, timestamp, and decision. Below is an example of the Create(or POST HTTP request) action result. Use `result.decision` to authorize the request and show/hide elements.
 
 ```json
 {
@@ -399,11 +399,11 @@ Let's log in as an admin user and check the authorization. As per the above auth
 
 Log in with a `developer` role user and check the authorization.
 
-🟢 Developer with `limit`, can `Create` a VM. You can see video below, Dhoni is a developer user, and he has enough limit `limit: 1`.
+🟢 Developer with `limit`, can `Create` a VM. You can see the video below. Dhoni is a developer user, and he has a limit `limit: 1`.
 
 [nodejs-dhoni-developer-user.webm](https://github.com/user-attachments/assets/c71e991b-bc51-41ac-b356-d8c43da13fff)
 
-🔴 Developer with not limit cannnot `Create` a VM. You can see video below, Virat is a developer user with `limit: 0` means he cannot create new virtual machine.
+🔴 A developer with no limit cannot `Create` a VM. You can see the video below. Virat is a developer user with `limit: 0` means he cannot create a new virtual machine.
 
 [nodejs-virat-developer-user.webm](https://github.com/user-attachments/assets/28a5b49e-2dd2-4877-b112-7aca1f96ebe4)
 
