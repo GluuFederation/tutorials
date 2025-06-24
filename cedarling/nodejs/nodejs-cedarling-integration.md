@@ -1,4 +1,4 @@
-# Modernizing Authz in Node JS Backend API Apps
+# Using Cedar to Modernize Authz in A Node.js Backend
 
 ![node-js-blog](https://github.com/user-attachments/assets/54f2309a-c08e-4a41-b995-c52e3f4581db)
 
@@ -6,7 +6,7 @@ This guide demonstrates how to build a Node JS application using a new approach 
 
 # Sample Application: Cloud Infrastrcutre
 
-For demo, we're going to use role-based access control (or "RBAC") and attribute-based access control (or "ABAC") to develop a sample application that allows users to create, update, and delete virtual machine. It's a very simple version of Digital Ocean APIs! For example, There is simple username password login simulating OAuth tokens. In your real application, you can add federated authentication via a standard OpenID Connect Provider. After authentication, Cedarling plays a role in authorization, which will take roles from the ID Token to authorize a user. Below are the roles which perform will perform the following actions and access Task resources. If a user has enough permission, then allow the action; otherwise, deny.
+For demo, we're going to use role-based access control (or "RBAC") and attribute-based access control (or "ABAC") to develop a sample application that allows users to create, update, and delete virtual machine. It's a very simple version of Digital Ocean APIs! For example, There is simple username password login simulating OAuth tokens. In your real application, you can add federated authentication via a standard OpenID Connect Provider. After authentication, Cedarling plays a role in authorization, which will take roles from the ID Token to authorize a user. Below are the roles which perform will perform the following actions and access virtual machine resources. If a user has enough permission, then allow the action; otherwise, deny.
 
 - Principals: Users with roles like `admin`, `developer`, and `auditor`.
 - Actions: `Create`, `Update`, `Delete`, and `View` virtual machines
@@ -130,7 +130,7 @@ We'll use the [Agama-Lab](https://cloud.gluu.org/agama-lab) Policy Designer to c
 
 ## Step 4: Setup Trusted Issuer
 
-A trusted issuer is required to configure the cedarling. Where we can configure which token is using for user and workload authentication. `access_token` is for workload and `id_token` is for user authentication. The cedarling also validate the access token and id token so we need add configure for both tokens in token metadata. [Mode details](https://docs.jans.io/v1.3.0/cedarling/cedarling-jwt/#summary-of-jwt-validation-mechanisms)
+A trusted issuer is required to configure the cedarling. Where we can configure which token is using for user and workload authentication. `access_token` is for workload and `id_token` is for user authentication. The cedarling also validate the access token and id token so we need add configure for both tokens in token metadata. [More details](https://docs.jans.io/v1.3.0/cedarling/cedarling-jwt/#summary-of-jwt-validation-mechanisms)
 
 - Go to `Manage Policy Store > Trusted Issuer > Add Issuer`.
 
@@ -268,6 +268,8 @@ app.listen(PORT, () => {
 
 ## Step 5: Middleware for Authorization
 
+This node js middleware provides authorization functionality using the Cedarling client, with the ability to enforce authorization checks. The middleware build the request for cedarling with actions, resources and tokens and checks the cedarling authz results. This is just an example to protect route. you can write your own logic to protect resources as per your requirments with the help of cedarling client.
+
 ```js
 export const authenticate = async (
   req: Request,
@@ -318,4 +320,114 @@ export const authenticate = async (
     next(error);
   }
 };
+
+
+export const getAction = (req: Request): string => {
+  if (req.method === 'GET') {
+    return 'View';
+  } else if (req.method === 'POST') {
+    return 'Create';
+  } else if (req.method === 'PUT') {
+    return 'Update';
+  } else if (req.method === 'DELETE') {
+    return 'Delete';
+  } else {
+    return 'Invalid';
+  }
+};
 ```
+
+In the above example, there are 2 things:
+
+- First, we make a middleware `authenticate` which helps us to make an authorization request to the Cedarling WASM with Access Token and ID Token. Your ID Token should have a Role claim, and if you don't have a role, then you need to change the policy, which will act like ABAC.
+
+- Second, the `getAction` function helps to get correct action. There is request object which check the authorization for the action. In response, it returns a result where we get which policy is responsible for authorization, timestamp, and decision. Below is an example of the Create(or POST http request) action result. Use `result.decision` to authorize the request and show/hide elements.
+
+```json
+{
+  "id": "0197a15c-cee0-72da-905f-5800be68fc4b",
+  "request_id": "0197a15c-ced6-7653-b17d-257d50de663e",
+  "timestamp": "2025-06-24T15:25:03.520Z",
+  "log_kind": "Decision",
+  "policystore_id": "22942366f5ad4d8338514bc402d4b901b056051f2bed",
+  "policystore_version": "undefined",
+  "principal": ["User"],
+  "User": {},
+  "diagnostics": {
+    "reason": [
+      {
+        "id": "feac81b973836478ae6478ac63b59d4f2f6691dcddae",
+        "description": "LimitDeveloperCreateAccess"
+      }
+    ],
+    "errors": []
+  },
+  "action": "Jans::Action::\"Create\"",
+  "resource": "Jans::VirtualMachine::\"CloudInfrastructure\"",
+  "decision": "ALLOW",
+  "tokens": {
+    "id_token": {
+      "jti": "6dV4hO0kQ3OaPJerJHNwgg"
+    },
+    "access_token": {
+      "jti": "6dV4hO0kQ3OaPJerJHNwgg"
+    }
+  },
+  "decision_time_micro_sec": 7000,
+  "pdp_id": "a446ecda-b6aa-4ad5-9d0e-b7c09b1fb30e",
+  "application_id": "CloudInfrastructure"
+}
+```
+
+# Test Cases
+
+## Admin Authorization
+
+Let's log in as an admin user and check the authorization. As per the above authorization policies, admins can access any resource. As you can see in the video below, Sachin is an admin user, and he has the `admin` role.
+
+🟢 Admin can `Create` a VM
+
+🟢 Admin can `Update` a VM
+
+🟢 Admin can `Delete` a VM
+
+🟢 Admin can `View` a VM
+
+[node-admin-user.webm](https://github.com/user-attachments/assets/a4980f10-5395-4d3c-afa1-01530efcee30)
+
+## Developer Authorization
+
+Log in with a `developer` role user and check the authorization.
+
+🟢 Developer with `limit`, can `Create` a VM. You can see video below, Dhoni is a developer user, and he has enough limit `limit: 1`.
+
+[nodejs-dhoni-developer-user.webm](https://github.com/user-attachments/assets/c71e991b-bc51-41ac-b356-d8c43da13fff)
+
+🔴 Developer with not limit cannnot `Create` a VM. You can see video below, Virat is a developer user with `limit: 0` means he cannot create new virtual machine.
+
+[nodejs-virat-developer-user.webm](https://github.com/user-attachments/assets/28a5b49e-2dd2-4877-b112-7aca1f96ebe4)
+
+🟢 Developer can `Update` a VM
+
+🔴 Developer cannot `Delete` a VM
+
+🟢 Developer can `View` a VM
+
+## Auditor Authorization
+
+An auditor user can only view virtual machine resources.
+
+🟢 Auditor can only `View` a VM
+
+🔴 Auditor cannot `Create` a VM
+
+🔴 Auditor cannot `Update` a VM
+
+🔴 Auditor cannot `Delete` a VM
+
+[nodejs-auditor-user.webm](https://github.com/user-attachments/assets/b9049e02-d8ac-4398-97f6-eed99aa96796)
+
+For a complete implementation, reference the:
+
+- [Node JS Demo project](https://github.com/GluuFederation/tutorials/tree/nodejs-blog/cedarling/nodejs/nodejs-cedarling)
+- [Policy Store](https://raw.githubusercontent.com/kdhttps/pd-first/refs/heads/agama-lab-policy-designer/22942366f5ad4d8338514bc402d4b901b056051f2bed.json).
