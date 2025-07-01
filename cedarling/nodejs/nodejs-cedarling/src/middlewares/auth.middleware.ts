@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
-import { verifyToken } from '../utils/auth';
+import { getAction, verifyToken } from '../utils/auth';
 import logger from '../utils/logger';
 import { findUserById } from '../models/user.model';
 import { HttpException } from './errorHandler';
 import { cedarlingClient } from '../utils/cedarlingUtils';
 
-export const authenticate = async (req: any, res: Response, next: NextFunction) => {
+export const authenticate = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const authHeader = req.headers.authorization;
 
@@ -28,12 +28,12 @@ export const authenticate = async (req: any, res: Response, next: NextFunction) 
         access_token: token,
         id_token: token,
       },
-      action: `Jans::Action::"Compare"`,
+      action: `Jans::Action::"${getAction(req)}"`,
       resource: {
-        type: 'Jans::Application',
-        id: 'App',
-        app_id: 'App',
-        name: 'App',
+        type: 'Jans::VirtualMachine',
+        id: 'CloudInfrastructure',
+        app_id: 'CloudInfrastructure',
+        name: 'CloudInfrastructure',
         url: {
           host: 'jans.test',
           path: '/',
@@ -47,8 +47,11 @@ export const authenticate = async (req: any, res: Response, next: NextFunction) 
 
     const result = await cedarlingClient.authorize(request);
     logger.info(`Authentication result: ${result.decision}`);
-    // Attach user to request object
-    req.user = user;
+
+    if (!result.decision) {
+      throw new HttpException(403, 'Permission denied!');
+    }
+
     next();
   } catch (error) {
     logger.error(`Authentication failed: ${error}`);

@@ -5,6 +5,7 @@ type User = {
   password: string;
   createdAt: Date;
   role: string[];
+  limit?: number;
 };
 
 // In-memory "database" for demo purposes
@@ -25,6 +26,16 @@ const users: User[] = [
     password: 'dhoni@123',
     createdAt: new Date(),
     role: ['developer'],
+    limit: 1,
+  },
+  {
+    id: '4',
+    username: 'virat',
+    email: 'virat@gluu.org',
+    password: 'virat@123',
+    createdAt: new Date(),
+    role: ['developer'],
+    limit: 0,
   },
   {
     id: '3',
