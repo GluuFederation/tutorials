@@ -6,7 +6,7 @@ This guide demonstrates how to build a Node.js application using a new approach 
 
 # Sample Application: Cloud Infrastructure
 
-For demo, we're going to use role-based access control (or "RBAC") and attribute-based access control (or "ABAC") to develop a sample application that allows users to create, update, and delete virtual machines. It's a very simple version of Digital Ocean APIs! In sample application, we have a simple username and password login which is simulating OAuth tokens. In your real application, you can add federated authentication via a standard OpenID Connect Provider. After authentication, Cedarling plays a role in authorization, which will take roles from the ID Token to authorize a user. Below are the roles which perform will perform the following actions and access virtual machine resources. If a user has enough permission, then allow the action; otherwise, deny.
+For demo, we're going to use role-based access control (or "RBAC") and attribute-based access control (or "ABAC") to develop a sample application that allows users to create, update, and delete virtual machines. It's a very simple version of Digital Ocean APIs! In the sample application, we have a simple username and password login that simulates OAuth tokens. In your real application, you can add federated authentication via a standard OpenID Connect Provider. After authentication, Cedarling plays a role in authorization, which will take roles from the ID Token to authorize a user. Below are the roles which perform will perform the following actions and access virtual machine resources. If a user has enough permission, then allow the action; otherwise, deny.
 
 - Principals: Users with roles like `admin`, `developer`, and `auditor`.
 - Actions: `Create`, `Update`, `Delete`, and `View` virtual machines
@@ -20,7 +20,7 @@ Roles and Permissions:
 
 1. Developer:
 
-   - Can perform `Create` but should be limit > 0
+   - Can perform `Create` but limit should be > 0
    - Can perform `Update`, `View`
    - Cannot perform `Delete`
 
@@ -190,7 +190,7 @@ Initialize with these properties:
 
 ```js
 export const cedarlingBootstrapProperties = {
-  CEDARLING_APPLICATION_NAME: "TaskManager",
+  CEDARLING_APPLICATION_NAME: "CloudInfrastructure",
   CEDARLING_POLICY_STORE_URI: "<your_policy_store_URI>",
   CEDARLING_USER_AUTHZ: "enabled",
   CEDARLING_LOG_TYPE: "std_out",
@@ -337,11 +337,11 @@ export const getAction = (req: Request): string => {
 };
 ```
 
-In the above example, there are 2 things:
+In the above example:
 
-- First, we make a middleware `authenticate` which helps us to make an authorization request to the Cedarling WASM with Access Token and ID Token. Your ID Token should have a Role claim, and if you don't have a role, then you need to change the policy, which will act like ABAC.
-
-- Second, the `getAction` function helps to get the correct action. There is a request object that checks the authorization for the action. In response, it returns a result where we get which policy is responsible for authorization, timestamp, and decision. Below is an example of the Create(or POST HTTP request) action result. Use `result.decision` to authorize the request and show/hide elements.
+- We make a middleware `authenticate` which helps us to make an authorization request to the Cedarling WASM with Access Token and ID Token. Your ID Token should have a Role claim, and if you don't have a role, then you need to change the policy, which will act like ABAC.
+- The getAction function helps to get the correct action.
+- There is a `request` object that checks the authorization for the action. In response, it returns a result where we get which policy is responsible for authorization, timestamp, and decision. Below is an example of the Create(or POST HTTP request) action result. Use `result.decision` to authorize the request and show/hide elements.
 
 ```json
 {
