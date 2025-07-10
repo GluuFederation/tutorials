@@ -1,0 +1,54 @@
+Blog Platform
+
+Roles: Admin, Editor, Author, Reader
+Actions: Create, Edit, Delete, View
+Resources: Article (with an owner attribute)
+
+
+// Admins can do anything
+permit (
+    principal in Jans::Role::"Admin",
+    action,
+    resource
+);
+
+// Editors can edit or view any article, cannot create new article
+permit (
+    principal in Jans::Role::"Editor",
+    action in [Jans::Action::"Edit", Jans::Action::"View"],
+    resource is Jans::Article
+);
+
+// Authors can edit/delete/view their own articles
+permit (
+    principal in Jans::Role::"Author",
+    action in [Jans::Action::"Create", Jans::Action::"Edit", Jans::Action::"Delete", Jans::Action::"View"],
+    resource is Jans::Article
+) when {
+    principal.id == resource.owner
+};
+
+// Readers can only view articles
+permit (
+    principal in Jans::Role::"Reader",
+    action == Jans::Action::"View",
+    resource is Jans::Article
+);
+
+// Basic plan users can only do conversation with AI
+permit (
+    principal,
+    action in [Jans::Action::"Conversation"],
+    resource is Jans::AI
+) when {
+    principal.plan == "basic"    
+};
+
+// Advance plan users can access AI to generate image and videos
+permit (
+    principal,
+    action in [Jans::Action::"GenerateImage", Jans::Action::"GenerateVideo"],
+    resource is Jans::AI
+) when {
+    principal.plan == "advance"    
+};
