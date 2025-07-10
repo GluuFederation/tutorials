@@ -6,6 +6,7 @@ Resources: Article (with an owner attribute)
 
 
 // Admins can do anything
+@id("AdminCanDoAnything")
 permit (
     principal in Jans::Role::"Admin",
     action,
@@ -13,6 +14,7 @@ permit (
 );
 
 // Editors can edit or view any article, cannot create new article
+@id("EditorCanEditViewArticleNotCreate")
 permit (
     principal in Jans::Role::"Editor",
     action in [Jans::Action::"Edit", Jans::Action::"View"],
@@ -39,7 +41,7 @@ permit (
 permit (
     principal,
     action in [Jans::Action::"Conversation"],
-    resource is Jans::AI
+    resource is Jans::AItools
 ) when {
     principal.plan == "basic"    
 };
@@ -48,7 +50,7 @@ permit (
 permit (
     principal,
     action in [Jans::Action::"GenerateImage", Jans::Action::"GenerateVideo"],
-    resource is Jans::AI
+    resource is Jans::AItools
 ) when {
     principal.plan == "advance"    
 };
