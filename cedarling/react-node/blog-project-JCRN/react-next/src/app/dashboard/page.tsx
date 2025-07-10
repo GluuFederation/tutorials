@@ -2,8 +2,9 @@
 export default function DashboardHome() {
   return (
     <div>
-      <h1>Dashboard Home</h1>
-      <p>Welcome to the dashboard. Use the sidebar to navigate.</p>
+      <h1>Blogging Platform</h1>
+      <p>Protected with the janssen cedarling.</p>
+      <p>Post your first blog.</p>
     </div>
   );
 }

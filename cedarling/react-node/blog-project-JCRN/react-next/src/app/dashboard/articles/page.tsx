@@ -4,33 +4,37 @@ import { makeUserAuthentication } from "@/factories/makeUserAuthentication";
 import { useCedarling } from "@/factories/useCedarling";
 import { AuthorizeResult } from "@janssenproject/cedarling_wasm";
 import { useState } from "react";
-import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
+import {
+  FaEdit,
+  FaPlus,
+  FaTrash,
+  FaTools,
+  FaVideo,
+  FaImage,
+} from "react-icons/fa";
 
 export default function TasksPage() {
   const initialTasks = [
     {
       id: 1,
-      name: "Design Home Page",
-      description: "Create the layout and design for the homepage.",
-      status: "In Progress",
+      name: "Janssen Project is a Digital Public Good",
+      content:
+        "Citizens want to use the Internet to connect to their government for a myriad of reasons...",
+      status: "Draft",
     },
     {
       id: 2,
-      name: "Implement User Authentication",
-      description: "Add login and signup functionality.",
-      status: "Pending",
+      name: "Multi Master Multi-Cluster LDAP (OpenDJ) replication in Kubernetes? A controversial view",
+      content:
+        "OpenDJ is a Lightweight Directory Access Protocol (LDAP) compliant distributed directory written in Java...",
+      status: "Draft",
     },
     {
       id: 3,
-      name: "Test Payment Gateway",
-      description: "Ensure the payment gateway integration works correctly.",
-      status: "Completed",
-    },
-    {
-      id: 4,
-      name: "Optimize Database Queries",
-      description: "Improve the performance of database queries.",
-      status: "Completed",
+      name: "Gluu Flex Roadmap",
+      content:
+        "As Flex is a commercial distribution of the Janssen Project, check the Janssen Nightly Build changelog and issues....",
+      status: "Published",
     },
   ];
   const [tasks] = useState(initialTasks);
@@ -112,46 +116,56 @@ export default function TasksPage() {
 
   return (
     <div className="p-4">
-      <h1>Tasks</h1>
+      <h1>Articles</h1>
       <button className="btn btn-primary mb-3" onClick={handleAdd}>
         <FaPlus className="me-2" />
-        Add Task
+        Write new Articles
       </button>
-      <table className="table table-striped table-bordered">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {tasks.map((task) => (
-            <tr key={task.id}>
-              <td>{task.id}</td>
-              <td>{task.name}</td>
-              <td>{task.description}</td>
-              <td>{task.status}</td>
-              <td>
-                <button
-                  className="btn btn-sm btn-warning me-2"
-                  onClick={() => handleUpdate()}
-                >
-                  <FaEdit />
-                </button>
-                <button
-                  className="btn btn-sm btn-danger"
-                  onClick={() => handleDelete()}
-                >
-                  <FaTrash />
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <button
+        className="btn btn-link btn-outline-primary mb-3 ms-3"
+        onClick={handleAdd}
+      >
+        <FaTools className="me-2" />
+        AI agent
+      </button>
+      <button
+        className="btn btn-link btn-outline-primary mb-3 ms-3"
+        onClick={handleAdd}
+      >
+        <FaImage className="me-2" />
+        Generate images
+      </button>
+      <button
+        className="btn btn-link btn-outline-primary mb-3 ms-3"
+        onClick={handleAdd}
+      >
+        <FaVideo className="me-2" />
+        Generate videos
+      </button>
+
+      {tasks.map((task) => (
+        <div className="card mt-2" key={task.id}>
+          <div className="card-body">
+            <h5 className="card-title">{task.name}</h5>
+            <p className="card-text">{task.content}</p>
+
+            <button
+              className="btn btn-sm btn-outline-info me-2"
+              onClick={() => handleUpdate()}
+              title="Edit article"
+            >
+              <FaEdit />
+            </button>
+            <button
+              className="btn btn-sm btn-outline-danger"
+              onClick={() => handleDelete()}
+              title="Delete article"
+            >
+              <FaTrash />
+            </button>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
