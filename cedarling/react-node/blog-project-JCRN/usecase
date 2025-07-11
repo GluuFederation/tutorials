@@ -22,6 +22,7 @@ permit (
 );
 
 // Authors can edit/delete/view their own articles
+@id("AuthorCanCreateEditDeleteView")
 permit (
     principal in Jans::Role::"Author",
     action in [Jans::Action::"Create", Jans::Action::"Edit", Jans::Action::"Delete", Jans::Action::"View"],
@@ -31,6 +32,7 @@ permit (
 };
 
 // Readers can only view articles
+@id("ReadersCanOnlyView")
 permit (
     principal in Jans::Role::"Reader",
     action == Jans::Action::"View",
@@ -38,6 +40,7 @@ permit (
 );
 
 // Basic plan users can only do conversation with AI
+@id("BasicPlanAccessAIConversationTool")
 permit (
     principal,
     action in [Jans::Action::"Conversation"],
@@ -47,6 +50,7 @@ permit (
 };
 
 // Advance plan users can access AI to generate image and videos
+@id("AdvancePlanAccessAIGenerateImageVideoTool")
 permit (
     principal,
     action in [Jans::Action::"GenerateImage", Jans::Action::"GenerateVideo"],
