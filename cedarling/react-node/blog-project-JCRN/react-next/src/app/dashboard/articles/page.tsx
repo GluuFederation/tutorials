@@ -52,10 +52,10 @@ export default function TasksPage() {
       },
       action: `Jans::Action::"${action}"`,
       resource: {
-        type: "Jans::Task",
-        id: "App",
-        app_id: "App",
-        name: "App",
+        type: "Jans::AItools",
+        id: "JansBlogPlatform",
+        app_id: "JansBlogPlatform",
+        name: "JansBlogPlatform",
         url: {
           host: "jans.test",
           path: "/",
@@ -114,6 +114,51 @@ export default function TasksPage() {
     }
   };
 
+  const handleAIAgentConversation = async () => {
+    try {
+      const result = await cedarlingRequest("Conversation");
+      console.log(result);
+      if (result.decision) {
+        alert("You can access AI chat!");
+      } else {
+        alert("You are not allowed to access AI chat!");
+      }
+    } catch (e) {
+      alert("You are not allowed to access AI chat!");
+      console.log(e);
+    }
+  };
+
+  const handleAIAgentImageGenerate = async () => {
+    try {
+      const result = await cedarlingRequest("GenerateImage");
+      console.log(result);
+      if (result.decision) {
+        alert("You can access Generate Image tool!");
+      } else {
+        alert("You are not allowed to access Generate Image tool!");
+      }
+    } catch (e) {
+      alert("You are not allowed to access Generate Image tool!");
+      console.log(e);
+    }
+  };
+
+  const handleAIAgentVideoGenerate = async () => {
+    try {
+      const result = await cedarlingRequest("Conversation");
+      console.log(result);
+      if (result.decision) {
+        alert("You can access Generate Video tool!");
+      } else {
+        alert("You are not allowed to access Generate Video tool!");
+      }
+    } catch (e) {
+      alert("You are not allowed to access Generate Video tool!");
+      console.log(e);
+    }
+  };
+
   return (
     <div className="p-4">
       <h1>Articles</h1>
@@ -123,21 +168,21 @@ export default function TasksPage() {
       </button>
       <button
         className="btn btn-link btn-outline-primary mb-3 ms-3"
-        onClick={handleAdd}
+        onClick={handleAIAgentConversation}
       >
         <FaTools className="me-2" />
         AI agent
       </button>
       <button
         className="btn btn-link btn-outline-primary mb-3 ms-3"
-        onClick={handleAdd}
+        onClick={handleAIAgentImageGenerate}
       >
         <FaImage className="me-2" />
         Generate images
       </button>
       <button
         className="btn btn-link btn-outline-primary mb-3 ms-3"
-        onClick={handleAdd}
+        onClick={handleAIAgentVideoGenerate}
       >
         <FaVideo className="me-2" />
         Generate videos

@@ -31,8 +31,11 @@ export default function DashboardLayout({
         {/* Sidebar */}
         <div className="col-md-2 bg-light vh-100 p-3">
           <h2 className="mb-4">Next JS</h2>
-          <h6 className="mb-4">{user.email}</h6>
-          <h6 className="mb-4">{user.roles && user.roles.map((r) => r)}</h6>
+          <h6>{user.email}</h6>
+          <h6 className="text-secondary">
+            {user.roles && user.roles.map((r) => r)}
+          </h6>
+          <i className="text-secondary mb-4">Plan: {user.plan}</i>
           <ul className="nav flex-column">
             <li className="nav-item">
               <Link href="/dashboard/articles" className="nav-link">

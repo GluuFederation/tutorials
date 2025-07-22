@@ -16,6 +16,7 @@ const userManagerSettings: UserManagerSettings = {
   automaticSilentRenew: true,
   validateSubOnSilentRenew: true,
   userStore: new WebStorageStateStore({ store: new InMemoryWebStorage() }),
+  acr_values: "basic",
 };
 const userManager = new UserManager(userManagerSettings);
 const userAuthentication = new UserAuthentication(userManager);

@@ -49,12 +49,12 @@ permit (
     principal.plan == "basic"    
 };
 
-// Advance plan users can access AI to generate image and videos
-@id("AdvancePlanAccessAIGenerateImageVideoTool")
+// Premium plan users can access AI to generate image and videos
+@id("PremiumPlanAccessAIGenerateImageVideoTool")
 permit (
     principal,
     action in [Jans::Action::"GenerateImage", Jans::Action::"GenerateVideo"],
     resource is Jans::AItools
 ) when {
-    principal.plan == "advance"    
+    principal.plan == "premium"    
 };

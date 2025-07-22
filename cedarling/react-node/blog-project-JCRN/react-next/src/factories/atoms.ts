@@ -6,4 +6,5 @@ export const accountAtom = atom({
   name: "",
   roles: [],
   userId: "",
+  plan: "",
 });

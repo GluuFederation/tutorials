@@ -41,6 +41,7 @@ export default function LoginPage() {
         name: decoded_id_token.name,
         roles: decoded_id_token.role,
         userId: decoded_id_token.sub,
+        plan: decoded_id_token.plan,
       });
       return router.push("/dashboard");
     } catch (e) {
