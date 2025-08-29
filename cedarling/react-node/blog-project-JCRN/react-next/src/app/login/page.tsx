@@ -1,6 +1,6 @@
 // app/login/page.js
 "use client";
-
+import axios from "axios";
 import { makeUserAuthentication } from "@/factories/makeUserAuthentication";
 import { parseJwt } from "@/factories/parseJWT";
 import { useRouter } from "next/navigation";
@@ -20,7 +20,8 @@ export default function LoginPage() {
 
   const login = async () => {
     try {
-      return auth.signinRedirect(loginPrompt.current);
+      window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/login`;
+      return;
     } catch (e) {
       console.error(e);
     }
@@ -48,20 +49,51 @@ export default function LoginPage() {
       console.error("Failed to authenticate!", e);
     }
   }
+  const checkUser = async () => {
+    try {
+      // const redirectUrl: any = getRedirectUrl();
+      const response: any = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/user/me`
+      );
+
+      console.log("User created:", response.data);
+
+      // setAccount({
+      //   ...account,
+      //   isAuthenticate: true,
+      //   email: decoded_id_token.email,
+      //   name: decoded_id_token.name,
+      //   roles: decoded_id_token.role,
+      //   userId: decoded_id_token.sub,
+      //   plan: decoded_id_token.plan,
+      // });
+
+      return router.push("/dashboard");
+    } catch (err) {
+      console.error("Backend token exchange failed:", err);
+      login();
+    }
+  };
 
   useEffect(() => {
-    if (error) {
-      return () => undefined;
-    }
-    const code = searchParams?.get("code");
-    const errorDescription = searchParams?.get("error_description");
-    if (code) {
-      checkCodeAndGetToken();
-    } else if (errorDescription) {
-      setError(errorDescription);
-      loginPrompt.current = "login";
+    if (!error) {
+      checkUser();
     }
   }, []);
+
+  // useEffect(() => {
+  //   if (error) {
+  //     return () => undefined;
+  //   }
+  //   const code = searchParams?.get("code");
+  //   const errorDescription = searchParams?.get("error_description");
+  //   if (code) {
+  //     checkCodeAndGetToken();
+  //   } else if (errorDescription) {
+  //     setError(errorDescription);
+  //     loginPrompt.current = "login";
+  //   }
+  // }, []);
 
   return (
     <div className="container d-flex justify-content-center align-items-center vh-100">

@@ -7,13 +7,11 @@ import { cedarlingClient } from '../utils/cedarlingUtils';
 
 export const authenticate = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const authHeader = req.headers.authorization;
-
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    const token = req.cookies.token;
+    if (!token) {
       throw new HttpException(401, 'Authentication token missing');
     }
 
-    const token = authHeader.split(' ')[1];
     const decoded = verifyToken(token);
     const user = await findUserById(decoded.id);
 
@@ -23,34 +21,34 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
     logger.info(`Token ${token} Decoded ${JSON.stringify(decoded)}`);
 
     // Cedarling authorization
-    const request = {
-      tokens: {
-        access_token: token,
-        id_token: token,
-      },
-      action: `Jans::Action::"${getAction(req)}"`,
-      resource: {
-        type: 'Jans::VirtualMachine',
-        id: 'CloudInfrastructure',
-        app_id: 'CloudInfrastructure',
-        name: 'CloudInfrastructure',
-        url: {
-          host: 'jans.test',
-          path: '/',
-          protocol: 'http',
-        },
-      },
-      context: {},
-    };
+    // const request = {
+    //   tokens: {
+    //     access_token: token,
+    //     id_token: token,
+    //   },
+    //   action: `Jans::Action::"${getAction(req)}"`,
+    //   resource: {
+    //     type: 'Jans::VirtualMachine',
+    //     id: 'CloudInfrastructure',
+    //     app_id: 'CloudInfrastructure',
+    //     name: 'CloudInfrastructure',
+    //     url: {
+    //       host: 'jans.test',
+    //       path: '/',
+    //       protocol: 'http',
+    //     },
+    //   },
+    //   context: {},
+    // };
 
-    logger.info(`Request: ${JSON.stringify(request)}`);
+    // logger.info(`Request: ${JSON.stringify(request)}`);
 
-    const result = await cedarlingClient.authorize(request);
-    logger.info(`Authentication result: ${result.decision}`);
+    // const result = await cedarlingClient.authorize(request);
+    // logger.info(`Authentication result: ${result.decision}`);
 
-    if (!result.decision) {
-      throw new HttpException(403, 'Permission denied!');
-    }
+    // if (!result.decision) {
+    //   throw new HttpException(403, 'Permission denied!');
+    // }
 
     next();
   } catch (error) {
