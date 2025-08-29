@@ -102,3 +102,4 @@ test-results/
 # Optional configuration files
 .eslintrc.local.js
 .prettierrc.local.js
+nginx/certs/*
