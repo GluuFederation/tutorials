@@ -7,6 +7,16 @@ import querystring from 'querystring';
 import { generateCodeChallenge, generateCodeVerifier } from '../utils/pkceUtils';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
+import { User } from '../utils/types';
+
+declare module 'express-session' {
+  interface SessionData {
+    access_token: string;
+    id_token: string;
+    refresh_token: string;
+    user: User;
+  }
+}
 
 const router = Router();
 
@@ -119,7 +129,12 @@ router.get('/callback', async (req, res, next) => {
     );
 
     const { access_token, id_token, refresh_token } = response.data;
-    const decodedIDTOken = jwtDecode(id_token);
+    const decodedIDTOken = jwtDecode(id_token) as User;
+    req.session!.access_token = access_token;
+    req.session!.id_token = id_token;
+    req.session!.refresh_token = refresh_token;
+    req.session!.user = decodedIDTOken;
+    logger.info(`Decoded ID Token: ${JSON.stringify(decodedIDTOken)}`);
 
     const token = generateToken(decodedIDTOken.sub as string);
 

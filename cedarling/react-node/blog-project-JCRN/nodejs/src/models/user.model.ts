@@ -20,7 +20,7 @@ const users: User[] = [
     role: ['admin'],
   },
   {
-    id: '2',
+    id: 'NJjbmVFpBjBL7x29TvYMmCBO87Dtl0WrBtsCwjuTt6Y',
     username: 'dhoni',
     email: 'dhoni@gluu.org',
     password: 'dhoni@123',

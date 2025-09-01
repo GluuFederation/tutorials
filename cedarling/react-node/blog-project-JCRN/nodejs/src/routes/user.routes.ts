@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import logger from '../utils/logger';
 import { authenticate } from '../middlewares/auth.middleware';
+import { HttpException } from '../middlewares/errorHandler';
 
 const router = Router();
 
@@ -36,11 +37,20 @@ router.use(authenticate);
  *         description: Internal server error
  */
 router.get('/me', (req, res) => {
-  logger.info('Fetching user information');
-  res.json({
-    id: 1,
-    role: 'admin',
-  });
+  try {
+    logger.info('Fetching user information');
+    const sessionUser = req.session!.user;
+    logger.info(`/me Session User: ${JSON.stringify(sessionUser)}`);
+    res.json({
+      id: sessionUser?.sub,
+      role: sessionUser?.role,
+      email: sessionUser?.email,
+      name: sessionUser?.name,
+    });
+  } catch (err: Error | any) {
+    logger.error(err.response?.data || err.message);
+    throw new HttpException(500, err.response?.data || err.message);
+  }
 });
 
 /**

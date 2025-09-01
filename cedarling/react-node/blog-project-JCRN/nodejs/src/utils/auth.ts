@@ -5,7 +5,6 @@ import { Request } from 'express';
 
 const SECRET_KEY = process.env.JWT_SECRET ?? 'your-very-secure-secret-key';
 
-// Simulating OAuth token
 export const generateToken = (id: string): string => {
   return jwt.sign(
     {

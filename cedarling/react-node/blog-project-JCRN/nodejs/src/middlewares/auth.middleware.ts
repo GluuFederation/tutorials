@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { getAction, verifyToken } from '../utils/auth';
+import { verifyToken } from '../utils/auth';
 import logger from '../utils/logger';
-import { findUserById } from '../models/user.model';
 import { HttpException } from './errorHandler';
 import { cedarlingClient } from '../utils/cedarlingUtils';
 
@@ -13,12 +12,17 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
     }
 
     const decoded = verifyToken(token);
-    const user = await findUserById(decoded.id);
-
-    if (!user) {
-      throw new HttpException(401, 'User not found');
-    }
     logger.info(`Token ${token} Decoded ${JSON.stringify(decoded)}`);
+
+    const sessionUser = req.session!.user;
+    logger.info(`Session User: ${JSON.stringify(sessionUser)}`);
+    if (!sessionUser) {
+      throw new HttpException(401, 'User not found in session');
+    }
+
+    if (sessionUser && sessionUser.sub != decoded.id) {
+      throw new HttpException(403, 'Invalid user');
+    }
 
     // Cedarling authorization
     // const request = {
