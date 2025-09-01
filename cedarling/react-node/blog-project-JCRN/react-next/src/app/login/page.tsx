@@ -1,21 +1,14 @@
 // app/login/page.js
 "use client";
 import axios from "axios";
-import { makeUserAuthentication } from "@/factories/makeUserAuthentication";
-import { parseJwt } from "@/factories/parseJWT";
 import { useRouter } from "next/navigation";
-import { User } from "oidc-client-ts";
-import { useEffect, useRef, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useAtom } from "jotai";
 import { accountAtom } from "@/factories/atoms";
 
 export default function LoginPage() {
-  const auth = makeUserAuthentication();
-  const loginPrompt = useRef<undefined | string>(undefined);
   const router = useRouter();
   const [error, setError] = useState("");
-  const searchParams = useSearchParams();
   const [account, setAccount] = useAtom(accountAtom);
 
   const login = async () => {
@@ -27,28 +20,6 @@ export default function LoginPage() {
     }
   };
 
-  async function checkCodeAndGetToken() {
-    try {
-      // validate code
-      await auth.verifyCodeAndGetAccessToken();
-
-      const user = (await auth.getUser()) as User;
-      const decoded_id_token = parseJwt(user.id_token as string);
-      console.log(decoded_id_token);
-      setAccount({
-        ...account,
-        isAuthenticate: true,
-        email: decoded_id_token.email,
-        name: decoded_id_token.name,
-        roles: decoded_id_token.role,
-        userId: decoded_id_token.sub,
-        plan: decoded_id_token.plan,
-      });
-      return router.push("/dashboard");
-    } catch (e) {
-      console.error("Failed to authenticate!", e);
-    }
-  }
   const checkUser = async () => {
     try {
       // const redirectUrl: any = getRedirectUrl();
@@ -57,16 +28,16 @@ export default function LoginPage() {
       );
 
       console.log("User created:", response.data);
+      const decoded_id_token = response.data;
 
-      // setAccount({
-      //   ...account,
-      //   isAuthenticate: true,
-      //   email: decoded_id_token.email,
-      //   name: decoded_id_token.name,
-      //   roles: decoded_id_token.role,
-      //   userId: decoded_id_token.sub,
-      //   plan: decoded_id_token.plan,
-      // });
+      setAccount({
+        ...account,
+        isAuthenticate: true,
+        email: decoded_id_token.email,
+        name: decoded_id_token.name,
+        roles: decoded_id_token.role,
+        userId: decoded_id_token.sub,
+      });
 
       return router.push("/dashboard");
     } catch (err) {
@@ -80,20 +51,6 @@ export default function LoginPage() {
       checkUser();
     }
   }, []);
-
-  // useEffect(() => {
-  //   if (error) {
-  //     return () => undefined;
-  //   }
-  //   const code = searchParams?.get("code");
-  //   const errorDescription = searchParams?.get("error_description");
-  //   if (code) {
-  //     checkCodeAndGetToken();
-  //   } else if (errorDescription) {
-  //     setError(errorDescription);
-  //     loginPrompt.current = "login";
-  //   }
-  // }, []);
 
   return (
     <div className="container d-flex justify-content-center align-items-center vh-100">
