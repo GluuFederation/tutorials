@@ -40,7 +40,7 @@ export const getAction = (req: Request): string => {
   } else if (req.method === 'POST') {
     return 'Create';
   } else if (req.method === 'PUT') {
-    return 'Update';
+    return 'Edit';
   } else if (req.method === 'DELETE') {
     return 'Delete';
   } else {

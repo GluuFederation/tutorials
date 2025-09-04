@@ -46,6 +46,7 @@ router.get('/me', (req, res) => {
       role: sessionUser?.role,
       email: sessionUser?.email,
       name: sessionUser?.name,
+      plan: sessionUser?.plan,
     });
   } catch (err: Error | any) {
     logger.error(err.response?.data || err.message);

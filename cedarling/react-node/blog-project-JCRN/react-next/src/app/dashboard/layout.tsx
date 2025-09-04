@@ -16,7 +16,7 @@ export default function DashboardLayout({
   const router = useRouter();
 
   const logout = () => {
-    auth.signoutRedirect();
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/logout`;
   };
 
   useEffect(() => {

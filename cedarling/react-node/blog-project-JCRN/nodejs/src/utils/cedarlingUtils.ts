@@ -2,16 +2,19 @@ import { init, Cedarling, AuthorizeResult } from '@janssenproject/cedarling_wasm
 import logger from './logger';
 
 export const cedarlingBootstrapProperties = {
-  CEDARLING_APPLICATION_NAME: 'CloudInfrastructure',
+  CEDARLING_APPLICATION_NAME: 'JansBlogPlatform',
   CEDARLING_POLICY_STORE_URI:
-    'https://raw.githubusercontent.com/kdhttps/pd-first/refs/heads/agama-lab-policy-designer/22942366f5ad4d8338514bc402d4b901b056051f2bed.json',
+    'https://raw.githubusercontent.com/kdhttps/pd-first/refs/heads/agama-lab-policy-designer/e3a8d6281e8538a0977bf544428c260004601bc289ff.json',
   CEDARLING_USER_AUTHZ: 'enabled',
   CEDARLING_LOG_TYPE: 'std_out',
-  CEDARLING_LOG_LEVEL: 'INFO',
+  CEDARLING_LOG_LEVEL: 'TRACE',
   CEDARLING_LOG_TTL: 120,
   CEDARLING_PRINCIPAL_BOOLEAN_OPERATION: {
     '===': [{ var: 'Jans::User' }, 'ALLOW'],
   },
+  CEDARLING_JWT_SIG_VALIDATION: 'disabled',
+  CEDARLING_JWT_STATUS_VALIDATION: 'disabled',
+  CEDARLING_JWT_SIGNATURE_ALGORITHMS_SUPPORTED: ['RS256'],
 };
 
 class CedarlingClient {
