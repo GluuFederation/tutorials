@@ -36,7 +36,7 @@ export default function LoginPage() {
         email: decoded_id_token.email,
         name: decoded_id_token.name,
         roles: decoded_id_token.role,
-        userId: decoded_id_token.sub,
+        userId: decoded_id_token.id,
         plan: decoded_id_token.plan,
       });
 

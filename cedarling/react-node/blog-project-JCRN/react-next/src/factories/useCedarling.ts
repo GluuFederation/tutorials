@@ -6,7 +6,7 @@ import { AuthorizeResult } from "@janssenproject/cedarling_wasm";
 export function useCedarling() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
-  const authorize = useCallback(
+  const authorize_unsigned = useCallback(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async (request: any): Promise<AuthorizeResult> => {
       setIsLoading(true);
@@ -14,15 +14,15 @@ export function useCedarling() {
       try {
         console.log("Enforcing Cedarling authorization");
         console.log("Request: ", request);
-        console.log(
-          "Decoded idToken: ",
-          parseJwt(request.tokens.id_token as string)
-        );
-        console.log(
-          "Decoded accessToken: ",
-          parseJwt(request.tokens.access_token as string)
-        );
-        return await cedarlingClient.authorize(request);
+        // console.log(
+        //   "Decoded idToken: ",
+        //   parseJwt(request.tokens.id_token as string)
+        // );
+        // console.log(
+        //   "Decoded accessToken: ",
+        //   parseJwt(request.tokens.access_token as string)
+        // );
+        return await cedarlingClient.authorize_unsigned(request);
       } catch (err) {
         const error =
           err instanceof Error ? err : new Error("Authorization failed");
@@ -34,5 +34,5 @@ export function useCedarling() {
     },
     []
   );
-  return { authorize, isLoading, error };
+  return { authorize_unsigned, isLoading, error };
 }

@@ -12,6 +12,8 @@ import {
   FaVideo,
   FaImage,
 } from "react-icons/fa";
+import { accountAtom } from "@/factories/atoms";
+import { useAtom } from "jotai";
 
 export default function TasksPage() {
   const initialTasks = [
@@ -38,24 +40,32 @@ export default function TasksPage() {
     },
   ];
   const [tasks] = useState(initialTasks);
-  const { authorize } = useCedarling();
-  const userAuthentication = makeUserAuthentication();
-
+  const { authorize_unsigned } = useCedarling();
+  const [account, setAccount] = useAtom(accountAtom);
+  console.log("Account from atom:", account);
   const cedarlingRequest = async (action: string) => {
-    const idToken = await userAuthentication.getIdToken();
-    const accessToken = await userAuthentication.getAccessToken();
+    const principals = [
+      {
+        cedar_entity_mapping: {
+          entity_type: "Jans::User",
+          id: account.userId,
+          role: account.roles,
+        },
+        role: account.roles,
+        sub: account.userId,
+        plan: account.plan,
+      },
+    ];
 
     const request = {
-      tokens: {
-        access_token: accessToken,
-        id_token: idToken,
-      },
+      principals,
       action: `Jans::Action::"${action}"`,
       resource: {
-        type: "Jans::AItools",
-        id: "JansBlogPlatform",
-        app_id: "JansBlogPlatform",
         name: "JansBlogPlatform",
+        cedar_entity_mapping: {
+          entity_type: "Jans::AItools",
+          id: "JansBlogPlatform",
+        },
         url: {
           host: "jans.test",
           path: "/",
@@ -65,7 +75,7 @@ export default function TasksPage() {
       context: {},
     };
 
-    const result: AuthorizeResult = await authorize(request);
+    const result: AuthorizeResult = await authorize_unsigned(request);
     return result;
   };
 
@@ -143,7 +153,7 @@ export default function TasksPage() {
 
   const handleAIAgentVideoGenerate = async () => {
     try {
-      const result = await cedarlingRequest("Conversation");
+      const result = await cedarlingRequest("GenerateVideo");
       console.log(result);
       if (result.decision) {
         alert("You can access Generate Video tool!");
@@ -168,7 +178,7 @@ export default function TasksPage() {
         onClick={handleAIAgentConversation}
       >
         <FaTools className="me-2" />
-        AI agent
+        Ask AI
       </button>
       <button
         className="btn btn-link btn-outline-primary mb-3 ms-3"

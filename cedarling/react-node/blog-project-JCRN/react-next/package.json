@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@janssenproject/cedarling_wasm": "^0.0.120",
+    "@janssenproject/cedarling_wasm": "^0.0.213",
     "axios": "^1.11.0",
     "bootstrap": "^5.3.3",
     "jotai": "^2.12.1",
