@@ -8,6 +8,7 @@ import { generateCodeChallenge, generateCodeVerifier } from '../utils/pkceUtils'
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { User } from '../utils/types';
+import { v4 as uuid } from 'uuid';
 
 declare module 'express-session' {
   interface SessionData {
@@ -94,6 +95,8 @@ router.get('/login', async (req, res, next) => {
         client_id: process.env.CLIENT_ID,
         redirect_uri: `${process.env.APP_URL}/api/auth/callback`,
         scope: 'openid profile email role offline_access permission',
+        state: uuid(),
+        acr_values: 'basic',
       });
 
     res.redirect(authUrl);
@@ -128,6 +131,8 @@ router.get('/callback', async (req, res, next) => {
       },
     );
 
+    logger.info(`Token Response: ${JSON.stringify(response.data)}`);
+
     const { access_token, id_token, refresh_token } = response.data;
     const decodedIDTOken = jwtDecode(id_token) as User;
     req.session!.access_token = access_token;
@@ -153,6 +158,22 @@ router.get('/callback', async (req, res, next) => {
     logger.error(err.response?.data || err.message);
     throw new HttpException(500, err.response?.data || err.message);
   }
+});
+
+router.get('/logout', (req, res) => {
+  req.session!.access_token = undefined;
+  req.session!.refresh_token = undefined;
+  req.session!.user = undefined;
+
+  const logoutUrl =
+    `${process.env.END_SESSION_ENDPOINT as string}?` +
+    querystring.stringify({
+      id_token_hint: req.session!.id_token,
+      post_logout_redirect_uri: process.env.APP_URL,
+    });
+
+  req.session!.id_token = undefined;
+  res.redirect(logoutUrl);
 });
 
 export default router;
