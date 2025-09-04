@@ -1,5 +1,5 @@
 "use client";
-
+import axios from "axios";
 import { makeUserAuthentication } from "@/factories/makeUserAuthentication";
 import { useCedarling } from "@/factories/useCedarling";
 import { AuthorizeResult } from "@janssenproject/cedarling_wasm";
@@ -71,46 +71,43 @@ export default function TasksPage() {
 
   const handleAdd = async () => {
     try {
-      const result = await cedarlingRequest("Add");
-      console.log(result);
-      if (result.decision) {
-        alert("Successfully added!");
-      } else {
-        alert("You are not allowed to add new Task!");
-      }
+      const response: any = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/article`
+      );
+
+      console.log("Article added: ", response.data);
+      alert("Successfully article added!");
     } catch (e) {
-      alert("You are not allowed to add new Task!");
-      console.log(e);
+      alert("You are not allowed to add article!");
+      console.error(e);
     }
   };
 
   const handleUpdate = async () => {
     try {
-      const result = await cedarlingRequest("Update");
-      console.log(result);
-      if (result.decision) {
-        alert("Successfully updated!");
-      } else {
-        alert("You are not allowed to update task!");
-      }
+      const response: any = await axios.put(
+        `${process.env.NEXT_PUBLIC_API_URL}/article`
+      );
+
+      console.log("Article updated: ", response.data);
+      alert("Successfully article updated!");
     } catch (e) {
-      alert("You are not allowed to update task!");
-      console.log(e);
+      alert("You are not allowed to update article!");
+      console.error(e);
     }
   };
 
   const handleDelete = async () => {
     try {
-      const result = await cedarlingRequest("Delete");
-      console.log(result);
-      if (result.decision) {
-        alert("Successfully deleted!");
-      } else {
-        alert("You are not allowed to delete task!");
-      }
+      const response: any = await axios.delete(
+        `${process.env.NEXT_PUBLIC_API_URL}/article/1`
+      );
+
+      console.log("Article delete: ", response.data);
+      alert("Successfully article deleted!");
     } catch (e) {
-      alert("You are not allowed to delete task!");
-      console.log(e);
+      alert("You are not allowed to delete article!");
+      console.error(e);
     }
   };
 
