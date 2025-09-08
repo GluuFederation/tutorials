@@ -146,48 +146,48 @@ We'll use the [Agama-Lab](https://cloud.gluu.org/agama-lab) Policy Designer to c
 
 ## Admin with All permissions
 
-🟢 Admin can `Create` a Article
-🟢 Admin can `Edit` a Article
-🟢 Admin can `Delete` a Article
-🟢 Admin can `View` a Article
-🟢 Admin can `Conversation` with AITools
-🟢 Admin can `GenerateImage` with AITools
-🟢 Admin can `GenerateVideo` with AITools
+- 🟢 Admin can `Create` a Article
+- 🟢 Admin can `Edit` a Article
+- 🟢 Admin can `Delete` a Article
+- 🟢 Admin can `View` a Article
+- 🟢 Admin can `Conversation` with AITools
+- 🟢 Admin can `GenerateImage` with AITools
+- 🟢 Admin can `GenerateVideo` with AITools
 
 [admin.webm](https://github.com/user-attachments/assets/0db55157-ff67-46c6-a37f-5ff83c28ad74)
 
 ## Author with Premium plan
 
-🟢 Author can `Create` a Article
-🟢 Author can `Edit` a Article
-🟢 Author can `Delete` a Article
-🟢 Author can `View` a Article
-🟢 Author can `Conversation` with AITools
-🟢 Author can `GenerateImage` with AITools
-🟢 Author can `GenerateVideo` with AITools
+- 🟢 Author can `Create` a Article
+- 🟢 Author can `Edit` a Article
+- 🟢 Author can `Delete` a Article
+- 🟢 Author can `View` a Article
+- 🟢 Author can `Conversation` with AITools
+- 🟢 Author can `GenerateImage` with AITools
+- 🟢 Author can `GenerateVideo` with AITools
 
 [author_premium.webm](https://github.com/user-attachments/assets/740a8d3e-c73e-446e-8032-e3b00f92c8ae)
 
 ## Author with Basic plan
 
-🟢 Author can `Create` a Article
-🟢 Author can `Edit` a Article
-🟢 Author can `Delete` a Article
-🟢 Author can `View` a Article
-🟢 Author can `Conversation` with AITools
-🔴 Author can `GenerateImage` with AITools
-🔴 Author can `GenerateVideo` with AITools
+- 🟢 Author can `Create` a Article
+- 🟢 Author can `Edit` a Article
+- 🟢 Author can `Delete` a Article
+- 🟢 Author can `View` a Article
+- 🟢 Author can `Conversation` with AITools
+- 🔴 Author can `GenerateImage` with AITools
+- 🔴 Author can `GenerateVideo` with AITools
 
 [author_basic.webm](https://github.com/user-attachments/assets/9394f3f7-686e-4a9f-9ad5-145bc3f33534)
 
 ## Editor with Basic plan
 
-🔴 Author can `Create` a Article
-🟢 Author can `Edit` a Article
-🔴 Author can `Delete` a Article
-🟢 Author can `View` a Article
-🟢 Author can `Conversation` with AITools
-🔴 Author can `GenerateImage` with AITools
-🔴 Author can `GenerateVideo` with AITools
+- 🔴 Author can `Create` a Article
+- 🟢 Author can `Edit` a Article
+- 🔴 Author can `Delete` a Article
+- 🟢 Author can `View` a Article
+- 🟢 Author can `Conversation` with AITools
+- 🔴 Author can `GenerateImage` with AITools
+- 🔴 Author can `GenerateVideo` with AITools
 
 [editor_basic.webm](https://github.com/user-attachments/assets/b1be3d15-c31b-46f6-9c69-fcc89ea0147b)
