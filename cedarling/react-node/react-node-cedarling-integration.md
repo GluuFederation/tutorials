@@ -175,19 +175,19 @@ We'll use the [Agama-Lab](https://cloud.gluu.org/agama-lab) Policy Designer to c
 - 🟢 Author can `Delete` a Article
 - 🟢 Author can `View` a Article
 - 🟢 Author can `Conversation` with AITools
-- 🔴 Author can `GenerateImage` with AITools
-- 🔴 Author can `GenerateVideo` with AITools
+- 🔴 Author cannot `GenerateImage` with AITools
+- 🔴 Author cannot `GenerateVideo` with AITools
 
 [author_basic.webm](https://github.com/user-attachments/assets/9394f3f7-686e-4a9f-9ad5-145bc3f33534)
 
 ## Editor with Basic plan
 
-- 🔴 Author can `Create` a Article
+- 🔴 Author cannot `Create` a Article
 - 🟢 Author can `Edit` a Article
-- 🔴 Author can `Delete` a Article
+- 🔴 Author cannot `Delete` a Article
 - 🟢 Author can `View` a Article
 - 🟢 Author can `Conversation` with AITools
-- 🔴 Author can `GenerateImage` with AITools
-- 🔴 Author can `GenerateVideo` with AITools
+- 🔴 Author cannot `GenerateImage` with AITools
+- 🔴 Author cannot `GenerateVideo` with AITools
 
 [editor_basic.webm](https://github.com/user-attachments/assets/b1be3d15-c31b-46f6-9c69-fcc89ea0147b)
