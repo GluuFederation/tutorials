@@ -5,9 +5,9 @@
 
 This guide demonstrates how to build a NodeJS and ReactJS application using a new approach to security: **Token-Based Access Control**, where developers authorize capabilities by presenting a bundle of JWT tokens to a policy engine, specifically the [Janssen Project Cedarling](https://docs.jans.io/head/cedarling/cedarling-overview/). The Cedar policy syntax is very expressive. A developer can even express policies based on a person's role or group membership. And that's exactly what we're going to do here: use TBAC to implement RBAC and ABAC. That may not sound very clear, but please continue for more details on why this makes sense.
 
-# Sample Application : Blogging Platform
+# Sample Application: Blogging Platform
 
-For demo, We are going to develop Blogging platform like **medium.com**. Where we will add RBAC and ABAC fine grained control using the [Janssen Project Cedarling](https://docs.jans.io/head/cedarling/cedarling-overview/). We are going to use the [BFF](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-browser-based-apps-24) application structure to build the backend in NodeJS that means only backend is having the tokens where we can easily integrate TBAC but for frontend there are no tokens. but don't worry we have solution for this. We will use the [unsigned-authorization](https://docs.jans.io/stable/cedarling/getting-started/javascript/#unsigned-authorization) feature.
+For demo, we are going to develop a Blogging platform like **medium.com**. Where we will add RBAC and ABAC fine-grained control using the [Janssen Project Cedarling](https://docs.jans.io/head/cedarling/cedarling-overview/). We are going to use the [BFF](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-browser-based-apps-24) application structure to build the backend in NodeJS, which means only the backend has the tokens, where we can easily integrate TBAC, but for frontend, there are no tokens. But don't worry, we have a solution for this. We will use the [unsigned-authorization](https://docs.jans.io/stable/cedarling/getting-started/javascript/#unsigned-authorization) feature.
 
 - Principals: Users with roles like `Admin`, `Editor`, and `Author`.
 - Actions: `Create`, `Edit`, `Delete`, and `View` articles and `Conversion`, `GenerateImage`, `GenerateVideo` using AITools
@@ -21,7 +21,7 @@ For demo, We are going to develop Blogging platform like **medium.com**. Where w
 
 1. Author:
 
-   - Can perform `Create`, `Edit`, `Delete`, and `View` article
+   - Can perform `Create`, `Edit`, `Delete`, and `View` articles
 
 1. Editor:
 
@@ -31,10 +31,10 @@ For demo, We are going to develop Blogging platform like **medium.com**. Where w
 ## Plans and Permissions:
 
 1. Premium:
-   User with `Premium` plan can access `AITools` for `Conversation`, `GenerateImage` and `GenerateVideo`
+   Users with the `Premium` plan can access `AITools` for `Conversation`, `GenerateImage`, and `GenerateVideo`
 
 1. Basic:
-   User with `Basic` plan can access `AITools` but only for `Conversation`.
+   Users with the `Basic` plan can access `AITools` but only for `Conversation`.
 
 # Setting Up Cedar Policies
 
