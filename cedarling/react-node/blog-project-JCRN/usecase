@@ -1,60 +1,59 @@
 Blog Platform
 
-Roles: Admin, Editor, Author, Reader
-Actions: Create, Edit, Delete, View
-Resources: Article (with an owner attribute)
+Roles: Admin, Editor, Author
+Actions: Create, Edit, Delete, View, Conversation, GenerateImage, GenerateVideo
+Resources: Article, AItools
+Plan: basic, premium
 
-
-// Admins can do anything
+// Admin can do anything
 @id("AdminCanDoAnything")
 permit (
-    principal in Jans::Role::"Admin",
-    action,
-    resource
+  principal in Jans::Role::"Admin",
+  action,
+  resource
 );
 
-// Editors can edit or view any article, cannot create new article
-@id("EditorCanEditViewArticleNotCreate")
-permit (
-    principal in Jans::Role::"Editor",
-    action in [Jans::Action::"Edit", Jans::Action::"View"],
-    resource is Jans::Article
-);
-
-// Authors can edit/delete/view their own articles
+// Author can create, edit, delete, and view articles
 @id("AuthorCanCreateEditDeleteView")
 permit (
-    principal in Jans::Role::"Author",
-    action in [Jans::Action::"Create", Jans::Action::"Edit", Jans::Action::"Delete", Jans::Action::"View"],
-    resource is Jans::Article
-) when {
-    principal.id == resource.owner
-};
-
-// Readers can only view articles
-@id("ReadersCanOnlyView")
-permit (
-    principal in Jans::Role::"Reader",
-    action == Jans::Action::"View",
-    resource is Jans::Article
+  principal in Jans::Role::"Author",
+  action in [Jans::Action::"Create",
+  Jans::Action::"Edit",
+  Jans::Action::"Delete",
+  Jans::Action::"View"],
+  resource is Jans::Article
 );
 
-// Basic plan users can only do conversation with AI
+// Editor can edit and view articles but cannot create or delete them
+@id("EditorCanEditViewArticleNotCreate")
+permit (
+  principal in Jans::Role::"Editor",
+  action in [Jans::Action::"Edit",
+  Jans::Action::"View"],
+  resource is Jans::Article
+);
+
+// Basic plan users can access conversation tool
 @id("BasicPlanAccessAIConversationTool")
 permit (
-    principal,
-    action in [Jans::Action::"Conversation"],
-    resource is Jans::AItools
-) when {
-    principal.plan == "basic"    
+  principal,
+  action in [Jans::Action::"Conversation"],
+  resource is Jans::AItools
+)
+when {
+    principal has plan
 };
 
-// Premium plan users can access AI to generate image and videos
+
+// Premium plan users can access image and video generation tools
 @id("PremiumPlanAccessAIGenerateImageVideoTool")
 permit (
-    principal,
-    action in [Jans::Action::"GenerateImage", Jans::Action::"GenerateVideo"],
-    resource is Jans::AItools
-) when {
-    principal.plan == "premium"    
+  principal,
+  action in [Jans::Action::"GenerateImage",
+  Jans::Action::"GenerateVideo"],
+  resource is Jans::AItools
+)
+when {
+    principal has plan && principal.plan == "premium"
 };
+

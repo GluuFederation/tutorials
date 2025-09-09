@@ -1,5 +1,6 @@
 # Protect Backend Node JS and Frontend React with the Janssen Cedarling
-# Cedar Fine-grained Authorization in Backend Node JS and Frontend React JS 
+
+# Cedar Fine-grained Authorization in Backend Node JS and Frontend React JS
 
 ![banner-node-react](https://github.com/user-attachments/assets/8a679aa3-750b-4176-acc9-d7a30fb159b4)
 
@@ -63,7 +64,7 @@ We'll use the [Agama-Lab](https://cloud.gluu.org/agama-lab) Policy Designer to c
    ![add-artcle-entity](https://github.com/user-attachments/assets/7b8f5820-83ac-486c-adeb-f8588794e673)
    ![add-aitools-entity](https://github.com/user-attachments/assets/ef810e39-980a-4e37-a513-b21a4a07bea1)
 
-1. Once you add the Resources, you need to associate an action with it. 
+1. Once you add the Resources, you need to associate an action with it.
 
    Configure actions (`Create`, `Edit`, `Delete`, `View`):
 
@@ -93,7 +94,7 @@ We'll use the [Agama-Lab](https://cloud.gluu.org/agama-lab) Policy Designer to c
      resource
    );
    ```
-   
+
    ```js
    @id("AuthorCanCreateEditDeleteView")
    permit (
@@ -105,7 +106,7 @@ We'll use the [Agama-Lab](https://cloud.gluu.org/agama-lab) Policy Designer to c
      resource is Jans::Article
    );
    ```
-   
+
    ```js
    @id("EditorCanEditViewArticleNotCreate")
    permit (
@@ -115,7 +116,7 @@ We'll use the [Agama-Lab](https://cloud.gluu.org/agama-lab) Policy Designer to c
      resource is Jans::Article
    );
    ```
-   
+
    ```js
    @id("BasicPlanAccessAIConversationTool")
    permit (
@@ -127,7 +128,7 @@ We'll use the [Agama-Lab](https://cloud.gluu.org/agama-lab) Policy Designer to c
        principal has plan
    };
    ```
-   
+
    ```js
    @id("PremiumPlanAccessAIGenerateImageVideoTool")
    permit (
@@ -141,6 +142,133 @@ We'll use the [Agama-Lab](https://cloud.gluu.org/agama-lab) Policy Designer to c
    };
    ```
 
+## Step 4: Setup Trusted Issuer
+
+A trusted issuer is required to configure the Cedarling. We can configure which token is used for user and workload authentication. `access_token` is for workload and `id_token` is for user authentication. The cedarling also validates the access token and ID token, so we need to add configuration for both tokens in the token metadata. [More details](https://docs.jans.io/v1.3.0/cedarling/cedarling-jwt/#summary-of-jwt-validation-mechanisms)
+
+- Go to `Manage Policy Store > Trusted Issuer > Add Issuer`.
+
+- Add name, description, and OpenID Configuration endpoint
+
+- Add token metadata
+
+  ```js
+  {
+    "access_token": {
+      "trusted": true,
+      "entity_type_name": "Jans::Access_token",
+      "user_id": "sub",
+      "token_id": "jti",
+      "workload_id": "rp_id",
+      "claim_mapping": {},
+      "required_claims": [
+        "jti",
+        "iss",
+        "aud",
+        "sub",
+        "exp",
+        "nbf"
+      ],
+      "role_mapping": "role",
+      "principal_mapping": [
+        "Jans::Workload"
+      ]
+    },
+    "id_token": {
+      "trusted": true,
+      "entity_type_name": "Jans::id_token",
+      "user_id": "sub",
+      "token_id": "jti",
+      "role_mapping": "role",
+      "claim_mapping": {},
+      "principal_mapping": [
+        "Jans::User"
+      ]
+    },
+    "userinfo_token": {
+      "trusted": true,
+      "entity_type_name": "Jans::Userinfo_token",
+      "user_id": "sub",
+      "token_id": "jti",
+      "role_mapping": "role",
+      "claim_mapping": {},
+      "principal_mapping": [
+        "Jans::User"
+      ]
+    },
+    "tx_token": {
+      "trusted": true,
+      "entity_type_name": "Jans::Access_token",
+      "user_id": "sub",
+      "token_id": "jti"
+    }
+  }
+  ```
+
+# Setting up a Node.js Application
+
+## Step 1: Install the Cedarling WASM
+
+```sh
+npm install @janssenproject/cedarling_wasm@0.0.213-nodejs
+```
+
+You just need to add the suffix `-nodejs` in the current version to install Node JS Cedarling version. By default, it installs the web cedarling version.
+
+## Step 2: Configure the Cedarling
+
+Initialize with these properties:
+
+```js
+export const cedarlingBootstrapProperties = {
+  CEDARLING_APPLICATION_NAME: "JansBlogPlatform",
+  CEDARLING_POLICY_STORE_URI:
+    "https://raw.githubusercontent.com/kdhttps/pd-first/refs/heads/agama-lab-policy-designer/e3a8d6281e8538a0977bf544428c260004601bc289ff.json", // you policy store URI
+  CEDARLING_USER_AUTHZ: "enabled",
+  CEDARLING_LOG_TYPE: "std_out",
+  CEDARLING_LOG_LEVEL: "TRACE",
+  CEDARLING_LOG_TTL: 120,
+  CEDARLING_PRINCIPAL_BOOLEAN_OPERATION: {
+    "===": [{ var: "Jans::User" }, "ALLOW"],
+  },
+  CEDARLING_JWT_SIG_VALIDATION: "disabled",
+  CEDARLING_JWT_STATUS_VALIDATION: "disabled",
+  CEDARLING_JWT_SIGNATURE_ALGORITHMS_SUPPORTED: ["RS256"],
+};
+```
+
+Checkout [Cedarling NodeJS Article](https://medium.com/janssen-project-feed/using-cedar-to-modernize-authz-in-a-node-js-backend-d204fb4dc55e) for Code integration details.
+
+# Setting up a React JS Application
+
+## Step 1: Install the Cedarling WASM
+
+```sh
+npm install @janssenproject/cedarling_wasm@0.0.213
+```
+
+## Step 2: Configure the Cedarling
+
+Initialize with these properties:
+
+```js
+export const cedarlingBootstrapProperties = {
+  CEDARLING_APPLICATION_NAME: "JansBlogPlatform",
+  CEDARLING_POLICY_STORE_URI:
+    "https://raw.githubusercontent.com/kdhttps/pd-first/refs/heads/agama-lab-policy-designer/87d2c8877a2455a16149c55d956565e1d18ac81ba10a.json", // your policy store URI
+  CEDARLING_POLICY_STORE_ID: "4c996315c8165b5f79a960bb62769c39a054ce7b8550",
+  CEDARLING_USER_AUTHZ: "enabled",
+  CEDARLING_WORKLOAD_AUTHZ: "disabled",
+  CEDARLING_LOG_TYPE: "std_out",
+  CEDARLING_LOG_LEVEL: "TRACE",
+  CEDARLING_LOG_TTL: 120,
+  CEDARLING_PRINCIPAL_BOOLEAN_OPERATION: {
+    "===": [{ var: "Jans::User" }, "ALLOW"],
+  },
+};
+```
+
+Checkout [Cedarling React JS Article](https://medium.com/janssen-project-feed/using-cedar-to-modernize-authz-in-a-react-frontend-f30c637d879c) for code integration details.
 
 # Test Cases
 
