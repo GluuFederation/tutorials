@@ -319,3 +319,8 @@ Checkout [Cedarling React JS Article](https://medium.com/janssen-project-feed/us
 - 🔴 Author cannot `GenerateVideo` with AITools
 
 [editor_basic.webm](https://github.com/user-attachments/assets/b1be3d15-c31b-46f6-9c69-fcc89ea0147b)
+
+For a complete implementation, reference the:
+
+- [React Node Blog Project Code](https://github.com/GluuFederation/tutorials/tree/master/cedarling/react-node/blog-project-JCRN)
+- [Policy Store](https://raw.githubusercontent.com/kdhttps/pd-first/refs/heads/agama-lab-policy-designer/e3a8d6281e8538a0977bf544428c260004601bc289ff.json).
