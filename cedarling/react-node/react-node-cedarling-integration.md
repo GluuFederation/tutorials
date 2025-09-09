@@ -8,7 +8,7 @@ This guide demonstrates how to build a NodeJS and ReactJS application using a ne
 
 # Sample Application: Blogging Platform
 
-For demo, we are going to develop a Blogging platform like **medium.com**. Where we will add RBAC and ABAC fine-grained control using the [Janssen Project Cedarling](https://docs.jans.io/head/cedarling/cedarling-overview/). We are going to use the [BFF](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-browser-based-apps-24) application structure to build the backend in NodeJS, which means only the backend has the tokens, where we can easily integrate TBAC, but for frontend, there are no tokens. But don't worry, we have a solution for this. We will use the [unsigned-authorization](https://docs.jans.io/stable/cedarling/getting-started/javascript/#unsigned-authorization) feature.
+For this demo, we will build a blogging platform similar to Medium.com, incorporating RBAC and ABAC fine-grained access control using the [Janssen Project Cedarling](https://docs.jans.io/head/cedarling/cedarling-overview/). The backend will follow a Backend-for-Frontend (BFF)(https://datatracker.ietf.org/doc/html/draft-ietf-oauth-browser-based-apps-24) architecture in Node.js, ensuring that only the backend holds and manages tokens. This design makes it straightforward to integrate Token-Based Access Control (TBAC) while keeping the frontend token-free. To bridge this gap on the frontend, we will leverage the [unsigned-authorization](https://docs.jans.io/stable/cedarling/getting-started/javascript/#unsigned-authorization) feature as our solution.
 
 - Principals: Users with roles like `Admin`, `Editor`, and `Author`.
 - Actions: `Create`, `Edit`, `Delete`, and `View` articles and `Conversion`, `GenerateImage`, `GenerateVideo` using AITools
