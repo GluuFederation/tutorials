@@ -1,0 +1,43 @@
+version: "3.8"
+
+services:
+  backend:
+    image: node:22
+    working_dir: /nodejs
+    volumes:
+      - ./nodejs:/nodejs
+    command: npm run dev
+    ports:
+      - "3000:3000"
+    networks:
+      - appnet
+
+  frontend:
+    image: frontend
+    build:
+      context: ./react-next
+      target: "builder"
+    volumes:
+      - ./react-next:/app
+    command: npm run dev
+    ports:
+      - "3001:3001"
+    networks:
+      - appnet
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/certs:/etc/nginx/certs:ro
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - appnet
+
+networks:
+  appnet:
+    driver: bridge
