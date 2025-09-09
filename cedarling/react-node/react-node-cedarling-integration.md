@@ -255,7 +255,7 @@ Initialize with these properties:
 export const cedarlingBootstrapProperties = {
   CEDARLING_APPLICATION_NAME: "JansBlogPlatform",
   CEDARLING_POLICY_STORE_URI:
-    "https://raw.githubusercontent.com/kdhttps/pd-first/refs/heads/agama-lab-policy-designer/87d2c8877a2455a16149c55d956565e1d18ac81ba10a.json", // your policy store URI
+    "https://raw.githubusercontent.com/kdhttps/pd-first/refs/heads/agama-lab-policy-designer/e3a8d6281e8538a0977bf544428c260004601bc289ff.json", // your policy store URI
   CEDARLING_POLICY_STORE_ID: "4c996315c8165b5f79a960bb62769c39a054ce7b8550",
   CEDARLING_USER_AUTHZ: "enabled",
   CEDARLING_WORKLOAD_AUTHZ: "disabled",
