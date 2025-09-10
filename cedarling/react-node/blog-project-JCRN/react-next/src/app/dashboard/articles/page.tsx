@@ -49,7 +49,6 @@ export default function TasksPage() {
         cedar_entity_mapping: {
           entity_type: "Jans::User",
           id: account.userId,
-          role: account.roles,
         },
         role: account.roles,
         sub: account.userId,
