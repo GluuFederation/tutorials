@@ -1,5 +1,20 @@
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+};
+
+export async function OPTIONS() {
+  return new Response(null, {
+    status: 200,
+    headers: corsHeaders,
+  });
+}
+
 export async function GET() {
   try {
+    await OPTIONS(); // Handle CORS preflight
+
     const url = process.env.NEXT_PUBLIC_POLICY_STORE_URL;
 
     if (!url) {
@@ -29,6 +44,7 @@ export async function GET() {
       headers: {
         "Content-Type": "application/octet-stream",
         "Content-Length": arrayBuffer.byteLength.toString(),
+        ...corsHeaders,
       },
     });
   } catch (error) {
@@ -36,6 +52,9 @@ export async function GET() {
     return Response.json(
       { error: "Failed to fetch policy store" },
       { status: 500 },
+      // {
+      //   headers: corsHeaders,
+      // },
     );
   }
 }
