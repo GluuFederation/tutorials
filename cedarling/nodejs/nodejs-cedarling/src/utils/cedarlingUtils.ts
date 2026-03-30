@@ -1,18 +1,58 @@
-import { init, Cedarling, AuthorizeResult } from '@janssenproject/cedarling_wasm';
+import {
+  init,
+  Cedarling,
+  AuthorizeResult,
+  init_from_archive_bytes,
+} from '@janssenproject/cedarling_wasm';
 import logger from './logger';
 
 export const cedarlingBootstrapProperties = {
   CEDARLING_APPLICATION_NAME: 'CloudInfrastructure',
-  CEDARLING_POLICY_STORE_URI:
-    'https://raw.githubusercontent.com/kdhttps/pd-first/refs/heads/agama-lab-policy-designer/22942366f5ad4d8338514bc402d4b901b056051f2bed.json',
+  // CEDARLING_POLICY_STORE_URI:
+  //   'https://raw.githubusercontent.com/kdhttps/new-pd/refs/heads/main/JanssenReactCedarlingRBAC.cjar',
+  CEDARLING_POLICY_STORE_ID: '65c38cb629a964b423ee80dcdce7a76e0b37af9579bc',
   CEDARLING_USER_AUTHZ: 'enabled',
   CEDARLING_LOG_TYPE: 'std_out',
   CEDARLING_LOG_LEVEL: 'INFO',
-  CEDARLING_LOG_TTL: 120,
   CEDARLING_PRINCIPAL_BOOLEAN_OPERATION: {
     '===': [{ var: 'Jans::User' }, 'ALLOW'],
   },
 };
+
+export async function fetchPolicyStoreZip(url: string): Promise<ArrayBuffer> {
+  let etag = '';
+  logger.info(`Fetching policy store from URL: ${url} with ETag: ${etag}`);
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'User-Agent': 'node-fetch',
+        'Cache-Control': 'no-cache',
+        Pragma: 'no-cache',
+      },
+      redirect: 'follow',
+    });
+
+    if (response.status === 304) {
+      logger.info('Policy store not modified (304), retrying fetch...');
+      const retryResponse = await fetch(url);
+      if (!retryResponse.ok) {
+        throw new Error(`Failed to fetch policy store: ${retryResponse.statusText}`);
+      }
+      return await retryResponse.arrayBuffer();
+    }
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch policy store: ${response.statusText}`);
+    }
+
+    etag = response.headers.get('ETag') || '';
+    return await response.arrayBuffer();
+  } catch (error) {
+    logger.error('Error fetching policy store:', error);
+    throw error;
+  }
+}
 
 class CedarlingClient {
   private static instance: CedarlingClient;
@@ -33,7 +73,14 @@ class CedarlingClient {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async initialize(policyStoreConfig: any): Promise<void> {
     if (!this.initialized) {
-      this.cedarling = (await init(policyStoreConfig)) as unknown as Cedarling;
+      const responseArrayBuffer = await fetchPolicyStoreZip(
+        'https://github.com/duttarnab/GluuFlexAdminUIPolicyStore/releases/download/v1.0.0/MyStore.cjar',
+      );
+      const bytes = new Uint8Array(responseArrayBuffer);
+      this.cedarling = (await init_from_archive_bytes(
+        policyStoreConfig,
+        bytes,
+      )) as unknown as Cedarling;
       logger.info('WASM initialized', this.cedarling);
       this.initialized = true;
     }

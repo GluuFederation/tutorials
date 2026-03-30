@@ -2,13 +2,14 @@ import initWasm, {
   init,
   Cedarling,
   AuthorizeResult,
+  init_from_archive_bytes,
 } from "@janssenproject/cedarling_wasm";
 
 export const cedarlingBootstrapProperties = {
-  CEDARLING_APPLICATION_NAME: "AgamaLab",
+  CEDARLING_APPLICATION_NAME: "TaskManager",
   CEDARLING_POLICY_STORE_URI:
-    "https://raw.githubusercontent.com/kdhttps/pd-first/refs/heads/agama-lab-policy-designer/87d2c8877a2455a16149c55d956565e1d18ac81ba10a.json",
-  CEDARLING_POLICY_STORE_ID: "4c996315c8165b5f79a960bb62769c39a054ce7b8550",
+    "https://github.com/kdhttps/new-pd/releases/download/v0.0.6/JanssenReactCedarlingRBAC.cjar",
+  CEDARLING_POLICY_STORE_ID: "65c38cb629a964b423ee80dcdce7a76e0b37af9579bc",
   CEDARLING_USER_AUTHZ: "enabled",
   CEDARLING_WORKLOAD_AUTHZ: "disabled",
   CEDARLING_LOG_TYPE: "std_out",
@@ -18,6 +19,24 @@ export const cedarlingBootstrapProperties = {
     "===": [{ var: "Jans::User" }, "ALLOW"],
   },
 };
+
+export async function fetchPolicyStoreZip(): Promise<ArrayBuffer> {
+  console.info(`Fetching policy store via API endpoint`);
+  try {
+    const response = await fetch("/api/policy-store", {
+      method: "GET",
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch policy store: ${response.statusText}`);
+    }
+
+    return await response.arrayBuffer();
+  } catch (error) {
+    console.error("Error fetching policy store:", error);
+    throw error;
+  }
+}
 
 class CedarlingClient {
   private static instance: CedarlingClient;
@@ -39,8 +58,15 @@ class CedarlingClient {
   async initialize(policyStoreConfig: any): Promise<void> {
     if (!this.initialized) {
       this.wasmModule = await initWasm();
-      console.log("WASM initialized", this.wasmModule);
-      this.cedarling = (await init(policyStoreConfig)) as unknown as Cedarling;
+      // this.cedarling = (await init(policyStoreConfig)) as unknown as Cedarling;
+      const responseArrayBuffer = await fetchPolicyStoreZip();
+      const bytes = new Uint8Array(responseArrayBuffer);
+      this.cedarling = (await init_from_archive_bytes(
+        policyStoreConfig,
+        bytes,
+      )) as unknown as Cedarling;
+      console.log("WASM initialized", this.cedarling);
+
       this.initialized = true;
     }
   }
