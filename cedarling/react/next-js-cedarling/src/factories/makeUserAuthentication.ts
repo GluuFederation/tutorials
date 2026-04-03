@@ -12,7 +12,7 @@ const userManagerSettings: UserManagerSettings = {
   redirect_uri: `${process.env.NEXT_PUBLIC_URL}/login`,
   post_logout_redirect_uri: `${process.env.NEXT_PUBLIC_URL}/logout`,
   response_type: "code",
-  scope: "openid email profile offline_access permission",
+  scope: "openid email profile offline_access permission role",
   automaticSilentRenew: true,
   validateSubOnSilentRenew: true,
   userStore: new WebStorageStateStore({ store: new InMemoryWebStorage() }),

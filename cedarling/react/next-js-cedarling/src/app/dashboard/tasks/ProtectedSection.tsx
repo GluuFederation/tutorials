@@ -36,7 +36,12 @@ export function ProtectedSection({
           id_token: idToken,
         },
         action: `Jans::Action::"${actionId}"`,
-        resource: { type: "Jans::Task", id: resourceId, name: resourceId },
+        resource: {
+          cedar_entity_mapping: {
+            entity_type: "Jans::Task",
+            id: resourceId,
+          },
+        },
         context: {},
       };
       try {
