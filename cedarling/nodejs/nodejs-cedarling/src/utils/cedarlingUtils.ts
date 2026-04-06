@@ -6,14 +6,29 @@ import {
 } from '@janssenproject/cedarling_wasm';
 import logger from './logger';
 
-export const cedarlingBootstrapProperties = {
+interface TBootstrapProperties {
+  CEDARLING_APPLICATION_NAME: string;
+  CEDARLING_POLICY_STORE_URI: string;
+  CEDARLING_POLICY_STORE_ID: string;
+  CEDARLING_USER_AUTHZ: string;
+  CEDARLING_LOG_TYPE: string;
+  CEDARLING_LOG_LEVEL: string;
+  CEDARLING_WORKLOAD_AUTHZ: string;
+  CEDARLING_PRINCIPAL_BOOLEAN_OPERATION: Record<string, any>;
+  CEDARLING_ID_TOKEN_TRUST_MODE?: string;
+  CEDARLING_JWT_SIG_VALIDATION?: string;
+  CEDARLING_JWT_STATUS_VALIDATION?: string;
+}
+
+export const cedarlingBootstrapProperties: TBootstrapProperties = {
   CEDARLING_APPLICATION_NAME: 'CloudInfrastructure',
-  // CEDARLING_POLICY_STORE_URI:
-  //   'https://raw.githubusercontent.com/kdhttps/new-pd/refs/heads/main/JanssenReactCedarlingRBAC.cjar',
+  CEDARLING_POLICY_STORE_URI:
+    'https://github.com/kdhttps/new-pd/releases/download/v0.0.8/JansNodeJSCedarling.cjar',
   CEDARLING_POLICY_STORE_ID: '65c38cb629a964b423ee80dcdce7a76e0b37af9579bc',
   CEDARLING_USER_AUTHZ: 'enabled',
+  CEDARLING_WORKLOAD_AUTHZ: 'disabled',
   CEDARLING_LOG_TYPE: 'std_out',
-  CEDARLING_LOG_LEVEL: 'INFO',
+  CEDARLING_LOG_LEVEL: 'TRACE',
   CEDARLING_PRINCIPAL_BOOLEAN_OPERATION: {
     '===': [{ var: 'Jans::User' }, 'ALLOW'],
   },
@@ -71,16 +86,12 @@ class CedarlingClient {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async initialize(policyStoreConfig: any): Promise<void> {
+  async initialize(policyStoreConfig: TBootstrapProperties): Promise<void> {
     if (!this.initialized) {
-      const responseArrayBuffer = await fetchPolicyStoreZip(
-        'https://github.com/duttarnab/GluuFlexAdminUIPolicyStore/releases/download/v1.0.0/MyStore.cjar',
-      );
+      const { CEDARLING_POLICY_STORE_URI, ...config } = policyStoreConfig;
+      const responseArrayBuffer = await fetchPolicyStoreZip(CEDARLING_POLICY_STORE_URI);
       const bytes = new Uint8Array(responseArrayBuffer);
-      this.cedarling = (await init_from_archive_bytes(
-        policyStoreConfig,
-        bytes,
-      )) as unknown as Cedarling;
+      this.cedarling = (await init_from_archive_bytes(config, bytes)) as unknown as Cedarling;
       logger.info('WASM initialized', this.cedarling);
       this.initialized = true;
     }
