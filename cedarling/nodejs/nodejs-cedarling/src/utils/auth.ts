@@ -16,6 +16,7 @@ export const generateToken = (user: { id: string; role: string[] }): string => {
       aud: '01b8d980-b43c-455a-b8a6-98ba351bfe2b',
       jti: '6dV4hO0kQ3OaPJerJHNwgg',
       sub: '5a6130b1-2380-4a0f-94df-8af2214e395a',
+      nbf: 1774863117,
     },
     SECRET_KEY,
     {
