@@ -30,14 +30,9 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
       },
       action: `Jans::Action::"${getAction(req)}"`,
       resource: {
-        type: 'Jans::VirtualMachine',
-        id: 'CloudInfrastructure',
-        app_id: 'CloudInfrastructure',
-        name: 'CloudInfrastructure',
-        url: {
-          host: 'jans.test',
-          path: '/',
-          protocol: 'http',
+        cedar_entity_mapping: {
+          entity_type: 'Jans::VirtualMachine',
+          id: 'CloudInfrastructure',
         },
       },
       context: {},

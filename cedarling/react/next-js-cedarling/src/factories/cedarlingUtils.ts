@@ -1,5 +1,4 @@
 import initWasm, {
-  init,
   Cedarling,
   AuthorizeResult,
   init_from_archive_bytes,
@@ -7,14 +6,10 @@ import initWasm, {
 
 export const cedarlingBootstrapProperties = {
   CEDARLING_APPLICATION_NAME: "TaskManager",
-  CEDARLING_POLICY_STORE_URI:
-    "https://github.com/kdhttps/new-pd/releases/download/v0.0.6/JanssenReactCedarlingRBAC.cjar",
-  CEDARLING_POLICY_STORE_ID: "65c38cb629a964b423ee80dcdce7a76e0b37af9579bc",
   CEDARLING_USER_AUTHZ: "enabled",
   CEDARLING_WORKLOAD_AUTHZ: "disabled",
   CEDARLING_LOG_TYPE: "std_out",
   CEDARLING_LOG_LEVEL: "TRACE",
-  CEDARLING_LOG_TTL: 120,
   CEDARLING_PRINCIPAL_BOOLEAN_OPERATION: {
     "===": [{ var: "Jans::User" }, "ALLOW"],
   },
@@ -58,7 +53,6 @@ class CedarlingClient {
   async initialize(policyStoreConfig: any): Promise<void> {
     if (!this.initialized) {
       this.wasmModule = await initWasm();
-      // this.cedarling = (await init(policyStoreConfig)) as unknown as Cedarling;
       const responseArrayBuffer = await fetchPolicyStoreZip();
       const bytes = new Uint8Array(responseArrayBuffer);
       this.cedarling = (await init_from_archive_bytes(
